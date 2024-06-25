@@ -47,7 +47,7 @@ okhttp-url-connection = { group = "com.squareup.okhttp3", name = "okhttp-urlconn
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
-
+androidx-viewModel-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 
 [bundles]
 retrofit2 = ["retrofit2", "retrofit2-serialization"]

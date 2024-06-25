@@ -3,8 +3,7 @@ package com.seungsu.donsani
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.seungsu.presentation.DongsaniNavGraph
-import com.seungsu.presentation.theme.DongsaniTheme
+import com.seungsu.design.theme.DongsaniTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -21,6 +21,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "Dongsani"
 include(":app")
-include(":presentation")
+include(":core")
+include(":resource")
+include(":designsystem")
 include(":data")
 include(":domain")
+include(":presentation:exercise-grass")
+include(":presentation:common")
