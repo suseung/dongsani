@@ -5,12 +5,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.seungsu.presentation.Destination.HOME
-import com.seungsu.presentation.home.HomeScreen
+import com.seungsu.presentation.Destination.EXERCISE_GRASS
+import com.seungsu.presentation.exercisegrass.ExcersiseGrassMainScreen
 
 object Destination {
-    const val HOME = "home"
-    const val DDAY = "dday"
+    const val EXERCISE_GRASS = "exercise_grass"
 }
 
 @Composable
@@ -19,10 +18,10 @@ fun DongsaniNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = HOME
+        startDestination = EXERCISE_GRASS
     ) {
-        composable(HOME) {
-            HomeScreen()
+        composable(EXERCISE_GRASS) {
+            ExcersiseGrassMainScreen()
         }
     }
 }
