@@ -18,7 +18,7 @@ import com.seungsu.resource.R
 import com.seungsu.design.theme.DongsaniTheme
 
 @Composable
-fun RecordHeader(
+fun ExerciseRecordHeader(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -60,9 +60,9 @@ fun RecordHeader(
 
 @Preview(backgroundColor = 0xffffff, showBackground = true)
 @Composable
-fun RecordHeaderPreview() {
+fun ExerciseRecordHeaderPreview() {
     DongsaniTheme {
-        RecordHeader(
+        ExerciseRecordHeader(
             modifier = Modifier.padding(16.dp)
         )
     }

@@ -2,19 +2,59 @@ package com.seungsu.record
 
 import androidx.lifecycle.viewModelScope
 import com.seungsu.core.base.MVIViewModel
+import com.seungsu.domain.base.ApiResult
+import com.seungsu.domain.base.asResult
+import com.seungsu.domain.model.ExerciseRecordItemEntity
+import com.seungsu.domain.usecase.GetCurrentDayExerciseRecordUseCase
+import com.seungsu.domain.usecase.InsertExerciseRecordUseCase
 import com.seungsu.model.ExerciseRecordItem
+import com.seungsu.model.toDomainModel
+import com.seungsu.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.openjdk.tools.javac.util.DefinedBy.Api
 
 @HiltViewModel
 class ExerciseRecordViewModel @Inject constructor(
+    private val getCurrentDayExerciseRecordUseCase: GetCurrentDayExerciseRecordUseCase,
+    private val insertExerciseRecordUseCase: InsertExerciseRecordUseCase
 ) : MVIViewModel<ExerciseRecordIntent, ExerciseRecordState, ExerciseRecordEffect>() {
 
     private var timerJob: Job? = null
-    override fun createInitialState() = ExerciseRecordState.Success()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val exerciseRecordResult = loadDataSignal
+        .flatMapLatest {
+            getCurrentDayExerciseRecordUseCase(LocalDate.now()).asResult()
+        }
+        .stateIn(viewModelScope, SharingStarted.Lazily, ApiResult.Loading)
+
+    init {
+        viewModelScope.launch {
+            initializeMock()
+            exerciseRecordResult.collect { apiResult ->
+                setState {
+                    when (apiResult) {
+                        is ApiResult.Success -> ExerciseRecordState.Success(
+                            recordItems = apiResult.data.map(ExerciseRecordItemEntity::toUiModel)
+                        )
+
+                        else -> ExerciseRecordState.Loading
+                    }
+                }
+            }
+        }
+    }
+
+    override fun createInitialState() = ExerciseRecordState.Loading
 
     override suspend fun processIntent(intent: ExerciseRecordIntent) = when (intent) {
         ExerciseRecordIntent.OnClickStart -> processStartTimer()
@@ -22,6 +62,108 @@ class ExerciseRecordViewModel @Inject constructor(
         ExerciseRecordIntent.OnResetTimer -> processResetTimer()
 
         is ExerciseRecordIntent.OnSaveMemo -> processOnSaveMemo(intent.memo)
+    }
+
+    private fun initializeMock() {
+        viewModelScope.launch {
+            val lists = listOf(
+                ExerciseRecordItem(
+                    memo = "팔굽혀펴기",
+                    recordTime = 8L,
+                    recordDate = LocalDate.of(2024, 7, 1)
+                ),
+                ExerciseRecordItem(
+                    memo = "팔굽혀펴기",
+                    recordTime = 8L,
+                    recordDate = LocalDate.of(2024, 7, 2)
+                ),
+                ExerciseRecordItem(
+                    memo = "팔굽혀펴기",
+                    recordTime = 10L,
+                    recordDate = LocalDate.of(2024, 7, 3)
+                ),
+                ExerciseRecordItem(
+                    memo = "중량팔굽혀펴기",
+                    recordTime = 10L,
+                    recordDate = LocalDate.of(2024, 7, 4)
+                ),
+                ExerciseRecordItem(
+                    memo = "팔굽혀펴기",
+                    recordTime = 70L,
+                    recordDate = LocalDate.of(2024, 7, 4)
+                ),
+                ExerciseRecordItem(
+                    memo = "턱걸이",
+                    recordTime = 30L,
+                    recordDate = LocalDate.of(2024, 7, 7)
+                ),
+                ExerciseRecordItem(
+                    memo = "달리기",
+                    recordTime = 8L,
+                    recordDate = LocalDate.of(2024, 7, 7)
+                ),
+                ExerciseRecordItem(
+                    memo = "윗몸일으키기",
+                    recordTime = 10L,
+                    recordDate = LocalDate.of(2024, 7, 8)
+                ),
+                ExerciseRecordItem(
+                    memo = "팔굽혀펴기",
+                    recordTime = 20L,
+                    recordDate = LocalDate.of(2024, 7, 9)
+                ),
+                ExerciseRecordItem(
+                    memo = "턱걸이",
+                    recordTime = 2L,
+                    recordDate = LocalDate.of(2024, 7, 9)
+                ),
+                ExerciseRecordItem(
+                    memo = "주짓수",
+                    recordTime = 58L,
+                    recordDate = LocalDate.of(2024, 7, 14)
+                ),
+                ExerciseRecordItem(
+                    memo = "배밀기",
+                    recordTime = 10L,
+                    recordDate = LocalDate.of(2024, 7, 17)
+                ),
+                ExerciseRecordItem(
+                    memo = "턱걸이",
+                    recordTime = 10L,
+                    recordDate = LocalDate.of(2024, 7, 18)
+                ),
+                ExerciseRecordItem(
+                    memo = "팔굽혀펴기",
+                    recordTime = 20L,
+                    recordDate = LocalDate.of(2024, 7, 19)
+                ),
+                ExerciseRecordItem(
+                    memo = "팔굽혀펴기",
+                    recordTime = 150L,
+                    recordDate = LocalDate.of(2024, 7, 20)
+                ),
+            )
+            lists.forEach {
+                println(it)
+                insertExerciseRecordUseCase(it.toDomainModel()).asResult()
+                    .collect { apiResult ->
+                        when (apiResult) {
+                            is ApiResult.Success -> {
+                                println("success")
+                            }
+
+                            is ApiResult.Loading -> {
+                                println("loading")
+                            }
+
+                            is ApiResult.Error -> {
+                                println("error")
+                            }
+                        }
+
+                    }
+            }
+        }
     }
 
     private fun processStartTimer() = currentStateIf<ExerciseRecordState.Success> {
@@ -55,12 +197,28 @@ class ExerciseRecordViewModel @Inject constructor(
     }
 
     private fun processOnSaveMemo(memo: String) = currentStateIf<ExerciseRecordState.Success> {
-        setState {
-            copy(
-                recordItems = recordItems + ExerciseRecordItem(memo = memo, recordTime = currentTime),
-                currentTime = 0L
-            )
+        val insertItem = ExerciseRecordItem(
+            memo = memo,
+            recordTime = currentTime,
+            recordDate = LocalDate.now()
+        )
+        viewModelScope.launch {
+            insertExerciseRecordUseCase(insertItem.toDomainModel())
+                .asResult()
+                .collect { apiResult ->
+                    when (apiResult) {
+                        is ApiResult.Success -> {
+                            setState {
+                                copy(
+                                    recordItems = recordItems + insertItem,
+                                    currentTime = 0L
+                                )
+                            }
+                        }
+
+                        else -> Unit
+                    }
+                }
         }
-        // Todo DB에 저장
     }
 }

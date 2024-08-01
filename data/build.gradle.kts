@@ -43,6 +43,8 @@ dependencies {
     implementation(libs.bundles.okhttp3)
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
+    implementation(libs.bundles.androidx.room)
 
+    kapt(libs.androidx.room.compiler)
     kapt(libs.hilt.compiler)
 }

@@ -1,8 +1,12 @@
 package com.seungsu.design.component
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -14,6 +18,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seungsu.design.theme.DongsaniTheme
@@ -23,25 +28,22 @@ import com.seungsu.resource.R as resourceR
 @Composable
 fun DongsaniTopAppbar(
     modifier: Modifier = Modifier,
-    title: String,
+    thickness: Dp = 1.dp,
+    titleContent: @Composable () -> Unit,
     navigationIcon: @Composable () -> Unit = {},
-    alignment: TextAlign = TextAlign.Start
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
-    TopAppBar(
-        title = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = title,
-                style = TextStyle(
-                    fontSize = 18.sp,
-                    color = DongsaniTheme.color.Black,
-                    textAlign = alignment
-                )
-            )
-        },
-        navigationIcon = navigationIcon,
+    Column(
         modifier = modifier
-    )
+            //.systemBarsPadding()
+    ) {
+        TopAppBar(
+            title = { titleContent() },
+            navigationIcon = navigationIcon,
+            actions = actions
+        )
+        Divider(thickness = thickness)
+    }
 }
 
 @Preview(backgroundColor = 0xffffff, showBackground = true)
@@ -49,7 +51,14 @@ fun DongsaniTopAppbar(
 fun DongsaniTopAppbarPreview() {
     DongsaniTheme {
         DongsaniTopAppbar(
-            title = "TopAppbar",
+            titleContent = {
+                Text(
+                    text = "TopAppbar",
+                    style = TextStyle(
+                        textAlign = TextAlign.Center
+                    )
+                )
+            },
             navigationIcon = {
                 Icon(
                     modifier = Modifier

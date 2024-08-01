@@ -16,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,8 +47,10 @@ import com.seungsu.model.ExerciseRecordItem
 import com.seungsu.resource.R as resourceR
 
 @Composable
-fun ExerciseGrassMainScreen(
-    viewModel: ExerciseRecordViewModel = hiltViewModel()
+fun ExerciseRecordScreen(
+    viewModel: ExerciseRecordViewModel = hiltViewModel(),
+    navToExerciseGrass: () -> Unit,
+    navigateToSetting: () -> Unit = {}
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     var isMemoBottomSheetVisible by rememberSaveable { mutableStateOf(false) }
@@ -63,7 +66,40 @@ fun ExerciseGrassMainScreen(
     Scaffold(
         topBar = {
             DongsaniTopAppbar(
-                title = stringResource(id = resourceR.string.exercise_grass),
+                titleContent = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = stringResource(id = resourceR.string.exercise_record_title),
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                color = DongsaniTheme.color.Purple,
+                                textAlign = TextAlign.Center
+                            ),
+                            modifier = Modifier.padding(end = 32.dp)
+                        )
+                        Text(
+                            text = stringResource(id = resourceR.string.exercise_grass_title),
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                color = DongsaniTheme.color.Gray,
+                                textAlign = TextAlign.Center
+                            ),
+                            modifier = Modifier.clickable { navToExerciseGrass() }
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = navigateToSetting) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = resourceR.drawable.ic_setting),
+                            contentDescription = "setting",
+                            modifier = Modifier.clickable { navigateToSetting() }
+                        )
+                    }
+                },
                 navigationIcon = {
                     Icon(
                         modifier = Modifier
@@ -133,7 +169,7 @@ fun ExerciseGrassMainScreen(
     ) { paddingValues ->
         when (val state = uiState) {
             is ExerciseRecordState.Loading -> Unit
-            is ExerciseRecordState.Success -> ExerciseGrass(
+            is ExerciseRecordState.Success -> ExerciseRecord(
                 modifier = Modifier.padding(paddingValues),
                 parsedCurrentTime = state.parsedCurrentTime,
                 recordItems = state.recordItems,
@@ -152,7 +188,7 @@ fun ExerciseGrassMainScreen(
 }
 
 @Composable
-fun ExerciseGrass(
+fun ExerciseRecord(
     modifier: Modifier = Modifier,
     parsedCurrentTime: String,
     recordItems: List<ExerciseRecordItem>,
@@ -169,7 +205,7 @@ fun ExerciseGrass(
     ) {
         item { Timer(time = parsedCurrentTime) }
         if (recordItems.isNotEmpty()) {
-            item { RecordHeader() }
+            item { ExerciseRecordHeader() }
             item { Divider(modifier = Modifier.padding(vertical = 16.dp)) }
             items(recordItems.size) { index ->
                 ExerciseRecord(
@@ -250,7 +286,7 @@ fun ExerciseGrassPreview() {
         )
     )
     DongsaniTheme {
-        ExerciseGrass(
+        ExerciseRecord(
             recordItems = lists,
             parsedCurrentTime = "12:34:56",
             isMemoBottomSheetVisible = false,

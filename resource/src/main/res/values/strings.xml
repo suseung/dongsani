@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="exercise_grass">운동 잔디</string>
+    <string name="exercise_record_title">기록</string>
+    <string name="exercise_grass_title">잔디</string>
+    <string name="exercise_setting_title">설정</string>
     <string name="exercise_start">시작</string>
     <string name="exercise_stop">정지</string>
     <string name="accumultate">누적</string>
@@ -11,4 +13,5 @@
     <string name="exercise_memo_record_placeholder">운동 메모를 입력해주세요.</string>
     <string name="save">저장</string>
     <string name="no">아니요</string>
+    <string name="exercise_grass_color">테마</string>
 </resources>

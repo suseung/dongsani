@@ -20,6 +20,8 @@ kotlinSerializationJson = "1.6.2"
 kotlinSerialization = "1.9.10"
 kotlinxCoroutines = "1.7.3"
 appcompat = "1.7.0"
+androidxRoom = "2.6.1"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,10 +50,16 @@ okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-i
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 androidx-viewModel-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidxRoom" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidxRoom" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
+
 
 [bundles]
 retrofit2 = ["retrofit2", "retrofit2-serialization"]
 okhttp3 = ["okhttp", "okhttp-url-connection", "okhttp-logging-interceptor"]
+androidx-room = ["androidx-room-runtime", "androidx-room-ktx"]
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

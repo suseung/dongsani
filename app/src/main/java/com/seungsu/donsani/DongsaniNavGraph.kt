@@ -5,11 +5,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.seungsu.record.ExerciseGrassMainScreen
 import com.seungsu.donsani.Destination.EXERCISE_GRASS
+import com.seungsu.record.ExerciseRecordScreen
+import com.seungsu.donsani.Destination.EXERCISE_RECORD
+import com.seungsu.donsani.Destination.EXERCISE_SETTING
+import com.seungsu.grass.ExerciseGrassScreen
+import com.seungsu.setting.ExerciseSettingScreen
 
 object Destination {
+    const val EXERCISE_RECORD = "exercise_record"
     const val EXERCISE_GRASS = "exercise_grass"
+    const val EXERCISE_SETTING = "exercise_setting"
 }
 
 @Composable
@@ -18,10 +24,42 @@ fun DongsaniNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = EXERCISE_GRASS
+        startDestination = EXERCISE_RECORD
     ) {
+        composable(EXERCISE_RECORD) {
+            ExerciseRecordScreen(
+                navToExerciseGrass = {
+                    navController.navigate(EXERCISE_GRASS) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToSetting = {
+                    navController.navigate(EXERCISE_SETTING) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
         composable(EXERCISE_GRASS) {
-            ExerciseGrassMainScreen()
+            ExerciseGrassScreen(
+                navToExerciseRecord = {
+                    navController.navigate(EXERCISE_RECORD) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateToSetting = {
+                    navController.navigate(EXERCISE_SETTING) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+        composable(EXERCISE_SETTING) {
+            ExerciseSettingScreen(
+                onNavPopback = { navController.popBackStack() }
+            )
         }
     }
 }

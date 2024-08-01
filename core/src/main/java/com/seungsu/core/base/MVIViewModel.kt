@@ -2,12 +2,15 @@ package com.seungsu.core.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 abstract class MVIViewModel<I: ViewIntent, S: ViewState, E: ViewEffect>: ViewModel() {
@@ -57,5 +60,20 @@ abstract class MVIViewModel<I: ViewIntent, S: ViewState, E: ViewEffect>: ViewMod
         if (currentState is S) {
             currentState.action()
         }
+    }
+
+    private val _signalState = MutableStateFlow<SignalState>(SignalState.INITIALIZE)
+    val signalState: StateFlow<SignalState> = _signalState
+
+    private val refreshSignal = MutableSharedFlow<SignalState>()
+
+    protected val loadDataSignal: Flow<SignalState> = flow {
+        emit(SignalState.INITIALIZE)
+        emitAll(refreshSignal)
+    }
+
+    open fun onRefresh(signalState: SignalState = SignalState.ERROR_REFRESH) = viewModelScope.launch {
+        _signalState.value = signalState
+        refreshSignal.emit(signalState)
     }
 }
