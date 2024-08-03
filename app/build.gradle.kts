@@ -53,6 +53,7 @@ android {
 dependencies {
     implementation(project(":presentation:common"))
     implementation(project(":presentation:exercise-grass"))
+    implementation(project(":presentation:sparring"))
     implementation(project(":designsystem"))
     implementation(project(":data"))
     implementation(project(":domain"))

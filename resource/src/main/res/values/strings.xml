@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 운동기록 -->
     <string name="exercise_record_title">기록</string>
     <string name="exercise_grass_title">잔디</string>
     <string name="exercise_setting_title">설정</string>
@@ -14,4 +15,40 @@
     <string name="save">저장</string>
     <string name="no">아니요</string>
     <string name="exercise_grass_color">테마</string>
+
+    <!-- 스파링 -->
+    <string name="sparring_profile_title">프로필</string>
+    <string name="sparring_name_label">이름 (필수)</string>
+    <string name="sparring_nickname_label">별명 (선택)</string>
+    <string name="sparring_gym_name_label">체육관명 (필수)</string>
+    <string name="sparring_level_label">레벨 (필수)</string>
+    <string name="sparring_belt_label">벨트 (필수)</string>
+    <string name="sparring_grau_label">그랄 (필수)</string>
+    <string name="sparring_speciality_label">주특기 (*최대 3개까지 선택 가능)</string>
+    <string name="sparring_name_placeholder">3~6자 이내로 입력해 주세요.</string>
+    <string name="sparring_nickname_placeholder">2~10자 이내로 입력해 주세요.</string>
+    <string name="sparring_gym_name_placeholder">체육관명을 정확하게 입력해주세요.</string>
+    <string name="sparring_level_placeholder">현재 레벨을 선택해 주세요.</string>
+    <string name="sparring_type_all_rounder">All-rounder</string>
+    <string name="sparring_type_guard">Guard</string>
+    <string name="sparring_type_half_guard">Half-Guard</string>
+    <string name="sparring_type_top">Top</string>
+    <string name="sparring_type_lapel">Lapel</string>
+    <string name="sparring_type_lasso">Lasso</string>
+    <string name="sparring_type_choke">Choke</string>
+    <string name="sparring_type_physical">Physical</string>
+    <string name="sparring_type_unique">Unique</string>
+    <string name="sparring_type_submission">Submission</string>
+    <string name="sparring_level_bottomsheet_title">벨트 및 그랄 선택</string>
+    <string name="sparring_belt_white">White</string>
+    <string name="sparring_belt_blue">Blue</string>
+    <string name="sparring_belt_purple">Purple</string>
+    <string name="sparring_belt_brown">Brown</string>
+    <string name="sparring_belt_black">Black</string>
+    <string name="sparring_grau_1">1 Grau</string>
+    <string name="sparring_grau_2">2 Grau</string>
+    <string name="sparring_grau_3">3 Grau</string>
+    <string name="sparring_grau_4">4 Grau</string>
+
+
 </resources>
