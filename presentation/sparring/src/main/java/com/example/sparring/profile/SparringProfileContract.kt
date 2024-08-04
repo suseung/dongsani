@@ -1,5 +1,6 @@
 package com.example.sparring.profile
 
+import com.seungsu.common.model.ContentsType
 import com.seungsu.core.base.ViewEffect
 import com.seungsu.core.base.ViewIntent
 import com.seungsu.core.base.ViewState
@@ -18,6 +19,9 @@ sealed interface SparringProfileIntent: ViewIntent {
     data object OnClearName: SparringProfileIntent
     data object OnClearNickName: SparringProfileIntent
     data object OnClearGymName: SparringProfileIntent
+
+    @JvmInline
+    value class OnChangeContent(val content: ContentsType): SparringProfileIntent
 }
 
 
@@ -28,4 +32,6 @@ data class SparringProfileState(
     val gymName: String = ""
 ): ViewState
 
-sealed interface SparringProfileEffect: ViewEffect
+sealed interface SparringProfileEffect: ViewEffect {
+    data object ShowRestartDialog: SparringProfileEffect
+}

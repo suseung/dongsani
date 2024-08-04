@@ -2,6 +2,7 @@ package com.seungsu.record
 
 import com.seungsu.common.HOUR_TO_SEC
 import com.seungsu.common.MIN_TO_SEC
+import com.seungsu.common.model.ContentsType
 import com.seungsu.core.base.ViewEffect
 import com.seungsu.core.base.ViewIntent
 import com.seungsu.core.base.ViewState
@@ -14,6 +15,9 @@ sealed interface ExerciseRecordIntent : ViewIntent {
 
     @JvmInline
     value class OnSaveMemo(val memo: String): ExerciseRecordIntent
+
+    @JvmInline
+    value class OnChangeContent(val content: ContentsType): ExerciseRecordIntent
 }
 
 sealed interface ExerciseRecordState : ViewState {
@@ -36,4 +40,5 @@ sealed interface ExerciseRecordState : ViewState {
 
 sealed interface ExerciseRecordEffect : ViewEffect {
     data object ShowMemoBottomSheet: ExerciseRecordEffect
+    data object ShowRestartDialog: ExerciseRecordEffect
 }

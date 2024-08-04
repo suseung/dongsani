@@ -1,18 +1,18 @@
 package com.seungsu.record
 
 import androidx.lifecycle.viewModelScope
+import com.seungsu.common.model.ContentsType
 import com.seungsu.core.base.MVIViewModel
 import com.seungsu.domain.base.ApiResult
 import com.seungsu.domain.base.asResult
 import com.seungsu.domain.model.ExerciseRecordItemEntity
 import com.seungsu.domain.usecase.GetCurrentDayExerciseRecordUseCase
 import com.seungsu.domain.usecase.InsertExerciseRecordUseCase
+import com.seungsu.domain.usecase.UpdateCurrentContentUseCase
 import com.seungsu.model.ExerciseRecordItem
 import com.seungsu.model.toDomainModel
 import com.seungsu.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -20,12 +20,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import org.openjdk.tools.javac.util.DefinedBy.Api
+import java.time.LocalDate
+import javax.inject.Inject
 
 @HiltViewModel
 class ExerciseRecordViewModel @Inject constructor(
     private val getCurrentDayExerciseRecordUseCase: GetCurrentDayExerciseRecordUseCase,
-    private val insertExerciseRecordUseCase: InsertExerciseRecordUseCase
+    private val insertExerciseRecordUseCase: InsertExerciseRecordUseCase,
+    private val updateCurrentContentUseCase: UpdateCurrentContentUseCase
 ) : MVIViewModel<ExerciseRecordIntent, ExerciseRecordState, ExerciseRecordEffect>() {
 
     private var timerJob: Job? = null
@@ -62,6 +64,7 @@ class ExerciseRecordViewModel @Inject constructor(
         ExerciseRecordIntent.OnResetTimer -> processResetTimer()
 
         is ExerciseRecordIntent.OnSaveMemo -> processOnSaveMemo(intent.memo)
+        is ExerciseRecordIntent.OnChangeContent -> processOnChangeContent(intent.content)
     }
 
     private fun initializeMock() {
@@ -219,6 +222,13 @@ class ExerciseRecordViewModel @Inject constructor(
                         else -> Unit
                     }
                 }
+        }
+    }
+
+    private fun processOnChangeContent(contentType: ContentsType) {
+        viewModelScope.launch {
+            updateCurrentContentUseCase(contentType.code)
+            setEffect(ExerciseRecordEffect.ShowRestartDialog)
         }
     }
 }

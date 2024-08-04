@@ -1,4 +1,4 @@
-package com.seungsu.donsani
+package com.seungsu.dongsani
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

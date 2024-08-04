@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
     implementation(libs.bundles.androidx.room)
+    implementation(libs.androidx.datastore)
 
     kapt(libs.androidx.room.compiler)
     kapt(libs.hilt.compiler)

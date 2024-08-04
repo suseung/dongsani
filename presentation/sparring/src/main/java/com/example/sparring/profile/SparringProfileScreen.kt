@@ -17,15 +17,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,18 +51,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seungsu.common.model.ContentsType
 import com.seungsu.design.component.DongsaniBottomSheet
+import com.seungsu.design.component.DongsaniComposeDialog
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.resource.R
+import kotlinx.coroutines.launch
 
 @Composable
 fun SparringProfileScreen(
-    viewModel: SparringProfileViewModel = hiltViewModel()
+    viewModel: SparringProfileViewModel = hiltViewModel(),
+    onRestart: () -> Unit
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
-
     val action by remember { mutableStateOf(viewModel::dispatch) }
+    var isMenuExpanded by rememberSaveable { mutableStateOf(false) }
+    var isRestartDialogVisible by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(true) {
+        launch {
+            viewModel.effect.collect { effect ->
+                when (effect) {
+                    SparringProfileEffect.ShowRestartDialog -> isRestartDialogVisible = true
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -74,6 +94,47 @@ fun SparringProfileScreen(
                             .padding(end = 32.dp)
                             .clickable { }
                     )
+                },
+                actions = {
+                    IconButton(
+                        onClick = { isMenuExpanded = isMenuExpanded.not() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "setting",
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = isMenuExpanded,
+                        onDismissRequest = { isMenuExpanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = "운동기록",
+                                    style = TextStyle(
+                                        color = DongsaniTheme.color.Black
+                                    )
+                                )
+                            },
+                            onClick = {
+                                action(SparringProfileIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = "스파링",
+                                    style = TextStyle(
+                                        color = DongsaniTheme.color.Black
+                                    )
+                                )
+                            },
+                            onClick = {
+                                action(SparringProfileIntent.OnChangeContent(ContentsType.SPARRING))
+                            }
+                        )
+                    }
                 }
             )
         }
@@ -92,6 +153,14 @@ fun SparringProfileScreen(
                 onClearGymName = { action(SparringProfileIntent.OnClearGymName) }
             )
         }
+    }
+    if (isRestartDialogVisible) {
+        DongsaniComposeDialog(
+            message = stringResource(id = R.string.app_restart),
+            confirmText = stringResource(id = R.string.restart_ok),
+            isCancellable = false,
+            onClickConfirmed = onRestart
+        )
     }
 }
 
@@ -281,7 +350,7 @@ fun SparringProfileLoaded(
             modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = { isLevelBottomSheetOpen = true},
+            onClick = { isLevelBottomSheetOpen = true },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
@@ -358,7 +427,8 @@ fun SparringProfileLoaded(
                 }
                 Divider()
                 Spacer(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .size(16.dp)
                 )
                 Text(
@@ -400,7 +470,6 @@ fun SparringProfileLoaded(
                     GhostButton(title = stringResource(id = R.string.sparring_grau_4))
                 }
             }
-            
         }
     }
 }

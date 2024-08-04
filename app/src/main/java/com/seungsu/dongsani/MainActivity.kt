@@ -1,4 +1,4 @@
-package com.seungsu.donsani
+package com.seungsu.dongsani
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

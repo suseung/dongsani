@@ -12,9 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -40,25 +44,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seungsu.common.model.ContentsType
 import com.seungsu.design.component.DongsaniBottomSheet
+import com.seungsu.design.component.DongsaniComposeDialog
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.model.ExerciseRecordItem
+import com.seungsu.resource.R
 import com.seungsu.resource.R as resourceR
 
 @Composable
 fun ExerciseRecordScreen(
     viewModel: ExerciseRecordViewModel = hiltViewModel(),
     navToExerciseGrass: () -> Unit,
-    navigateToSetting: () -> Unit = {}
+    navigateToSetting: () -> Unit = {},
+    onRestart: () -> Unit
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     var isMemoBottomSheetVisible by rememberSaveable { mutableStateOf(false) }
+    var isMenuExpanded by rememberSaveable { mutableStateOf(false) }
+    var isRestartDialogVisible by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 ExerciseRecordEffect.ShowMemoBottomSheet -> isMemoBottomSheetVisible = true
+                ExerciseRecordEffect.ShowRestartDialog -> isRestartDialogVisible = true
             }
         }
     }
@@ -97,6 +108,45 @@ fun ExerciseRecordScreen(
                             imageVector = ImageVector.vectorResource(id = resourceR.drawable.ic_setting),
                             contentDescription = "setting",
                             modifier = Modifier.clickable { navigateToSetting() }
+                        )
+                    }
+                    IconButton(
+                        onClick = { isMenuExpanded = isMenuExpanded.not() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "setting",
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = isMenuExpanded,
+                        onDismissRequest = { isMenuExpanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = "운동기록",
+                                    style = TextStyle(
+                                        color = DongsaniTheme.color.Black
+                                    )
+                                )
+                            },
+                            onClick = {
+                                viewModel.dispatch(ExerciseRecordIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = "스파링",
+                                    style = TextStyle(
+                                        color = DongsaniTheme.color.Black
+                                    )
+                                )
+                            },
+                            onClick = {
+                                viewModel.dispatch(ExerciseRecordIntent.OnChangeContent(ContentsType.SPARRING))
+                            }
                         )
                     }
                 },
@@ -184,6 +234,14 @@ fun ExerciseRecordScreen(
                 }
             )
         }
+    }
+    if (isRestartDialogVisible) {
+        DongsaniComposeDialog(
+            message = stringResource(id = R.string.app_restart),
+            confirmText = stringResource(id = R.string.restart_ok),
+            isCancellable = false,
+            onClickConfirmed = onRestart
+        )
     }
 }
 

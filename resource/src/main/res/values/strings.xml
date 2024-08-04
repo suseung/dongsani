@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_restart">확인을 누르면 앱이 재시작됩니다</string>
+    <string name="restart_ok">확인</string>
+
     <!-- 운동기록 -->
     <string name="exercise_record_title">기록</string>
     <string name="exercise_grass_title">잔디</string>

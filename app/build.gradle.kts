@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
+    implementation(libs.process.phoenix)
 
     kapt(libs.hilt.compiler)
 }
