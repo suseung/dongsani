@@ -22,13 +22,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.seungsu.common.ext.addStyleSafely
 import com.seungsu.design.component.DongsaniOutlinedTextField
 import com.seungsu.design.theme.DongsaniTheme
@@ -74,10 +72,8 @@ fun ExerciseRecordBottomSheetContents(
                         startIndex + parsedCurrentTime.length
                     )
                 },
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    color = DongsaniTheme.colors.label.onBgPrimary
-                ),
+                style = DongsaniTheme.typos.regular.font16,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .weight(1f)
@@ -92,10 +88,8 @@ fun ExerciseRecordBottomSheetContents(
             placeholder = {
                 Text(
                     text = stringResource(id = resourceR.string.exercise_memo_record_placeholder),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = DongsaniTheme.colors.label.onBgTertiary
-                    )
+                    style = DongsaniTheme.typos.regular.font16,
+                    color = DongsaniTheme.colors.label.onBgTertiary
                 )
             },
             colors = OutlinedTextFieldDefaults.colors(
@@ -115,11 +109,9 @@ fun ExerciseRecordBottomSheetContents(
         ) {
             Text(
                 text = stringResource(id = resourceR.string.save),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    color = DongsaniTheme.colors.system.white,
-                    textAlign = TextAlign.Center
-                )
+                style = DongsaniTheme.typos.regular.font16,
+                color = DongsaniTheme.colors.system.white,
+                textAlign = TextAlign.Center
             )
         }
         Button(
@@ -135,11 +127,9 @@ fun ExerciseRecordBottomSheetContents(
         ) {
             Text(
                 text = stringResource(id = resourceR.string.no),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    color = DongsaniTheme.colors.system.white,
-                    textAlign = TextAlign.Center
-                ),
+                style = DongsaniTheme.typos.regular.font16,
+                color = DongsaniTheme.colors.system.white,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
             )
         }

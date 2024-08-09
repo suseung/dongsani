@@ -7,11 +7,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.seungsu.common.WEEK_OF_DAYS
 import com.seungsu.design.theme.DongsaniTheme
 
@@ -29,10 +27,8 @@ fun CalendarWeekOfDay(
                     .padding(end = 14.dp)
                     .size(30.dp),
                 text = it,
-                style = TextStyle(
-                    textAlign = TextAlign.Center,
-                    fontSize = 13.sp
-                )
+                style = DongsaniTheme.typos.regular.font14,
+                textAlign = TextAlign.Center
             )
         }
     }

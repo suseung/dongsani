@@ -44,7 +44,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -85,11 +84,9 @@ fun SparringProfileScreen(
                 titleContent = {
                     Text(
                         text = stringResource(id = R.string.sparring_profile_title),
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            color = DongsaniTheme.colors.label.onBgTertiary,
-                            textAlign = TextAlign.Center
-                        ),
+                        style = DongsaniTheme.typos.regular.font18,
+                        color = DongsaniTheme.colors.label.onBgTertiary,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier
                             .padding(end = 32.dp)
                             .clickable { }
@@ -204,19 +201,16 @@ fun SparringProfileLoaded(
 
         Text(
             text = stringResource(id = R.string.sparring_name_label),
-            style = TextStyle(
-                color = DongsaniTheme.colors.label.onBgPrimary,
-                fontSize = 12.sp
-            ),
+            style = DongsaniTheme.typos.regular.font12,
+            color = DongsaniTheme.colors.label.onBgPrimary,
             textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = name,
             onValueChange = { onChangeName(it) },
-            textStyle = TextStyle(
-                color = DongsaniTheme.colors.label.onBgPrimary,
-                fontSize = 12.sp
+            textStyle = DongsaniTheme.typos.regular.font12.copy(
+                color = DongsaniTheme.colors.label.onBgPrimary
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -224,10 +218,8 @@ fun SparringProfileLoaded(
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.sparring_name_placeholder),
-                    style = TextStyle(
-                        color = DongsaniTheme.colors.label.onBgTertiary,
-                        fontSize = 12.sp
-                    )
+                    style = DongsaniTheme.typos.regular.font12,
+                    color = DongsaniTheme.colors.label.onBgTertiary
                 )
             },
             trailingIcon = {
@@ -250,19 +242,16 @@ fun SparringProfileLoaded(
         )
         Text(
             text = stringResource(id = R.string.sparring_nickname_label),
-            style = TextStyle(
-                color = DongsaniTheme.colors.label.onBgPrimary,
-                fontSize = 12.sp
-            ),
+            style = DongsaniTheme.typos.regular.font12,
+            color = DongsaniTheme.colors.label.onBgPrimary,
             textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = nickName,
             onValueChange = { onChangeNickName(it) },
-            textStyle = TextStyle(
-                color = DongsaniTheme.colors.label.onBgPrimary,
-                fontSize = 12.sp
+            textStyle = DongsaniTheme.typos.regular.font12.copy(
+                color = DongsaniTheme.colors.label.onBgPrimary
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -270,10 +259,8 @@ fun SparringProfileLoaded(
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.sparring_nickname_placeholder),
-                    style = TextStyle(
-                        color = DongsaniTheme.colors.label.onBgTertiary,
-                        fontSize = 12.sp
-                    )
+                    style = DongsaniTheme.typos.regular.font12,
+                    color = DongsaniTheme.colors.label.onBgTertiary
                 )
             },
             trailingIcon = {
@@ -296,19 +283,16 @@ fun SparringProfileLoaded(
         )
         Text(
             text = stringResource(id = R.string.sparring_gym_name_label),
-            style = TextStyle(
-                color = DongsaniTheme.colors.label.onBgPrimary,
-                fontSize = 12.sp
-            ),
+            style = DongsaniTheme.typos.regular.font12,
+            color = DongsaniTheme.colors.label.onBgPrimary,
             textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = gymName,
             onValueChange = { onChangeGymName(it) },
-            textStyle = TextStyle(
+            textStyle = DongsaniTheme.typos.regular.font12.copy(
                 color = DongsaniTheme.colors.label.onBgPrimary,
-                fontSize = 12.sp
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -316,10 +300,8 @@ fun SparringProfileLoaded(
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.sparring_gym_name_placeholder),
-                    style = TextStyle(
-                        color = DongsaniTheme.colors.label.onBgTertiary,
-                        fontSize = 12.sp
-                    )
+                    style = DongsaniTheme.typos.regular.font12,
+                    color = DongsaniTheme.colors.label.onBgTertiary
                 )
             },
             trailingIcon = {
@@ -342,10 +324,8 @@ fun SparringProfileLoaded(
         )
         Text(
             text = stringResource(id = R.string.sparring_level_label),
-            style = TextStyle(
-                color = DongsaniTheme.colors.label.onBgPrimary,
-                fontSize = 12.sp
-            ),
+            style = DongsaniTheme.typos.regular.font12,
+            color = DongsaniTheme.colors.label.onBgPrimary,
             textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth()
         )
@@ -364,11 +344,9 @@ fun SparringProfileLoaded(
         )
         Text(
             text = stringResource(id = R.string.sparring_speciality_label),
-            style = TextStyle(
-                color = DongsaniTheme.colors.label.onBgPrimary,
-                fontSize = 12.sp,
-                textAlign = TextAlign.Start
-            ),
+            style = DongsaniTheme.typos.regular.font12,
+            textAlign = TextAlign.Start,
+            color = DongsaniTheme.colors.label.onBgPrimary,
             modifier = Modifier.fillMaxWidth()
         )
         FlowRow(
@@ -406,12 +384,9 @@ fun SparringProfileLoaded(
                 ) {
                     Text(
                         text = stringResource(id = R.string.sparring_level_bottomsheet_title),
-                        style = TextStyle(
-                            color = DongsaniTheme.colors.label.onBgPrimary,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center
-                        ),
+                        style = DongsaniTheme.typos.bold.font16,
+                        color = DongsaniTheme.colors.label.onBgPrimary,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier.align(Alignment.Center)
                     )
                     IconButton(
@@ -433,10 +408,8 @@ fun SparringProfileLoaded(
                 )
                 Text(
                     text = stringResource(id = R.string.sparring_belt_label),
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        color = DongsaniTheme.colors.label.onBgPrimary
-                    )
+                    style = DongsaniTheme.typos.regular.font12,
+                    color = DongsaniTheme.colors.label.onBgPrimary
                 )
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),

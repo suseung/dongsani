@@ -37,11 +37,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seungsu.common.model.ContentsType
@@ -85,20 +83,16 @@ fun ExerciseRecordScreen(
                     ) {
                         Text(
                             text = stringResource(id = resourceR.string.exercise_record_title),
-                            style = TextStyle(
-                                fontSize = 18.sp,
-                                color = Purple,
-                                textAlign = TextAlign.Center
-                            ),
+                            style = DongsaniTheme.typos.regular.font18,
+                            color = Purple,
+                            textAlign = TextAlign.Center,
                             modifier = Modifier.padding(end = 32.dp)
                         )
                         Text(
                             text = stringResource(id = resourceR.string.exercise_grass_title),
-                            style = TextStyle(
-                                fontSize = 18.sp,
-                                color = DongsaniTheme.colors.label.onBgTertiary,
-                                textAlign = TextAlign.Center
-                            ),
+                            style = DongsaniTheme.typos.regular.font18,
+                            color = DongsaniTheme.colors.label.onBgTertiary,
+                            textAlign = TextAlign.Center,
                             modifier = Modifier.clickable { navToExerciseGrass() }
                         )
                     }
@@ -204,11 +198,8 @@ fun ExerciseRecordScreen(
                                     text = stringResource(
                                         id = if (state.isStart.not()) resourceR.string.exercise_start else resourceR.string.exercise_stop
                                     ),
-                                    style = TextStyle(
-                                        color = DongsaniTheme.colors.system.white,
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold
-                                    ),
+                                    style = DongsaniTheme.typos.bold.font16,
+                                    color = DongsaniTheme.colors.system.white,
                                     modifier = Modifier.padding(start = 8.dp)
                                 )
                             }
@@ -293,12 +284,9 @@ fun ExerciseRecord(
                     ) {
                         Text(
                             text = stringResource(id = resourceR.string.exercise_record),
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = DongsaniTheme.colors.label.onBgPrimary,
-                                textAlign = TextAlign.Center
-                            ),
+                            style = DongsaniTheme.typos.bold.font16,
+                            color = DongsaniTheme.colors.label.onBgPrimary,
+                            textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )
                         Icon(

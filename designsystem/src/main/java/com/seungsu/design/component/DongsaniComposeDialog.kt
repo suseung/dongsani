@@ -16,10 +16,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.seungsu.design.theme.DongsaniTheme
@@ -57,18 +54,13 @@ fun DongsaniComposeDialog(
                 if (title != null) {
                     Text(
                         text = title,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp
-                        ),
+                        style = DongsaniTheme.typos.bold.font16,
                         color = DongsaniTheme.colors.label.onBgPrimary
                     )
                 }
                 Text(
                     text = message,
-                    style = TextStyle(
-                        fontSize = 14.sp
-                    ),
+                    style = DongsaniTheme.typos.regular.font14,
                     color = DongsaniTheme.colors.label.onBgPrimary
                 )
                 Row {
@@ -83,10 +75,7 @@ fun DongsaniComposeDialog(
                         ) {
                             Text(
                                 text = cancelText,
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp
-                                ),
+                                style = DongsaniTheme.typos.bold.font16,
                                 color = DongsaniTheme.colors.label.onBgPrimary
                             )
                         }
@@ -101,10 +90,7 @@ fun DongsaniComposeDialog(
                     ) {
                         Text(
                             text = confirmText,
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp
-                            ),
+                            style = DongsaniTheme.typos.bold.font16,
                             color = DongsaniTheme.colors.system.white
                         )
                     }

@@ -52,4 +52,8 @@ object DongsaniTheme {
     val colors: DongsaniColors
         @Composable
         get() = LocalDongsaniDongsaniColors.current
+
+    val typos: DongsaniTypography
+        @Composable
+        get() = LocalDongsaniTypography.current
 }

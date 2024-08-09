@@ -26,12 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seungsu.common.GrassIcon
@@ -59,11 +56,9 @@ fun ExerciseSettingScreen(
                     ) {
                         Text(
                             text = stringResource(id = resourceR.string.exercise_setting_title),
-                            style = TextStyle(
-                                fontSize = 18.sp,
-                                color = DongsaniTheme.colors.label.onBgPrimary,
-                                textAlign = TextAlign.Center
-                            ),
+                            style = DongsaniTheme.typos.regular.font18,
+                            color = DongsaniTheme.colors.label.onBgPrimary,
+                            textAlign = TextAlign.Center,
                             modifier = Modifier.padding(end = 32.dp)
                         )
                     }
@@ -110,27 +105,21 @@ fun ExerciseSettingLoaded(
         ) {
             Text(
                 text = stringResource(id = resourceR.string.exercise_grass_color),
-                style = TextStyle(
-                    color = DongsaniTheme.colors.label.onBgPrimary,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
+                style = DongsaniTheme.typos.bold.font16,
+                color = DongsaniTheme.colors.label.onBgPrimary
             )
             Spacer(
                 modifier = Modifier.weight(1f)
             )
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable { isColorChangeSheetOpen = true }
             ) {
                 GrassIcon(color = color)
                 Text(
                     text = colorText,
-                    style = TextStyle(
-                        color = DongsaniTheme.colors.label.onBgPrimary,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    ),
+                    style = DongsaniTheme.typos.bold.font16,
+                    color = DongsaniTheme.colors.label.onBgPrimary,
                     modifier = Modifier.padding(start = 20.dp)
                 )
                 Icon(
@@ -154,12 +143,9 @@ fun ExerciseSettingLoaded(
                 ) {
                     Text(
                         text = stringResource(id = resourceR.string.exercise_grass_color),
-                        style = TextStyle(
-                            color = DongsaniTheme.colors.label.onBgPrimary,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center
-                        ),
+                        style = DongsaniTheme.typos.bold.font16,
+                        color = DongsaniTheme.colors.label.onBgPrimary,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier.align(Alignment.Center)
                     )
                     IconButton(
@@ -185,11 +171,8 @@ fun ExerciseSettingLoaded(
                         )
                         Text(
                             text = GrassColors[index].text,
-                            style = TextStyle(
-                                color = DongsaniTheme.colors.label.onBgPrimary,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp
-                            )
+                            style = DongsaniTheme.typos.bold.font16,
+                            color = DongsaniTheme.colors.label.onBgPrimary
                         )
                     }
                     if (index != GrassColors.lastIndex) {
