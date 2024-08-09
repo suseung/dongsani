@@ -31,7 +31,7 @@ fun ExerciseRecordHeader(
                 text = stringResource(id = R.string.accumultate),
                 style = TextStyle(
                     fontSize = 16.sp,
-                    color = DongsaniTheme.color.Black,
+                    color = DongsaniTheme.colors.label.onBgPrimary,
                     textAlign = TextAlign.Center
                 ),
                 modifier = Modifier.weight(1f)
@@ -40,7 +40,7 @@ fun ExerciseRecordHeader(
                 text = stringResource(id = R.string.memo),
                 style = TextStyle(
                     fontSize = 16.sp,
-                    color = DongsaniTheme.color.Black,
+                    color = DongsaniTheme.colors.label.onBgPrimary,
                     textAlign = TextAlign.Center
                 ),
                 modifier = Modifier.weight(1f)
@@ -49,7 +49,7 @@ fun ExerciseRecordHeader(
                 text = stringResource(id = R.string.record),
                 style = TextStyle(
                     fontSize = 16.sp,
-                    color = DongsaniTheme.color.Black,
+                    color = DongsaniTheme.colors.label.onBgPrimary,
                     textAlign = TextAlign.Center
                 ),
                 modifier = Modifier.weight(1f)

@@ -28,7 +28,7 @@ fun ExerciseRecord(
             text = index.toString(),
             style = TextStyle(
                 fontSize = 14.sp,
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 textAlign = TextAlign.Center
             ),
             modifier = Modifier.weight(1f)
@@ -37,7 +37,7 @@ fun ExerciseRecord(
             text = recordItem.memo,
             style = TextStyle(
                 fontSize = 14.sp,
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 textAlign = TextAlign.Center
             ),
             modifier = Modifier.weight(1f)
@@ -46,7 +46,7 @@ fun ExerciseRecord(
             text = recordItem.parsedRecordTime,
             style = TextStyle(
                 fontSize = 14.sp,
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 textAlign = TextAlign.Center
             ),
             modifier = Modifier.weight(1f)

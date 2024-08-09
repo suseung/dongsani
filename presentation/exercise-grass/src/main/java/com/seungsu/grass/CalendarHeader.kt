@@ -46,7 +46,7 @@ fun CalendarHeader(
                 Icon(
                     painter = painterResource(id = resourceR.drawable.ic_left),
                     modifier = Modifier.size(24.dp),
-                    tint = DongsaniTheme.color.Black,
+                    tint = DongsaniTheme.colors.label.onBgPrimary,
                     contentDescription = "calendar left"
                 )
             }
@@ -65,7 +65,7 @@ fun CalendarHeader(
                 Icon(
                     painter = painterResource(id = resourceR.drawable.ic_right),
                     modifier = Modifier.size(24.dp),
-                    tint = DongsaniTheme.color.Black,
+                    tint = DongsaniTheme.colors.label.onBgPrimary,
                     contentDescription = "calendar left"
                 )
             }
@@ -75,7 +75,7 @@ fun CalendarHeader(
             painter = painterResource(id = resourceR.drawable.ic_calendar),
             contentDescription = "calendar",
             modifier = Modifier.size(24.dp),
-            tint = DongsaniTheme.color.Black
+            tint = DongsaniTheme.colors.label.onBgPrimary
         )
     }
 }

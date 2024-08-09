@@ -27,7 +27,7 @@ fun Timer(
             .border(
                 width = 1.dp,
                 shape = CircleShape,
-                color = DongsaniTheme.color.DarkGray
+                color = DongsaniTheme.colors.label.onBgSecondary
             )
             .size(255.dp),
         contentAlignment = Alignment.Center
@@ -37,7 +37,7 @@ fun Timer(
                 .border(
                     width = 1.dp,
                     shape = CircleShape,
-                    color = DongsaniTheme.color.DarkGray
+                    color = DongsaniTheme.colors.label.onBgSecondary
                 )
                 .size(240.dp),
             contentAlignment = Alignment.Center
@@ -47,7 +47,7 @@ fun Timer(
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 40.sp,
-                    color = DongsaniTheme.color.Black
+                    color = DongsaniTheme.colors.label.onBgPrimary
                 )
             )
         }

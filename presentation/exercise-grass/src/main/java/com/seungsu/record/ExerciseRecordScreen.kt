@@ -49,6 +49,7 @@ import com.seungsu.design.component.DongsaniBottomSheet
 import com.seungsu.design.component.DongsaniComposeDialog
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
+import com.seungsu.design.theme.Purple
 import com.seungsu.model.ExerciseRecordItem
 import com.seungsu.resource.R
 import com.seungsu.resource.R as resourceR
@@ -86,7 +87,7 @@ fun ExerciseRecordScreen(
                             text = stringResource(id = resourceR.string.exercise_record_title),
                             style = TextStyle(
                                 fontSize = 18.sp,
-                                color = DongsaniTheme.color.Purple,
+                                color = Purple,
                                 textAlign = TextAlign.Center
                             ),
                             modifier = Modifier.padding(end = 32.dp)
@@ -95,7 +96,7 @@ fun ExerciseRecordScreen(
                             text = stringResource(id = resourceR.string.exercise_grass_title),
                             style = TextStyle(
                                 fontSize = 18.sp,
-                                color = DongsaniTheme.color.Gray,
+                                color = DongsaniTheme.colors.label.onBgTertiary,
                                 textAlign = TextAlign.Center
                             ),
                             modifier = Modifier.clickable { navToExerciseGrass() }
@@ -127,7 +128,7 @@ fun ExerciseRecordScreen(
                                 Text(
                                     text = "운동기록",
                                     style = TextStyle(
-                                        color = DongsaniTheme.color.Black
+                                        color = DongsaniTheme.colors.label.onBgPrimary
                                     )
                                 )
                             },
@@ -140,7 +141,7 @@ fun ExerciseRecordScreen(
                                 Text(
                                     text = "스파링",
                                     style = TextStyle(
-                                        color = DongsaniTheme.color.Black
+                                        color = DongsaniTheme.colors.label.onBgPrimary
                                     )
                                 )
                             },
@@ -156,7 +157,7 @@ fun ExerciseRecordScreen(
                             .padding(10.dp)
                             .size(20.dp),
                         painter = painterResource(id = resourceR.drawable.ic_dongsani),
-                        tint = DongsaniTheme.color.Black,
+                        tint = DongsaniTheme.colors.label.onBgPrimary,
                         contentDescription = "dongsani logo"
                     )
                 }
@@ -179,11 +180,11 @@ fun ExerciseRecordScreen(
                                 )
                             },
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = DongsaniTheme.color.DarkGray
+                                containerColor = DongsaniTheme.colors.label.onBgSecondary
                             ),
                             modifier = Modifier
                                 .background(
-                                    color = DongsaniTheme.color.DarkGray,
+                                    color = DongsaniTheme.colors.label.onBgSecondary,
                                     shape = RoundedCornerShape(20.dp)
                                 )
                                 .clip(RoundedCornerShape(20.dp)),
@@ -204,7 +205,7 @@ fun ExerciseRecordScreen(
                                         id = if (state.isStart.not()) resourceR.string.exercise_start else resourceR.string.exercise_stop
                                     ),
                                     style = TextStyle(
-                                        color = DongsaniTheme.color.White,
+                                        color = DongsaniTheme.colors.system.white,
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold
                                     ),
@@ -295,7 +296,7 @@ fun ExerciseRecord(
                             style = TextStyle(
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = DongsaniTheme.color.Black,
+                                color = DongsaniTheme.colors.label.onBgPrimary,
                                 textAlign = TextAlign.Center
                             ),
                             modifier = Modifier.fillMaxWidth()
@@ -303,7 +304,7 @@ fun ExerciseRecord(
                         Icon(
                             painter = painterResource(id = resourceR.drawable.ic_close),
                             contentDescription = "close",
-                            tint = DongsaniTheme.color.Black,
+                            tint = DongsaniTheme.colors.label.onBgPrimary,
                             modifier = Modifier
                                 .padding(8.dp)
                                 .size(16.dp)

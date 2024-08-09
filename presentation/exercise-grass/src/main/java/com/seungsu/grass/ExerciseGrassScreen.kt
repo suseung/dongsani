@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
+import com.seungsu.design.theme.Purple
 import com.seungsu.model.ExerciseRecordItem
 import com.seungsu.record.ExerciseRecord
 import com.seungsu.record.ExerciseRecordHeader
@@ -59,7 +60,7 @@ fun ExerciseGrassScreen(
                             text = stringResource(id = resourceR.string.exercise_record_title),
                             style = TextStyle(
                                 fontSize = 18.sp,
-                                color = DongsaniTheme.color.Gray,
+                                color = DongsaniTheme.colors.label.onBgTertiary,
                                 textAlign = TextAlign.Center
                             ),
                             modifier = Modifier
@@ -71,7 +72,7 @@ fun ExerciseGrassScreen(
                             text = stringResource(id = resourceR.string.exercise_grass_title),
                             style = TextStyle(
                                 fontSize = 18.sp,
-                                color = DongsaniTheme.color.Purple,
+                                color = Purple,
                                 textAlign = TextAlign.Center
                             )
                         )
@@ -92,7 +93,7 @@ fun ExerciseGrassScreen(
                             .padding(10.dp)
                             .size(20.dp),
                         painter = painterResource(id = resourceR.drawable.ic_dongsani),
-                        tint = DongsaniTheme.color.Black,
+                        tint = DongsaniTheme.colors.label.onBgPrimary,
                         contentDescription = "dongsani logo"
                     )
                 }
@@ -179,7 +180,7 @@ fun ExerciseGrassPreview() {
             lengthOfMonth = 31,
             currentDayOfWeek = DayOfWeek.TUESDAY,
             currentTotalExerciseTimes = mapOf(),
-            color = DongsaniTheme.color.Purple,
+            color = Purple,
             currentSelectedExerciseRecords = emptyList()
         )
     }

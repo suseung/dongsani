@@ -87,7 +87,7 @@ fun SparringProfileScreen(
                         text = stringResource(id = R.string.sparring_profile_title),
                         style = TextStyle(
                             fontSize = 18.sp,
-                            color = DongsaniTheme.color.Gray,
+                            color = DongsaniTheme.colors.label.onBgTertiary,
                             textAlign = TextAlign.Center
                         ),
                         modifier = Modifier
@@ -113,7 +113,7 @@ fun SparringProfileScreen(
                                 Text(
                                     text = "운동기록",
                                     style = TextStyle(
-                                        color = DongsaniTheme.color.Black
+                                        color = DongsaniTheme.colors.label.onBgPrimary
                                     )
                                 )
                             },
@@ -126,7 +126,7 @@ fun SparringProfileScreen(
                                 Text(
                                     text = "스파링",
                                     style = TextStyle(
-                                        color = DongsaniTheme.color.Black
+                                        color = DongsaniTheme.colors.label.onBgPrimary
                                     )
                                 )
                             },
@@ -205,7 +205,7 @@ fun SparringProfileLoaded(
         Text(
             text = stringResource(id = R.string.sparring_name_label),
             style = TextStyle(
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 fontSize = 12.sp
             ),
             textAlign = TextAlign.Start,
@@ -215,7 +215,7 @@ fun SparringProfileLoaded(
             value = name,
             onValueChange = { onChangeName(it) },
             textStyle = TextStyle(
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 fontSize = 12.sp
             ),
             modifier = Modifier
@@ -225,7 +225,7 @@ fun SparringProfileLoaded(
                 Text(
                     text = stringResource(id = R.string.sparring_name_placeholder),
                     style = TextStyle(
-                        color = DongsaniTheme.color.Gray,
+                        color = DongsaniTheme.colors.label.onBgTertiary,
                         fontSize = 12.sp
                     )
                 )
@@ -237,7 +237,7 @@ fun SparringProfileLoaded(
                         modifier = Modifier
                             .size(12.dp)
                             .clickable { onClearName() },
-                        tint = DongsaniTheme.color.Black,
+                        tint = DongsaniTheme.colors.label.onBgPrimary,
                         contentDescription = "close"
                     )
                 }
@@ -251,7 +251,7 @@ fun SparringProfileLoaded(
         Text(
             text = stringResource(id = R.string.sparring_nickname_label),
             style = TextStyle(
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 fontSize = 12.sp
             ),
             textAlign = TextAlign.Start,
@@ -261,7 +261,7 @@ fun SparringProfileLoaded(
             value = nickName,
             onValueChange = { onChangeNickName(it) },
             textStyle = TextStyle(
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 fontSize = 12.sp
             ),
             modifier = Modifier
@@ -271,7 +271,7 @@ fun SparringProfileLoaded(
                 Text(
                     text = stringResource(id = R.string.sparring_nickname_placeholder),
                     style = TextStyle(
-                        color = DongsaniTheme.color.Gray,
+                        color = DongsaniTheme.colors.label.onBgTertiary,
                         fontSize = 12.sp
                     )
                 )
@@ -283,7 +283,7 @@ fun SparringProfileLoaded(
                         modifier = Modifier
                             .size(12.dp)
                             .clickable { onClearNickName() },
-                        tint = DongsaniTheme.color.Black,
+                        tint = DongsaniTheme.colors.label.onBgPrimary,
                         contentDescription = "close"
                     )
                 }
@@ -297,7 +297,7 @@ fun SparringProfileLoaded(
         Text(
             text = stringResource(id = R.string.sparring_gym_name_label),
             style = TextStyle(
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 fontSize = 12.sp
             ),
             textAlign = TextAlign.Start,
@@ -307,7 +307,7 @@ fun SparringProfileLoaded(
             value = gymName,
             onValueChange = { onChangeGymName(it) },
             textStyle = TextStyle(
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 fontSize = 12.sp
             ),
             modifier = Modifier
@@ -317,7 +317,7 @@ fun SparringProfileLoaded(
                 Text(
                     text = stringResource(id = R.string.sparring_gym_name_placeholder),
                     style = TextStyle(
-                        color = DongsaniTheme.color.Gray,
+                        color = DongsaniTheme.colors.label.onBgTertiary,
                         fontSize = 12.sp
                     )
                 )
@@ -329,7 +329,7 @@ fun SparringProfileLoaded(
                         modifier = Modifier
                             .size(12.dp)
                             .clickable { onClearGymName() },
-                        tint = DongsaniTheme.color.Black,
+                        tint = DongsaniTheme.colors.label.onBgPrimary,
                         contentDescription = "close"
                     )
                 }
@@ -343,7 +343,7 @@ fun SparringProfileLoaded(
         Text(
             text = stringResource(id = R.string.sparring_level_label),
             style = TextStyle(
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 fontSize = 12.sp
             ),
             textAlign = TextAlign.Start,
@@ -365,7 +365,7 @@ fun SparringProfileLoaded(
         Text(
             text = stringResource(id = R.string.sparring_speciality_label),
             style = TextStyle(
-                color = DongsaniTheme.color.Black,
+                color = DongsaniTheme.colors.label.onBgPrimary,
                 fontSize = 12.sp,
                 textAlign = TextAlign.Start
             ),
@@ -407,7 +407,7 @@ fun SparringProfileLoaded(
                     Text(
                         text = stringResource(id = R.string.sparring_level_bottomsheet_title),
                         style = TextStyle(
-                            color = DongsaniTheme.color.Black,
+                            color = DongsaniTheme.colors.label.onBgPrimary,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center
@@ -435,7 +435,7 @@ fun SparringProfileLoaded(
                     text = stringResource(id = R.string.sparring_belt_label),
                     style = TextStyle(
                         fontSize = 12.sp,
-                        color = DongsaniTheme.color.Black
+                        color = DongsaniTheme.colors.label.onBgPrimary
                     )
                 )
                 FlowRow(
@@ -457,7 +457,7 @@ fun SparringProfileLoaded(
                     text = stringResource(id = R.string.sparring_grau_label),
                     style = TextStyle(
                         fontSize = 12.sp,
-                        color = DongsaniTheme.color.Black
+                        color = DongsaniTheme.colors.label.onBgPrimary
                     )
                 )
                 FlowRow(
@@ -484,11 +484,11 @@ fun GhostButton(
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
-            contentColor = DongsaniTheme.color.Black
+            contentColor = DongsaniTheme.colors.label.onBgPrimary
         ),
         border = BorderStroke(
             width = 1.dp,
-            color = DongsaniTheme.color.Black
+            color = DongsaniTheme.colors.label.onBgPrimary
         ),
         contentPadding = PaddingValues(
             vertical = 6.dp,

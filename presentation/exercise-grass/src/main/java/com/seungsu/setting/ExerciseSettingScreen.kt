@@ -16,7 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +38,7 @@ import com.seungsu.common.GrassIcon
 import com.seungsu.design.component.DongsaniBottomSheet
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
+import com.seungsu.design.theme.Purple
 import com.seungsu.model.GrassColors
 import com.seungsu.resource.R as resourceR
 
@@ -61,7 +61,7 @@ fun ExerciseSettingScreen(
                             text = stringResource(id = resourceR.string.exercise_setting_title),
                             style = TextStyle(
                                 fontSize = 18.sp,
-                                color = DongsaniTheme.color.Black,
+                                color = DongsaniTheme.colors.label.onBgPrimary,
                                 textAlign = TextAlign.Center
                             ),
                             modifier = Modifier.padding(end = 32.dp)
@@ -75,7 +75,7 @@ fun ExerciseSettingScreen(
                             .size(20.dp)
                             .clickable { onNavPopback() },
                         painter = painterResource(id = resourceR.drawable.ic_arrow_back),
-                        tint = DongsaniTheme.color.Black,
+                        tint = DongsaniTheme.colors.label.onBgPrimary,
                         contentDescription = "back"
                     )
                 }
@@ -111,7 +111,7 @@ fun ExerciseSettingLoaded(
             Text(
                 text = stringResource(id = resourceR.string.exercise_grass_color),
                 style = TextStyle(
-                    color = DongsaniTheme.color.Black,
+                    color = DongsaniTheme.colors.label.onBgPrimary,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
@@ -127,7 +127,7 @@ fun ExerciseSettingLoaded(
                 Text(
                     text = colorText,
                     style = TextStyle(
-                        color = DongsaniTheme.color.Black,
+                        color = DongsaniTheme.colors.label.onBgPrimary,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     ),
@@ -155,7 +155,7 @@ fun ExerciseSettingLoaded(
                     Text(
                         text = stringResource(id = resourceR.string.exercise_grass_color),
                         style = TextStyle(
-                            color = DongsaniTheme.color.Black,
+                            color = DongsaniTheme.colors.label.onBgPrimary,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center
@@ -186,7 +186,7 @@ fun ExerciseSettingLoaded(
                         Text(
                             text = GrassColors[index].text,
                             style = TextStyle(
-                                color = DongsaniTheme.color.Black,
+                                color = DongsaniTheme.colors.label.onBgPrimary,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
                             )
@@ -207,7 +207,7 @@ fun ExerciseSettingLoadedPreviwe() {
     DongsaniTheme {
         ExerciseSettingLoaded(
             modifier = Modifier.padding(16.dp),
-            color = DongsaniTheme.color.Purple,
+            color = Purple,
             colorText = "보라"
         )
     }

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.seungsu.design.theme.DongsaniTheme
+import com.seungsu.design.theme.Purple
 
 @Composable
 fun DongsaniComposeDialog(
@@ -45,7 +46,7 @@ fun DongsaniComposeDialog(
         Card(
             modifier = modifier.widthIn(min = 280.dp, max = 400.dp),
             colors = CardDefaults.cardColors(
-                containerColor = DongsaniTheme.color.Gray
+                containerColor = DongsaniTheme.colors.background.groupedElevated
             ),
             shape = RoundedCornerShape(4.dp)
         ) {
@@ -60,7 +61,7 @@ fun DongsaniComposeDialog(
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp
                         ),
-                        color = DongsaniTheme.color.Black
+                        color = DongsaniTheme.colors.label.onBgPrimary
                     )
                 }
                 Text(
@@ -68,7 +69,7 @@ fun DongsaniComposeDialog(
                     style = TextStyle(
                         fontSize = 14.sp
                     ),
-                    color = DongsaniTheme.color.Black
+                    color = DongsaniTheme.colors.label.onBgPrimary
                 )
                 Row {
                     Spacer(
@@ -86,7 +87,7 @@ fun DongsaniComposeDialog(
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                                 ),
-                                color = DongsaniTheme.color.Black
+                                color = DongsaniTheme.colors.label.onBgPrimary
                             )
                         }
                         Spacer(modifier = Modifier.size(8.dp))
@@ -96,7 +97,7 @@ fun DongsaniComposeDialog(
                             onClickConfirmed()
                             onDismiss()
                         },
-                        colors = ButtonDefaults.buttonColors(containerColor = DongsaniTheme.color.Purple)
+                        colors = ButtonDefaults.buttonColors(containerColor = Purple)
                     ) {
                         Text(
                             text = confirmText,
@@ -104,7 +105,7 @@ fun DongsaniComposeDialog(
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
                             ),
-                            color = DongsaniTheme.color.White
+                            color = DongsaniTheme.colors.system.white
                         )
                     }
                 }

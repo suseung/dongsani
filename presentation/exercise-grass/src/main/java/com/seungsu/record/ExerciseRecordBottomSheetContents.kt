@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import com.seungsu.common.ext.addStyleSafely
 import com.seungsu.design.component.DongsaniOutlinedTextField
 import com.seungsu.design.theme.DongsaniTheme
+import com.seungsu.design.theme.LightPurple
+import com.seungsu.design.theme.Purple
 import com.seungsu.resource.R as resourceR
 
 @Composable
@@ -57,7 +59,7 @@ fun ExerciseRecordBottomSheetContents(
                 painter = painterResource(id = resourceR.drawable.ic_warning),
                 contentDescription = "warning",
                 modifier = Modifier.size(16.dp),
-                tint = DongsaniTheme.color.Black
+                tint = DongsaniTheme.colors.label.onBgPrimary
             )
             Text(
                 text = buildAnnotatedString {
@@ -65,7 +67,7 @@ fun ExerciseRecordBottomSheetContents(
                     val startIndex = stringResource(id = resourceR.string.exercise_save_record).indexOf("%1s")
                     addStyleSafely(
                         SpanStyle(
-                            color = DongsaniTheme.color.DarkGray,
+                            color = DongsaniTheme.colors.label.onBgSecondary,
                             fontWeight = FontWeight.Bold
                         ),
                         startIndex,
@@ -74,7 +76,7 @@ fun ExerciseRecordBottomSheetContents(
                 },
                 style = TextStyle(
                     fontSize = 16.sp,
-                    color = DongsaniTheme.color.Black
+                    color = DongsaniTheme.colors.label.onBgPrimary
                 ),
                 modifier = Modifier
                     .padding(start = 8.dp)
@@ -92,13 +94,13 @@ fun ExerciseRecordBottomSheetContents(
                     text = stringResource(id = resourceR.string.exercise_memo_record_placeholder),
                     style = TextStyle(
                         fontSize = 16.sp,
-                        color = DongsaniTheme.color.Gray
+                        color = DongsaniTheme.colors.label.onBgTertiary
                     )
                 )
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = DongsaniTheme.color.Gray,
-                unfocusedBorderColor = DongsaniTheme.color.Gray
+                focusedBorderColor = DongsaniTheme.colors.label.onBgTertiary,
+                unfocusedBorderColor = DongsaniTheme.colors.label.onBgTertiary
             )
         )
         Button(
@@ -108,14 +110,14 @@ fun ExerciseRecordBottomSheetContents(
                 .padding(top = 8.dp),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = DongsaniTheme.color.Purple
+                containerColor = Purple
             )
         ) {
             Text(
                 text = stringResource(id = resourceR.string.save),
                 style = TextStyle(
                     fontSize = 16.sp,
-                    color = DongsaniTheme.color.White,
+                    color = DongsaniTheme.colors.system.white,
                     textAlign = TextAlign.Center
                 )
             )
@@ -128,14 +130,14 @@ fun ExerciseRecordBottomSheetContents(
                 .clip(RoundedCornerShape(4.dp)),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = DongsaniTheme.color.LightPurple
+                containerColor = LightPurple
             )
         ) {
             Text(
                 text = stringResource(id = resourceR.string.no),
                 style = TextStyle(
                     fontSize = 16.sp,
-                    color = DongsaniTheme.color.White,
+                    color = DongsaniTheme.colors.system.white,
                     textAlign = TextAlign.Center
                 ),
                 modifier = Modifier

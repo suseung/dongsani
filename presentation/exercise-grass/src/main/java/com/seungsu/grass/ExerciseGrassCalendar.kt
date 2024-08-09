@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seungsu.design.theme.DongsaniTheme
+import com.seungsu.design.theme.Purple
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -65,7 +66,7 @@ fun ExerciseGrassCalendarPreview() {
             lengthOfMonth = 31,
             currentDayOfWeek = DayOfWeek.MONDAY,
             currentTotalExerciseTimes = mapOf(),
-            color = DongsaniTheme.color.Purple
+            color = Purple
         )
     }
 }
