@@ -27,6 +27,9 @@ abstract class MVIViewModel<I: ViewIntent, S: ViewState, E: ViewEffect>: ViewMod
     private val _effect: MutableSharedFlow<E> = MutableSharedFlow()
     val effect: SharedFlow<E> = _effect.asSharedFlow()
 
+    private val _toastEffect: MutableSharedFlow<String> = MutableSharedFlow()
+    val toastEffect: SharedFlow<String> = _toastEffect.asSharedFlow()
+
     abstract suspend fun processIntent(intent: I)
 
     fun dispatch(intent: I) {
@@ -48,6 +51,12 @@ abstract class MVIViewModel<I: ViewIntent, S: ViewState, E: ViewEffect>: ViewMod
     protected fun setEffect(effect: E) {
         viewModelScope.launch {
             _effect.emit(effect)
+        }
+    }
+
+    protected fun setToastEffect(message: String) {
+        viewModelScope.launch {
+            _toastEffect.emit(message)
         }
     }
 

@@ -14,7 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.sparring.profile.SparringProfileScreen
+import com.example.sparring.makeprofile.SparringMakeProfileScreen
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.seungsu.common.model.ContentsType
 import com.seungsu.dongsani.Destination.EXERCISE_GRASS
@@ -55,7 +55,7 @@ fun DongsaniNavGraph(
         startDestination = startDestination
     ) {
         composable(SPARRING_PROFILE) {
-            SparringProfileScreen(
+            SparringMakeProfileScreen(
                 onRestart = {
                     val newIntent = Intent((context as Activity), MainActivity::class.java).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

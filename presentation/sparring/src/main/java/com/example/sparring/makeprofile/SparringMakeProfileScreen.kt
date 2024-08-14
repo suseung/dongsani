@@ -1,14 +1,12 @@
-package com.example.sparring.profile
-
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
+package com.example.sparring.makeprofile
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -28,9 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,44 +36,54 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.sparring.model.PLAYSTYLEs
+import com.example.sparring.makeprofile.component.LevelSelectBottomSheetContent
+import com.example.sparring.makeprofile.component.SelectItem
+import com.seungsu.common.INVALID_INT
+import com.seungsu.common.ext.noRippleClickable
 import com.seungsu.common.model.ContentsType
+import com.seungsu.core.CollectContent
+import com.seungsu.core.ext.toastS
 import com.seungsu.design.component.DongsaniBottomSheet
 import com.seungsu.design.component.DongsaniComposeDialog
+import com.seungsu.design.component.DongsaniTextField
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.resource.R
-import kotlinx.coroutines.launch
 
 @Composable
-fun SparringProfileScreen(
-    viewModel: SparringProfileViewModel = hiltViewModel(),
+fun SparringMakeProfileScreen(
+    viewModel: SparringMakeProfileViewModel = hiltViewModel(),
     onRestart: () -> Unit
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     val action by remember { mutableStateOf(viewModel::dispatch) }
+    val context = LocalContext.current
     var isMenuExpanded by rememberSaveable { mutableStateOf(false) }
     var isRestartDialogVisible by rememberSaveable { mutableStateOf(false) }
+    val selectBeltMessage = stringResource(id = R.string.no_belt_selected)
+    val selectGrauMessage = stringResource(id = R.string.no_grau_selected)
 
-    LaunchedEffect(true) {
-        launch {
-            viewModel.effect.collect { effect ->
-                when (effect) {
-                    SparringProfileEffect.ShowRestartDialog -> isRestartDialogVisible = true
-                }
+    CollectContent(
+        viewModel = viewModel,
+        processEffect = { effect ->
+            when (effect) {
+                SparringMakeProfileEffect.ShowRestartDialog -> isRestartDialogVisible = true
+                SparringMakeProfileEffect.ShowSelectBeltToast -> context.toastS(selectBeltMessage)
+                SparringMakeProfileEffect.ShowSelectGrauToast -> context.toastS(selectGrauMessage)
             }
         }
-    }
+    )
 
     Scaffold(
         topBar = {
@@ -85,7 +92,7 @@ fun SparringProfileScreen(
                     Text(
                         text = stringResource(id = R.string.sparring_profile_title),
                         style = DongsaniTheme.typos.regular.font18,
-                        color = DongsaniTheme.colors.label.onBgTertiary,
+                        color = DongsaniTheme.colors.label.onBgPrimary,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .padding(end = 32.dp)
@@ -115,7 +122,7 @@ fun SparringProfileScreen(
                                 )
                             },
                             onClick = {
-                                action(SparringProfileIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
+                                action(SparringMakeProfileIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
                             }
                         )
                         DropdownMenuItem(
@@ -128,12 +135,33 @@ fun SparringProfileScreen(
                                 )
                             },
                             onClick = {
-                                action(SparringProfileIntent.OnChangeContent(ContentsType.SPARRING))
+                                action(SparringMakeProfileIntent.OnChangeContent(ContentsType.SPARRING))
                             }
                         )
                     }
                 }
             )
+        },
+        containerColor = DongsaniTheme.colors.background.groupedUpperBase,
+        bottomBar = {
+            Button(
+                onClick = { action(SparringMakeProfileIntent.OnClickSaveProfile) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = DongsaniTheme.colors.system.inverse
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                shape = RoundedCornerShape(4.dp),
+                enabled = uiState.isSaveEnabled
+            ) {
+                Text(
+                    text = stringResource(id = R.string.save),
+                    style = DongsaniTheme.typos.bold.font14,
+                    color = DongsaniTheme.colors.label.onTintPrimary,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     ) { paddingValues ->
         with(uiState) {
@@ -142,12 +170,21 @@ fun SparringProfileScreen(
                 name = name,
                 nickName = nickName,
                 gymName = gymName,
-                onChangeName = { action(SparringProfileIntent.OnChangeName(it)) },
-                onChangeNickName = { action(SparringProfileIntent.OnChangeNickName(it)) },
-                onChangeGymName = { action(SparringProfileIntent.OnChangeGymName(it)) },
-                onClearName = { action(SparringProfileIntent.OnClearName) },
-                onClearNickName = { action(SparringProfileIntent.OnClearNickName) },
-                onClearGymName = { action(SparringProfileIntent.OnClearGymName) }
+                currentBeltId = currentBeltId,
+                currentGrauId = currentGrauId,
+                currentLevel = currentLevel,
+                currentPlayStyleIds = currentPlayStyleIds,
+                onChangeName = { action(SparringMakeProfileIntent.OnChangeName(it)) },
+                onChangeNickName = { action(SparringMakeProfileIntent.OnChangeNickName(it)) },
+                onChangeGymName = { action(SparringMakeProfileIntent.OnChangeGymName(it)) },
+                onClearName = { action(SparringMakeProfileIntent.OnClearName) },
+                onClearNickName = { action(SparringMakeProfileIntent.OnClearNickName) },
+                onClearGymName = { action(SparringMakeProfileIntent.OnClearGymName) },
+                onChangeLevel = { beltId, grauId -> action(SparringMakeProfileIntent.OnChangeLevel(beltId, grauId)) },
+                onSelectPlayStyle = { id -> action(SparringMakeProfileIntent.OnSelectPlayStyle(id)) },
+                onClickDeleteProfileImage = { action(SparringMakeProfileIntent.OnClickDeleteProfile) },
+                onClickTakePhoto = { action(SparringMakeProfileIntent.OnClickTakePhoto) },
+                onClickGetPhotoFromGallery = { action(SparringMakeProfileIntent.OnClickGetPhotoFromGallery) }
             )
         }
     }
@@ -168,15 +205,24 @@ fun SparringProfileLoaded(
     name: String,
     nickName: String,
     gymName: String,
-    onChangeName: (String) -> Unit,
-    onChangeNickName: (String) -> Unit,
-    onChangeGymName: (String) -> Unit,
-    onClearName: () -> Unit,
-    onClearNickName: () -> Unit,
-    onClearGymName: () -> Unit
+    currentBeltId: Int,
+    currentGrauId: Int,
+    currentLevel: String,
+    currentPlayStyleIds: List<Int>,
+    onChangeName: (String) -> Unit = {},
+    onChangeNickName: (String) -> Unit = {},
+    onChangeGymName: (String) -> Unit = {},
+    onClearName: () -> Unit = {},
+    onClearNickName: () -> Unit = {},
+    onClearGymName: () -> Unit = {},
+    onChangeLevel: (Int, Int) -> Unit = { _, _ -> },
+    onSelectPlayStyle: (Int) -> Unit = {},
+    onClickDeleteProfileImage: () -> Unit = {},
+    onClickTakePhoto: () -> Unit = {},
+    onClickGetPhotoFromGallery: () -> Unit = {}
 ) {
-
     var isLevelBottomSheetOpen by rememberSaveable { mutableStateOf(false) }
+    var isProfileImageSelectorOpen by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -188,17 +234,15 @@ fun SparringProfileLoaded(
         Spacer(
             modifier = Modifier.padding(top = 24.dp)
         )
-        Image(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_default_profile),
+        Icon(
+            painter = painterResource(id = R.drawable.ic_default_profile),
             contentDescription = "profile image",
-            modifier = Modifier.size(103.dp)
-        )
-        Spacer(
             modifier = Modifier
-                .fillMaxWidth()
-                .size(24.dp)
+                .size(103.dp)
+                .padding(bottom = 24.dp)
+                .noRippleClickable { isProfileImageSelectorOpen = true },
+            tint = DongsaniTheme.colors.label.onBgPrimary
         )
-
         Text(
             text = stringResource(id = R.string.sparring_name_label),
             style = DongsaniTheme.typos.regular.font12,
@@ -206,7 +250,7 @@ fun SparringProfileLoaded(
             textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        DongsaniTextField(
             value = name,
             onValueChange = { onChangeName(it) },
             textStyle = DongsaniTheme.typos.regular.font12.copy(
@@ -214,7 +258,7 @@ fun SparringProfileLoaded(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 10.dp),
+                .padding(top = 10.dp, bottom = 16.dp),
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.sparring_name_placeholder),
@@ -229,16 +273,12 @@ fun SparringProfileLoaded(
                         modifier = Modifier
                             .size(12.dp)
                             .clickable { onClearName() },
-                        tint = DongsaniTheme.colors.label.onBgPrimary,
+                        tint = DongsaniTheme.colors.label.onBgSecondary,
                         contentDescription = "close"
                     )
                 }
-            }
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(16.dp)
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
         )
         Text(
             text = stringResource(id = R.string.sparring_nickname_label),
@@ -247,7 +287,7 @@ fun SparringProfileLoaded(
             textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        DongsaniTextField(
             value = nickName,
             onValueChange = { onChangeNickName(it) },
             textStyle = DongsaniTheme.typos.regular.font12.copy(
@@ -255,7 +295,7 @@ fun SparringProfileLoaded(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 10.dp),
+                .padding(top = 10.dp, bottom = 16.dp),
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.sparring_nickname_placeholder),
@@ -270,16 +310,12 @@ fun SparringProfileLoaded(
                         modifier = Modifier
                             .size(12.dp)
                             .clickable { onClearNickName() },
-                        tint = DongsaniTheme.colors.label.onBgPrimary,
+                        tint = DongsaniTheme.colors.label.onBgSecondary,
                         contentDescription = "close"
                     )
                 }
-            }
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(16.dp)
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
         )
         Text(
             text = stringResource(id = R.string.sparring_gym_name_label),
@@ -288,7 +324,7 @@ fun SparringProfileLoaded(
             textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        DongsaniTextField(
             value = gymName,
             onValueChange = { onChangeGymName(it) },
             textStyle = DongsaniTheme.typos.regular.font12.copy(
@@ -296,7 +332,7 @@ fun SparringProfileLoaded(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 10.dp),
+                .padding(top = 10.dp, bottom = 16.dp),
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.sparring_gym_name_placeholder),
@@ -311,16 +347,12 @@ fun SparringProfileLoaded(
                         modifier = Modifier
                             .size(12.dp)
                             .clickable { onClearGymName() },
-                        tint = DongsaniTheme.colors.label.onBgPrimary,
+                        tint = DongsaniTheme.colors.label.onBgSecondary,
                         contentDescription = "close"
                     )
                 }
-            }
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(16.dp)
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
         Text(
             text = stringResource(id = R.string.sparring_level_label),
@@ -331,17 +363,41 @@ fun SparringProfileLoaded(
         )
         Button(
             onClick = { isLevelBottomSheetOpen = true },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = stringResource(id = R.string.sparring_level_placeholder)
-            )
-        }
-        Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .size(16.dp)
-        )
+                .padding(top = 10.dp, bottom = 16.dp)
+                .border(
+                    width = 1.dp,
+                    shape = RoundedCornerShape(4.dp),
+                    color = DongsaniTheme.colors.separator
+                ),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                contentColor = DongsaniTheme.colors.label.onBgSecondary
+            ),
+            contentPadding = PaddingValues(16.dp),
+            shape = RoundedCornerShape(4.dp)
+        ) {
+            Text(
+                text = currentLevel.takeIf { it.isNotEmpty() } ?: stringResource(id = R.string.sparring_level_placeholder),
+                color = if (currentLevel.isEmpty()) {
+                    DongsaniTheme.colors.label.onBgTertiary
+                } else {
+                    DongsaniTheme.colors.label.onBgPrimary
+                },
+                style = DongsaniTheme.typos.regular.font14,
+                textAlign = TextAlign.Start
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                painter = painterResource(id = R.drawable.ic_right),
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onClearGymName() },
+                tint = DongsaniTheme.colors.label.onBgSecondary,
+                contentDescription = "close"
+            )
+        }
         Text(
             text = stringResource(id = R.string.sparring_speciality_label),
             style = DongsaniTheme.typos.regular.font12,
@@ -352,46 +408,31 @@ fun SparringProfileLoaded(
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.padding(top = 14.dp)
+            modifier = Modifier.padding(top = 14.dp, bottom = 24.dp)
         ) {
-            GhostButton(title = stringResource(id = R.string.sparring_type_all_rounder))
-            GhostButton(title = stringResource(id = R.string.sparring_type_guard))
-            GhostButton(title = stringResource(id = R.string.sparring_type_half_guard))
-            GhostButton(title = stringResource(id = R.string.sparring_type_top))
-            GhostButton(title = stringResource(id = R.string.sparring_type_lapel))
-            GhostButton(title = stringResource(id = R.string.sparring_type_lapel))
-            GhostButton(title = stringResource(id = R.string.sparring_type_choke))
-            GhostButton(title = stringResource(id = R.string.sparring_type_physical))
-            GhostButton(title = stringResource(id = R.string.sparring_type_unique))
-            GhostButton(title = stringResource(id = R.string.sparring_type_submission))
+            repeat(PLAYSTYLEs.size) { index ->
+                SelectItem(
+                    content = PLAYSTYLEs[index].styleName,
+                    isSelected = currentPlayStyleIds.contains(PLAYSTYLEs[index].id),
+                    onClickItem = { onSelectPlayStyle(PLAYSTYLEs[index].id) }
+                )
+            }
         }
-        Spacer(
-            modifier = Modifier.padding(top = 24.dp)
-        )
     }
 
-    if (isLevelBottomSheetOpen) {
+    if (isProfileImageSelectorOpen) {
         DongsaniBottomSheet(
-            onDismissRequest = { isLevelBottomSheetOpen = false }
+            onDismissRequest = { isProfileImageSelectorOpen = false }
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Box(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.sparring_level_bottomsheet_title),
-                        style = DongsaniTheme.typos.bold.font16,
-                        color = DongsaniTheme.colors.label.onBgPrimary,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                Row {
+                    Spacer(modifier = Modifier.weight(1f))
                     IconButton(
-                        onClick = { isLevelBottomSheetOpen = false },
-                        modifier = Modifier.align(Alignment.TopEnd)
+                        onClick = { isProfileImageSelectorOpen = false }
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_close),
@@ -400,83 +441,76 @@ fun SparringProfileLoaded(
                         )
                     }
                 }
+                Text(
+                    text = stringResource(id = R.string.delete),
+                    style = DongsaniTheme.typos.regular.font16,
+                    color = DongsaniTheme.colors.label.onBgPrimary,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .noRippleClickable {
+                            onClickDeleteProfileImage()
+                            isProfileImageSelectorOpen = false
+                        }
+                )
                 Divider()
-                Spacer(
+                Text(
+                    text = stringResource(id = R.string.take_photo),
+                    style = DongsaniTheme.typos.regular.font16,
+                    color = DongsaniTheme.colors.label.onBgPrimary,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(16.dp)
+                        .padding(vertical = 16.dp)
+                        .noRippleClickable {
+                            onClickTakePhoto()
+                            isProfileImageSelectorOpen = false
+                        }
                 )
+                Divider()
                 Text(
-                    text = stringResource(id = R.string.sparring_belt_label),
-                    style = DongsaniTheme.typos.regular.font12,
-                    color = DongsaniTheme.colors.label.onBgPrimary
-                )
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    GhostButton(title = stringResource(id = R.string.sparring_belt_white))
-                    GhostButton(title = stringResource(id = R.string.sparring_belt_blue))
-                    GhostButton(title = stringResource(id = R.string.sparring_belt_purple))
-                    GhostButton(title = stringResource(id = R.string.sparring_belt_brown))
-                    GhostButton(title = stringResource(id = R.string.sparring_belt_black))
-                }
-                Spacer(
+                    text = stringResource(id = R.string.get_photo_from_gallery),
+                    style = DongsaniTheme.typos.regular.font16,
+                    color = DongsaniTheme.colors.label.onBgPrimary,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(16.dp)
+                        .padding(vertical = 16.dp)
+                        .noRippleClickable {
+                            onClickGetPhotoFromGallery()
+                            isProfileImageSelectorOpen = false
+                        }
                 )
-                Text(
-                    text = stringResource(id = R.string.sparring_grau_label),
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        color = DongsaniTheme.colors.label.onBgPrimary
-                    )
-                )
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    GhostButton(title = stringResource(id = R.string.sparring_grau_1))
-                    GhostButton(title = stringResource(id = R.string.sparring_grau_2))
-                    GhostButton(title = stringResource(id = R.string.sparring_grau_3))
-                    GhostButton(title = stringResource(id = R.string.sparring_grau_4))
-                }
             }
         }
     }
-}
-
-@Composable
-fun GhostButton(
-    title: String,
-    onClick: () -> Unit = {}
-) {
-    Button(
-        onClick = onClick,
-        shape = RoundedCornerShape(8.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            contentColor = DongsaniTheme.colors.label.onBgPrimary
-        ),
-        border = BorderStroke(
-            width = 1.dp,
-            color = DongsaniTheme.colors.label.onBgPrimary
-        ),
-        contentPadding = PaddingValues(
-            vertical = 6.dp,
-            horizontal = 12.dp
-        )
-    ) {
-        Text(text = title)
+    if (isLevelBottomSheetOpen) {
+        DongsaniBottomSheet(
+            onDismissRequest = { isLevelBottomSheetOpen = false }
+        ) {
+            LevelSelectBottomSheetContent(
+                currentBeltId = currentBeltId,
+                currentGrauId = currentGrauId,
+                onClickClose = { isLevelBottomSheetOpen = false },
+                onClickSave = { beltId, grauId ->
+                    onChangeLevel(beltId, grauId)
+                    if (beltId != INVALID_INT && grauId != INVALID_INT) isLevelBottomSheetOpen = false
+                }
+            )
+        }
     }
 }
 
 @Preview(backgroundColor = 0xffffff, showBackground = true)
 @Composable
-fun GhostButtonPreview() {
-    GhostButton(
-        title = "White",
-        onClick = {}
-    )
+fun SparringProfileLoadedPreview() {
+    DongsaniTheme {
+        SparringProfileLoaded(
+            name = "name",
+            nickName = "",
+            gymName = "gymName",
+            currentBeltId = 3,
+            currentGrauId = 3,
+            currentLevel = "Purple, 3 Grau",
+            currentPlayStyleIds = emptyList()
+        )
+    }
 }

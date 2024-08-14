@@ -52,6 +52,10 @@
     <string name="sparring_grau_2">2 Grau</string>
     <string name="sparring_grau_3">3 Grau</string>
     <string name="sparring_grau_4">4 Grau</string>
-
-
+    <string name="sparring_save">저장하기</string>
+    <string name="no_belt_selected">벨트를 선택해주세요</string>
+    <string name="no_grau_selected">그랄을 선택해주세요</string>
+    <string name="delete">삭제</string>
+    <string name="take_photo">사진 찍기</string>
+    <string name="get_photo_from_gallery">앨범에서 선택</string>
 </resources>

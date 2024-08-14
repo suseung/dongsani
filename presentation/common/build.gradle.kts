@@ -20,6 +20,9 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+    buildFeatures {
+        compose = true
+    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
@@ -36,4 +39,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3)
 }

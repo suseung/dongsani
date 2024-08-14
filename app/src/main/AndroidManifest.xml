@@ -17,7 +17,8 @@
             android:name="com.seungsu.dongsani.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Dongsani">
+            android:theme="@style/Theme.Dongsani"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
