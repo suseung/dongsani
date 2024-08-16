@@ -28,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,9 +37,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -46,10 +49,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.request.Disposable
 import com.example.sparring.model.PLAYSTYLEs
 import com.example.sparring.makeprofile.component.LevelSelectBottomSheetContent
 import com.example.sparring.makeprofile.component.SelectItem
 import com.seungsu.common.INVALID_INT
+import com.seungsu.common.eventbus.Event
+import com.seungsu.common.eventbus.EventBusEntryPoint
 import com.seungsu.common.ext.noRippleClickable
 import com.seungsu.common.model.ContentsType
 import com.seungsu.core.CollectContent
@@ -64,7 +70,8 @@ import com.seungsu.resource.R
 @Composable
 fun SparringMakeProfileScreen(
     viewModel: SparringMakeProfileViewModel = hiltViewModel(),
-    onRestart: () -> Unit
+    onRestart: () -> Unit,
+    onNavPopback: () -> Unit
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     val action by remember { mutableStateOf(viewModel::dispatch) }
@@ -73,6 +80,7 @@ fun SparringMakeProfileScreen(
     var isRestartDialogVisible by rememberSaveable { mutableStateOf(false) }
     val selectBeltMessage = stringResource(id = R.string.no_belt_selected)
     val selectGrauMessage = stringResource(id = R.string.no_grau_selected)
+    val eventBus = EventBusEntryPoint.resolve(context).getEventBus()
 
     CollectContent(
         viewModel = viewModel,
@@ -81,22 +89,34 @@ fun SparringMakeProfileScreen(
                 SparringMakeProfileEffect.ShowRestartDialog -> isRestartDialogVisible = true
                 SparringMakeProfileEffect.ShowSelectBeltToast -> context.toastS(selectBeltMessage)
                 SparringMakeProfileEffect.ShowSelectGrauToast -> context.toastS(selectGrauMessage)
+                SparringMakeProfileEffect.NavigateToProfile -> onNavPopback()
             }
         }
     )
 
+    DisposableEffect(true) {
+        onDispose { eventBus.publishEvent(Event.Sparring.OnProfileChanged) }
+    }
+
     Scaffold(
         topBar = {
             DongsaniTopAppbar(
+                navigationIcon = {
+                    Icon(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(20.dp)
+                            .clickable { onNavPopback() },
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
+                        contentDescription = "back"
+                    )
+                },
                 titleContent = {
                     Text(
                         text = stringResource(id = R.string.sparring_profile_title),
                         style = DongsaniTheme.typos.regular.font18,
                         color = DongsaniTheme.colors.label.onBgPrimary,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(end = 32.dp)
-                            .clickable { }
+                        textAlign = TextAlign.Center
                     )
                 },
                 actions = {

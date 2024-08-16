@@ -63,4 +63,5 @@ sealed interface SparringMakeProfileEffect: ViewEffect {
     data object ShowRestartDialog: SparringMakeProfileEffect
     data object ShowSelectBeltToast: SparringMakeProfileEffect
     data object ShowSelectGrauToast: SparringMakeProfileEffect
+    data object NavigateToProfile: SparringMakeProfileEffect
 }

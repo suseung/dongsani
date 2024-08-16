@@ -1,20 +1,104 @@
 package com.example.sparring.makeprofile
 
 import androidx.lifecycle.viewModelScope
+import com.example.sparring.model.ProfileInfo
 import com.seungsu.common.INVALID_INT
 import com.seungsu.common.model.ContentsType
 import com.seungsu.core.base.MVIViewModel
+import com.seungsu.domain.base.ApiResult
+import com.seungsu.domain.base.asResult
+import com.seungsu.domain.usecase.GetBeltIdUseCase
+import com.seungsu.domain.usecase.GetGrauIdUseCase
+import com.seungsu.domain.usecase.GetGymNameUseCase
+import com.seungsu.domain.usecase.GetPlayStyleIdsUseCase
+import com.seungsu.domain.usecase.GetUserNameUseCase
+import com.seungsu.domain.usecase.GetUserNickNameUseCase
+import com.seungsu.domain.usecase.UpdateBeltIdUseCase
 import com.seungsu.domain.usecase.UpdateCurrentContentUseCase
+import com.seungsu.domain.usecase.UpdateGrauIdUseCase
+import com.seungsu.domain.usecase.UpdateGymNameUseCase
+import com.seungsu.domain.usecase.UpdatePlayStyleIdsUseCase
+import com.seungsu.domain.usecase.UpdateUserNameUseCase
+import com.seungsu.domain.usecase.UpdateUserNickNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SparringMakeProfileViewModel @Inject constructor(
-    private val updateCurrentContentUseCase: UpdateCurrentContentUseCase
+    getUserNameUseCase: GetUserNameUseCase,
+    getUserNickNameUseCase: GetUserNickNameUseCase,
+    getGymNameUseCase: GetGymNameUseCase,
+    getBeltIdUseCase: GetBeltIdUseCase,
+    getGrauIdUseCase: GetGrauIdUseCase,
+    getPlayStyleIdsUseCase: GetPlayStyleIdsUseCase,
+    private val updateCurrentContentUseCase: UpdateCurrentContentUseCase,
+    private val updateUserNameUseCase: UpdateUserNameUseCase,
+    private val updateUserNickNameUseCase: UpdateUserNickNameUseCase,
+    private val updateGymNameUseCase: UpdateGymNameUseCase,
+    private val updateBeltIdUseCase: UpdateBeltIdUseCase,
+    private val updateGrauIdUseCase: UpdateGrauIdUseCase,
+    private val updatePlayStyleIdsUseCase: UpdatePlayStyleIdsUseCase
 ): MVIViewModel<SparringMakeProfileIntent, SparringMakeProfileState, SparringMakeProfileEffect>() {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val makeProfileResult = loadDataSignal
+        .flatMapLatest {
+            combine(
+                getUserNameUseCase(Unit),
+                getUserNickNameUseCase(Unit),
+                getGymNameUseCase(Unit),
+                getBeltIdUseCase(Unit),
+                getGrauIdUseCase(Unit),
+                getPlayStyleIdsUseCase(Unit)
+            ) { values: Array<Any> ->
+                ProfileInfo(
+                    name = values[0] as String,
+                    nickName = values[1] as String,
+                    gymName = values[2] as String,
+                    beltId = values[3] as Int,
+                    grauId = values[4] as Int,
+                    playStyleIds = values[5] as List<Int>
+                )
+            }
+        }.asResult()
+        .stateIn(viewModelScope, SharingStarted.Lazily, ApiResult.Loading)
     override fun createInitialState() = SparringMakeProfileState()
+
+    init {
+        viewModelScope.launch {
+            makeProfileResult.collect { apiResult ->
+                when (apiResult) {
+                    is ApiResult.Success -> {
+                        val data = apiResult.data
+                        setState {
+                            SparringMakeProfileState(
+                                name = data.name,
+                                nickName = data.nickName,
+                                gymName = data.gymName,
+                                currentBeltId = data.beltId,
+                                currentGrauId = data.grauId,
+                                currentPlayStyleIds = data.playStyleIds
+                            )
+                        }
+
+                    }
+                    else -> {
+                        setState {
+                            SparringMakeProfileState()
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     override suspend fun processIntent(intent: SparringMakeProfileIntent) {
         when (intent) {
@@ -26,7 +110,7 @@ class SparringMakeProfileViewModel @Inject constructor(
             SparringMakeProfileIntent.OnClearNickName -> setState { copy(nickName = "") }
             is SparringMakeProfileIntent.OnChangeContent -> processOnChangeContent(intent.content)
             is SparringMakeProfileIntent.OnChangeLevel -> processChangeLevel(intent.beltId, intent.grauId)
-            SparringMakeProfileIntent.OnClickSaveProfile -> setToastEffect("완료우~~")
+            SparringMakeProfileIntent.OnClickSaveProfile -> processSaveProfile()
             is SparringMakeProfileIntent.OnSelectPlayStyle -> setState {
                 if (currentPlayStyleIds.contains(intent.playStyleId)) {
                     copy(currentPlayStyleIds = currentPlayStyleIds - intent.playStyleId)
@@ -60,6 +144,28 @@ class SparringMakeProfileViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun processSaveProfile() = currentState {
+        viewModelScope.launch {
+            val userNameAsync  = async { updateUserNameUseCase(name) }
+            val userNickNameAsync = async { updateUserNickNameUseCase(nickName) }
+            val gymNameAsync = async { updateGymNameUseCase(gymName) }
+            val beltIdAsync = async { updateBeltIdUseCase(currentBeltId) }
+            val grauIdAsync = async { updateGrauIdUseCase(currentGrauId) }
+            val playStyleIdsAsync = async { updatePlayStyleIdsUseCase(currentPlayStyleIds) }
+
+            listOf(
+                userNameAsync,
+                userNickNameAsync,
+                gymNameAsync,
+                beltIdAsync,
+                grauIdAsync,
+                playStyleIdsAsync
+            ).joinAll()
+            setToastEffect("프로필 편집 완료~")
+            setEffect(SparringMakeProfileEffect.NavigateToProfile)
         }
     }
 }

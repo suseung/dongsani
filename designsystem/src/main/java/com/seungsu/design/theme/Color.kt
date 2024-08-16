@@ -87,6 +87,7 @@ val Navy70 = Color(0xFF4370DF)
 val Navy80 = Color(0xFF2A4B95)
 val Navy90 = Color(0xFF132342)
 
+val BROWN = Color(0xFF613D09)
 val Purple = Color(0xFF7F56D9)
 val LightPurple: Color = Color(0x447F56D9)
 val VeryLightPurplele: Color = Color(0x44AB8DEC)

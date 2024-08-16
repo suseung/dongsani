@@ -15,12 +15,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sparring.makeprofile.SparringMakeProfileScreen
+import com.example.sparring.profile.ProfileScreen
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.seungsu.common.model.ContentsType
 import com.seungsu.dongsani.Destination.EXERCISE_GRASS
 import com.seungsu.record.ExerciseRecordScreen
 import com.seungsu.dongsani.Destination.EXERCISE_RECORD
 import com.seungsu.dongsani.Destination.EXERCISE_SETTING
+import com.seungsu.dongsani.Destination.SPARRING_MAKE_PROFILE
 import com.seungsu.dongsani.Destination.SPARRING_PROFILE
 import com.seungsu.grass.ExerciseGrassScreen
 import com.seungsu.setting.ExerciseSettingScreen
@@ -29,6 +31,7 @@ object Destination {
     const val EXERCISE_RECORD = "exercise_record"
     const val EXERCISE_GRASS = "exercise_grass"
     const val EXERCISE_SETTING = "exercise_setting"
+    const val SPARRING_MAKE_PROFILE = "sparring_make_profile"
     const val SPARRING_PROFILE = "sparring_profile"
 }
 
@@ -54,13 +57,25 @@ fun DongsaniNavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(SPARRING_PROFILE) {
+        composable(SPARRING_MAKE_PROFILE) {
             SparringMakeProfileScreen(
+                onNavPopback = {
+                    navController.popBackStack()
+                },
                 onRestart = {
                     val newIntent = Intent((context as Activity), MainActivity::class.java).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     }
                     ProcessPhoenix.triggerRebirth(context.applicationContext, newIntent)
+                }
+            )
+        }
+        composable(SPARRING_PROFILE) {
+            ProfileScreen(
+                onNavigateToMakeProfile = {
+                    navController.navigate(SPARRING_MAKE_PROFILE) {
+                        launchSingleTop = true
+                    }
                 }
             )
         }

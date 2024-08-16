@@ -58,4 +58,14 @@
     <string name="delete">삭제</string>
     <string name="take_photo">사진 찍기</string>
     <string name="get_photo_from_gallery">앨범에서 선택</string>
+    <string name="mypage">마이페이지</string>
+    <string name="register_profile">프로필을 등록해주세요</string>
+    <string name="my_sparring_result">내 스파링 전적</string>
+    <string name="record_sparring">스파링을 기록해주세요</string>
+    <string name="record_total">Total</string>
+    <string name="record_win">Win</string>
+    <string name="record_learn">Learn</string>
+
+
+
 </resources>
