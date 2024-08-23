@@ -80,6 +80,7 @@ fun ProfileScreen(
         with(uiState) {
             ProfileLoaded(
                 modifier = Modifier.padding(paddingValues),
+                profileImagePath = profileImagePath,
                 userName = name,
                 userNickName = nickName,
                 gymName = gymName,
@@ -97,6 +98,7 @@ fun ProfileScreen(
 @Composable
 fun ProfileLoaded(
     modifier: Modifier = Modifier,
+    profileImagePath: String,
     userName: String,
     userNickName: String,
     gymName: String,
@@ -114,6 +116,7 @@ fun ProfileLoaded(
             .verticalScroll(rememberScrollState())
     ) {
         ProfileInfo(
+            profileImagePath = profileImagePath,
             userName = userName,
             userNickName = userNickName,
             gymName = gymName,
@@ -138,6 +141,7 @@ fun ProfileLoaded(
 fun ProfileLoadedPreview() {
     DongsaniTheme {
         ProfileLoaded(
+            profileImagePath = "",
             userName = "name",
             userNickName = "nickName",
             gymName = "gymName",

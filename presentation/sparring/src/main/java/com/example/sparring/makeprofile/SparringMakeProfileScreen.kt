@@ -1,4 +1,16 @@
 package com.example.sparring.makeprofile
+import android.Manifest
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +25,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -36,8 +49,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -47,17 +63,22 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.request.Disposable
-import com.example.sparring.model.PLAYSTYLEs
 import com.example.sparring.makeprofile.component.LevelSelectBottomSheetContent
 import com.example.sparring.makeprofile.component.SelectItem
+import com.example.sparring.model.PLAYSTYLEs
 import com.seungsu.common.INVALID_INT
+import com.seungsu.common.createNewImageFile
 import com.seungsu.common.eventbus.Event
 import com.seungsu.common.eventbus.EventBusEntryPoint
 import com.seungsu.common.ext.noRippleClickable
+import com.seungsu.common.getCurrentBitmap
 import com.seungsu.common.model.ContentsType
+import com.seungsu.common.model.DialogEvent
 import com.seungsu.core.CollectContent
 import com.seungsu.core.ext.toastS
 import com.seungsu.design.component.DongsaniBottomSheet
@@ -66,6 +87,13 @@ import com.seungsu.design.component.DongsaniTextField
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.resource.R
+import java.io.File
+
+val CAMERA_PERMISSION = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    listOf(Manifest.permission.CAMERA)
+} else {
+    listOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+}
 
 @Composable
 fun SparringMakeProfileScreen(
@@ -194,6 +222,7 @@ fun SparringMakeProfileScreen(
                 currentGrauId = currentGrauId,
                 currentLevel = currentLevel,
                 currentPlayStyleIds = currentPlayStyleIds,
+                profileImagePath = profileImagePath,
                 onChangeName = { action(SparringMakeProfileIntent.OnChangeName(it)) },
                 onChangeNickName = { action(SparringMakeProfileIntent.OnChangeNickName(it)) },
                 onChangeGymName = { action(SparringMakeProfileIntent.OnChangeGymName(it)) },
@@ -203,8 +232,8 @@ fun SparringMakeProfileScreen(
                 onChangeLevel = { beltId, grauId -> action(SparringMakeProfileIntent.OnChangeLevel(beltId, grauId)) },
                 onSelectPlayStyle = { id -> action(SparringMakeProfileIntent.OnSelectPlayStyle(id)) },
                 onClickDeleteProfileImage = { action(SparringMakeProfileIntent.OnClickDeleteProfile) },
-                onClickTakePhoto = { action(SparringMakeProfileIntent.OnClickTakePhoto) },
-                onClickGetPhotoFromGallery = { action(SparringMakeProfileIntent.OnClickGetPhotoFromGallery) }
+                onClickGetPhotoFromGallery = { action(SparringMakeProfileIntent.OnClickGetPhotoFromGallery) },
+                onChangeProfileImage = { filePath -> action(SparringMakeProfileIntent.OnChangeProfileImage(filePath)) }
             )
         }
     }
@@ -228,6 +257,7 @@ fun SparringProfileLoaded(
     currentBeltId: Int,
     currentGrauId: Int,
     currentLevel: String,
+    profileImagePath: String,
     currentPlayStyleIds: List<Int>,
     onChangeName: (String) -> Unit = {},
     onChangeNickName: (String) -> Unit = {},
@@ -238,11 +268,40 @@ fun SparringProfileLoaded(
     onChangeLevel: (Int, Int) -> Unit = { _, _ -> },
     onSelectPlayStyle: (Int) -> Unit = {},
     onClickDeleteProfileImage: () -> Unit = {},
-    onClickTakePhoto: () -> Unit = {},
-    onClickGetPhotoFromGallery: () -> Unit = {}
+    onClickGetPhotoFromGallery: () -> Unit = {},
+    onChangeProfileImage: (String) -> Unit = {}
 ) {
+    val context = LocalContext.current
     var isLevelBottomSheetOpen by rememberSaveable { mutableStateOf(false) }
     var isProfileImageSelectorOpen by rememberSaveable { mutableStateOf(false) }
+    var dialogEvent by remember { mutableStateOf(DialogEvent.NONE) }
+    var mediaPath by remember { mutableStateOf(File("")) }
+    val activityResultLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            onChangeProfileImage(mediaPath.absolutePath)
+        } else {
+            return@rememberLauncherForActivityResult
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allPermissionsGranted = permissions.values.all { it }
+        if (allPermissionsGranted.not()) {
+            dialogEvent = DialogEvent.PERMISSION_DENIED
+        } else {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            try {
+                mediaPath = createNewImageFile(context)
+                val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", mediaPath)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                activityResultLauncher.launch(intent)
+            } catch (exception: PackageManager.NameNotFoundException) {
+                context.toastS(exception.message.toString())
+            }
+        }
+    }
 
     Column(
         modifier = modifier
@@ -254,15 +313,32 @@ fun SparringProfileLoaded(
         Spacer(
             modifier = Modifier.padding(top = 24.dp)
         )
-        Icon(
-            painter = painterResource(id = R.drawable.ic_default_profile),
-            contentDescription = "profile image",
-            modifier = Modifier
-                .size(103.dp)
-                .padding(bottom = 24.dp)
-                .noRippleClickable { isProfileImageSelectorOpen = true },
-            tint = DongsaniTheme.colors.label.onBgPrimary
-        )
+        if (profileImagePath.isNotEmpty()) {
+            val resultBitmap = getCurrentBitmap(
+                bitmap = BitmapFactory.decodeFile(profileImagePath),
+                imagePath = profileImagePath
+            )
+
+            Image(
+                bitmap = resultBitmap.asImageBitmap(),
+                contentDescription = "profile image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(bottom = 24.dp)
+                    .size(80.dp)
+                    .clip(CircleShape)
+                    .noRippleClickable { isProfileImageSelectorOpen = true }
+            )
+        } else {
+            Image(
+                painter = painterResource(id = R.drawable.ic_default_profile),
+                contentDescription = "profile image",
+                modifier = Modifier
+                    .size(104.dp)
+                    .padding(bottom = 24.dp)
+                    .noRippleClickable { isProfileImageSelectorOpen = true }
+            )
+        }
         Text(
             text = stringResource(id = R.string.sparring_name_label),
             style = DongsaniTheme.typos.regular.font12,
@@ -482,7 +558,25 @@ fun SparringProfileLoaded(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                         .noRippleClickable {
-                            onClickTakePhoto()
+                            val permissionNeeded = mutableListOf<String>()
+                            CAMERA_PERMISSION.forEach { permission ->
+                                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                                    permissionNeeded.add(permission)
+                                }
+                            }
+                            if (permissionNeeded.isNotEmpty()) {
+                                permissionLauncher.launch(CAMERA_PERMISSION.toTypedArray())
+                            } else {
+                                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                                try {
+                                    mediaPath = createNewImageFile(context)
+                                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", mediaPath)
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                                    activityResultLauncher.launch(intent)
+                                } catch (exception: PackageManager.NameNotFoundException) {
+                                    context.toastS(exception.message.toString())
+                                }
+                            }
                             isProfileImageSelectorOpen = false
                         }
                 )
@@ -517,6 +611,28 @@ fun SparringProfileLoaded(
             )
         }
     }
+    when (dialogEvent) {
+        DialogEvent.PERMISSION_DENIED -> {
+            DongsaniComposeDialog(
+                title = stringResource(id = R.string.permission_request_title),
+                message = stringResource(id = R.string.camera_permission_request_message),
+                cancelText = stringResource(id = R.string.cancel),
+                confirmText = stringResource(id = R.string.settings),
+                onClickConfirmed = {
+                    val action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    val data = Uri.parse("package:${context.packageName}")
+                    val intent = Intent(action, data).apply {
+                        addCategory(Intent.CATEGORY_DEFAULT)
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
+                    startActivity(context, intent, null)
+                },
+                isCancellable = false,
+                onDismiss = { dialogEvent = DialogEvent.NONE }
+            )
+        }
+        else -> Unit
+    }
 }
 
 @Preview(backgroundColor = 0xffffff, showBackground = true)
@@ -530,7 +646,8 @@ fun SparringProfileLoadedPreview() {
             currentBeltId = 3,
             currentGrauId = 3,
             currentLevel = "Purple, 3 Grau",
-            currentPlayStyleIds = emptyList()
+            currentPlayStyleIds = emptyList(),
+            profileImagePath = ""
         )
     }
 }

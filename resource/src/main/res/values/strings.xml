@@ -65,6 +65,10 @@
     <string name="record_total">Total</string>
     <string name="record_win">Win</string>
     <string name="record_learn">Learn</string>
+    <string name="permission_request_title">필수 권한 허용 안내</string>
+    <string name="cancel">취소</string>
+    <string name="settings">설정</string>
+    <string name="camera_permission_request_message">"카메라" 접근 권한이 없어 해당 기능을 사용할 수 없습니다. 권한을 허용하려면 “설정”을 선택해주세요.</string>
 
 
 

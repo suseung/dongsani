@@ -17,6 +17,7 @@ sealed interface ProfileIntent : ViewIntent {
 }
 
 data class ProfileState(
+    val profileImagePath: String = "",
     val name: String = "",
     val nickName: String = "",
     val gymName: String = "",

@@ -11,6 +11,7 @@ import com.seungsu.domain.usecase.GetBeltIdUseCase
 import com.seungsu.domain.usecase.GetGrauIdUseCase
 import com.seungsu.domain.usecase.GetGymNameUseCase
 import com.seungsu.domain.usecase.GetPlayStyleIdsUseCase
+import com.seungsu.domain.usecase.GetProfileImagePathUseCase
 import com.seungsu.domain.usecase.GetUserNameUseCase
 import com.seungsu.domain.usecase.GetUserNickNameUseCase
 import com.seungsu.domain.usecase.UpdateBeltIdUseCase
@@ -18,6 +19,7 @@ import com.seungsu.domain.usecase.UpdateCurrentContentUseCase
 import com.seungsu.domain.usecase.UpdateGrauIdUseCase
 import com.seungsu.domain.usecase.UpdateGymNameUseCase
 import com.seungsu.domain.usecase.UpdatePlayStyleIdsUseCase
+import com.seungsu.domain.usecase.UpdateProfileImagePathUseCase
 import com.seungsu.domain.usecase.UpdateUserNameUseCase
 import com.seungsu.domain.usecase.UpdateUserNickNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,12 +35,14 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SparringMakeProfileViewModel @Inject constructor(
+    getProfileImagePathUseCase: GetProfileImagePathUseCase,
     getUserNameUseCase: GetUserNameUseCase,
     getUserNickNameUseCase: GetUserNickNameUseCase,
     getGymNameUseCase: GetGymNameUseCase,
     getBeltIdUseCase: GetBeltIdUseCase,
     getGrauIdUseCase: GetGrauIdUseCase,
     getPlayStyleIdsUseCase: GetPlayStyleIdsUseCase,
+    private val updateProfileImagePathUseCase: UpdateProfileImagePathUseCase,
     private val updateCurrentContentUseCase: UpdateCurrentContentUseCase,
     private val updateUserNameUseCase: UpdateUserNameUseCase,
     private val updateUserNickNameUseCase: UpdateUserNickNameUseCase,
@@ -46,12 +50,13 @@ class SparringMakeProfileViewModel @Inject constructor(
     private val updateBeltIdUseCase: UpdateBeltIdUseCase,
     private val updateGrauIdUseCase: UpdateGrauIdUseCase,
     private val updatePlayStyleIdsUseCase: UpdatePlayStyleIdsUseCase
-): MVIViewModel<SparringMakeProfileIntent, SparringMakeProfileState, SparringMakeProfileEffect>() {
+) : MVIViewModel<SparringMakeProfileIntent, SparringMakeProfileState, SparringMakeProfileEffect>() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val makeProfileResult = loadDataSignal
         .flatMapLatest {
             combine(
+                getProfileImagePathUseCase(Unit),
                 getUserNameUseCase(Unit),
                 getUserNickNameUseCase(Unit),
                 getGymNameUseCase(Unit),
@@ -60,16 +65,18 @@ class SparringMakeProfileViewModel @Inject constructor(
                 getPlayStyleIdsUseCase(Unit)
             ) { values: Array<Any> ->
                 ProfileInfo(
-                    name = values[0] as String,
-                    nickName = values[1] as String,
-                    gymName = values[2] as String,
-                    beltId = values[3] as Int,
-                    grauId = values[4] as Int,
-                    playStyleIds = values[5] as List<Int>
+                    profileImagePath = values[0] as String,
+                    name = values[1] as String,
+                    nickName = values[2] as String,
+                    gymName = values[3] as String,
+                    beltId = values[4] as Int,
+                    grauId = values[5] as Int,
+                    playStyleIds = values[6] as List<Int>
                 )
             }
         }.asResult()
         .stateIn(viewModelScope, SharingStarted.Lazily, ApiResult.Loading)
+
     override fun createInitialState() = SparringMakeProfileState()
 
     init {
@@ -80,6 +87,7 @@ class SparringMakeProfileViewModel @Inject constructor(
                         val data = apiResult.data
                         setState {
                             SparringMakeProfileState(
+                                profileImagePath = data.profileImagePath,
                                 name = data.name,
                                 nickName = data.nickName,
                                 gymName = data.gymName,
@@ -90,6 +98,7 @@ class SparringMakeProfileViewModel @Inject constructor(
                         }
 
                     }
+
                     else -> {
                         setState {
                             SparringMakeProfileState()
@@ -119,9 +128,14 @@ class SparringMakeProfileViewModel @Inject constructor(
                 }
             }
 
-            SparringMakeProfileIntent.OnClickDeleteProfile -> setToastEffect("프로필 삭제~")
+            SparringMakeProfileIntent.OnClickDeleteProfile -> setState {
+                copy(profileImagePath = "")
+            }
             SparringMakeProfileIntent.OnClickGetPhotoFromGallery -> setToastEffect("갤러리~")
-            SparringMakeProfileIntent.OnClickTakePhoto -> setToastEffect("사진 찍기~")
+
+            is SparringMakeProfileIntent.OnChangeProfileImage -> setState {
+                copy(profileImagePath = intent.filePath)
+            }
         }
     }
 
@@ -149,7 +163,8 @@ class SparringMakeProfileViewModel @Inject constructor(
 
     private fun processSaveProfile() = currentState {
         viewModelScope.launch {
-            val userNameAsync  = async { updateUserNameUseCase(name) }
+            val profileImageAsync = async { updateProfileImagePathUseCase(profileImagePath) }
+            val userNameAsync = async { updateUserNameUseCase(name) }
             val userNickNameAsync = async { updateUserNickNameUseCase(nickName) }
             val gymNameAsync = async { updateGymNameUseCase(gymName) }
             val beltIdAsync = async { updateBeltIdUseCase(currentBeltId) }
@@ -157,6 +172,7 @@ class SparringMakeProfileViewModel @Inject constructor(
             val playStyleIdsAsync = async { updatePlayStyleIdsUseCase(currentPlayStyleIds) }
 
             listOf(
+                profileImageAsync,
                 userNameAsync,
                 userNickNameAsync,
                 gymNameAsync,

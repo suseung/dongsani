@@ -3,9 +3,11 @@ package com.seungsu.domain.preference
 import kotlinx.coroutines.flow.Flow
 
 interface PreferenceStorage {
-
     suspend fun setCurrentContent(contentName: String)
     val currentContent: Flow<String>
+
+    suspend fun updateProfileImagePath(filePath: String)
+    val profileImagePath: Flow<String>
 
     suspend fun updateUserName(userName: String)
     val userName: Flow<String>

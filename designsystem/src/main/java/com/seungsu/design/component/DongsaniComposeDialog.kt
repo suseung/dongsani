@@ -16,11 +16,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.seungsu.design.theme.DongsaniTheme
-import com.seungsu.design.theme.Purple
 
 @Composable
 fun DongsaniComposeDialog(
@@ -71,12 +71,15 @@ fun DongsaniComposeDialog(
                     )
                     if (cancelText != null) {
                         Button(
-                            onClick = onDismiss
+                            onClick = onDismiss,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Transparent,
+                                contentColor = DongsaniTheme.colors.system.inverse,
+                            )
                         ) {
                             Text(
                                 text = cancelText,
-                                style = DongsaniTheme.typos.bold.font16,
-                                color = DongsaniTheme.colors.label.onBgPrimary
+                                style = DongsaniTheme.typos.bold.font16
                             )
                         }
                         Spacer(modifier = Modifier.size(8.dp))
@@ -86,12 +89,15 @@ fun DongsaniComposeDialog(
                             onClickConfirmed()
                             onDismiss()
                         },
-                        colors = ButtonDefaults.buttonColors(containerColor = Purple)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = DongsaniTheme.colors.system.inverse.copy(alpha = 0.2f),
+                            contentColor = DongsaniTheme.colors.system.inverse,
+                        ),
+                        shape = RoundedCornerShape(4.dp)
                     ) {
                         Text(
                             text = confirmText,
-                            style = DongsaniTheme.typos.bold.font16,
-                            color = DongsaniTheme.colors.system.white
+                            style = DongsaniTheme.typos.bold.font16
                         )
                     }
                 }

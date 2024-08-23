@@ -34,12 +34,15 @@ sealed interface SparringMakeProfileIntent: ViewIntent {
     data object OnClickSaveProfile: SparringMakeProfileIntent
     data object OnClickDeleteProfile: SparringMakeProfileIntent
     data object OnClickGetPhotoFromGallery: SparringMakeProfileIntent
-    data object OnClickTakePhoto: SparringMakeProfileIntent
+
+    @JvmInline
+    value class OnChangeProfileImage(val filePath: String): SparringMakeProfileIntent
 }
 
 
 
 data class SparringMakeProfileState(
+    val profileImagePath: String = "",
     val name: String = "",
     val nickName: String = "",
     val gymName: String = "",
