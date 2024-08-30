@@ -1,4 +1,6 @@
 [versions]
+androidGradlePlugin = "8.5.0"
+
 agp = "8.3.2"
 coreKtx = "1.13.1"
 lifecycleRuntimeKtx = "2.7.0"
@@ -24,6 +26,7 @@ androidxRoom = "2.6.1"
 androidxDatastore = "1.0.0"
 androidxPreference = "1.2.1"
 processPhoenix = "2.1.2"
+androidxComposeCompiler = "1.5.3"
 
 
 [libraries]
@@ -63,16 +66,28 @@ androidx-preference-ktx = { group = "androidx.preference", name = "preference-kt
 
 process-phoenix = { group = "com.jakewharton", name = "process-phoenix", version.ref = "processPhoenix" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [bundles]
 retrofit2 = ["retrofit2", "retrofit2-serialization"]
 okhttp3 = ["okhttp", "okhttp-url-connection", "okhttp-logging-interceptor"]
 androidx-room = ["androidx-room-runtime", "androidx-room-ktx"]
-
+androidx-ui-compose = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling"]
+androidx-ui-compose-debug = ["androidx-ui-tooling-preview", "androidx-ui-test-manifest"]
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
-hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
-kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+dongsani-android-application = { id = "dongsani.android.application", version = "unspecified"}
+dongsani-android-library = { id = "dongsani.android.library", version = "unspecified"}
+dongsani-jvm-library = { id = "dongsani.jvm.library", version = "unspecified"}
+dongsani-android-hilt = { id = "dongsani.android.hilt", version = "unspecified"}
+dongsani-jvm-hilt = { id = "dongsani.jvm.hilt", version = "unspecified"}
+dongsani-android-feature = { id = "dongsani.android.feature", version = "unspecified"}

@@ -1,4 +1,4 @@
-package com.seungsu.core.ext
+package com.seungsu.common.ext
 
 import android.content.Context
 import android.widget.Toast

@@ -1,4 +1,4 @@
-package com.seungsu.core.base
+package com.seungsu.common.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

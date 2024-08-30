@@ -1,9 +1,9 @@
 package com.seungsu.grass
 
 import androidx.compose.ui.graphics.Color
-import com.seungsu.core.base.ViewEffect
-import com.seungsu.core.base.ViewIntent
-import com.seungsu.core.base.ViewState
+import com.seungsu.common.base.ViewEffect
+import com.seungsu.common.base.ViewIntent
+import com.seungsu.common.base.ViewState
 import com.seungsu.model.ExerciseRecordItem
 import java.time.DayOfWeek
 import java.time.LocalDate

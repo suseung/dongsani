@@ -3,9 +3,9 @@ package com.seungsu.record
 import com.seungsu.common.HOUR_TO_SEC
 import com.seungsu.common.MIN_TO_SEC
 import com.seungsu.common.model.ContentsType
-import com.seungsu.core.base.ViewEffect
-import com.seungsu.core.base.ViewIntent
-import com.seungsu.core.base.ViewState
+import com.seungsu.common.base.ViewEffect
+import com.seungsu.common.base.ViewIntent
+import com.seungsu.common.base.ViewState
 import com.seungsu.model.ExerciseRecordItem
 
 sealed interface ExerciseRecordIntent : ViewIntent {

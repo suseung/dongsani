@@ -8,9 +8,9 @@ import com.example.sparring.model.PLAYSTYLEs
 import com.example.sparring.model.PlayStyle
 import com.example.sparring.model.SparringResult
 import com.seungsu.common.INVALID_INT
-import com.seungsu.core.base.ViewEffect
-import com.seungsu.core.base.ViewIntent
-import com.seungsu.core.base.ViewState
+import com.seungsu.common.base.ViewEffect
+import com.seungsu.common.base.ViewIntent
+import com.seungsu.common.base.ViewState
 
 sealed interface ProfileIntent : ViewIntent {
     data object OnRefresh: ProfileIntent

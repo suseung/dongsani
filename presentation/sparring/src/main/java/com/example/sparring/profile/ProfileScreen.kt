@@ -29,7 +29,7 @@ import com.example.sparring.profile.component.ProfileInfo
 import com.example.sparring.profile.component.SparringResultInfo
 import com.seungsu.common.eventbus.Event
 import com.seungsu.common.eventbus.EventBusEntryPoint
-import com.seungsu.core.CollectContent
+import com.seungsu.common.component.CollectContent
 import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme

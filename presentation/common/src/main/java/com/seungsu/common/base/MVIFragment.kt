@@ -1,4 +1,4 @@
-package com.seungsu.core.base
+package com.seungsu.common.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

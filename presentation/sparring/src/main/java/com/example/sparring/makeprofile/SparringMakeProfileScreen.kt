@@ -78,8 +78,8 @@ import com.seungsu.common.ext.noRippleClickable
 import com.seungsu.common.getCurrentBitmap
 import com.seungsu.common.model.ContentsType
 import com.seungsu.common.model.DialogEvent
-import com.seungsu.core.CollectContent
-import com.seungsu.core.ext.toastS
+import com.seungsu.common.component.CollectContent
+import com.seungsu.common.ext.toastS
 import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniBottomSheet
 import com.seungsu.design.component.DongsaniComposeDialog

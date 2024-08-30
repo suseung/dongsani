@@ -2,7 +2,7 @@ package com.seungsu.grass
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.seungsu.core.base.MVIViewModel
+import com.seungsu.common.base.MVIViewModel
 import com.seungsu.domain.base.ApiResult
 import com.seungsu.domain.base.asResult
 import com.seungsu.domain.model.ExerciseRecordItemEntity

@@ -1,4 +1,4 @@
-package com.seungsu.core.base
+package com.seungsu.common.base
 
 interface ViewIntent
 

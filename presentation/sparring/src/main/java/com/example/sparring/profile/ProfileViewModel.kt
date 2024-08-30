@@ -2,7 +2,7 @@ package com.example.sparring.profile
 
 import androidx.lifecycle.viewModelScope
 import com.example.sparring.model.ProfileInfo
-import com.seungsu.core.base.MVIViewModel
+import com.seungsu.common.base.MVIViewModel
 import com.seungsu.domain.base.ApiResult
 import com.seungsu.domain.base.asResult
 import com.seungsu.domain.usecase.GetBeltIdUseCase

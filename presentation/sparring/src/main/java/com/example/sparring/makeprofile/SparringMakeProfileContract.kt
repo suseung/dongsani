@@ -4,9 +4,9 @@ import com.example.sparring.model.BELTs
 import com.example.sparring.model.GRAUs
 import com.seungsu.common.INVALID_INT
 import com.seungsu.common.model.ContentsType
-import com.seungsu.core.base.ViewEffect
-import com.seungsu.core.base.ViewIntent
-import com.seungsu.core.base.ViewState
+import com.seungsu.common.base.ViewEffect
+import com.seungsu.common.base.ViewIntent
+import com.seungsu.common.base.ViewState
 
 sealed interface SparringMakeProfileIntent: ViewIntent {
 

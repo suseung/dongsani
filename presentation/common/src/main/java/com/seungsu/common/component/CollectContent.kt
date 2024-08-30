@@ -1,11 +1,11 @@
-package com.seungsu.core
+package com.seungsu.common.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import com.seungsu.core.base.MVIViewModel
-import com.seungsu.core.base.ViewEffect
-import com.seungsu.core.ext.toastS
+import com.seungsu.common.base.MVIViewModel
+import com.seungsu.common.base.ViewEffect
+import com.seungsu.common.ext.toastS
 import kotlinx.coroutines.launch
 
 @Composable
@@ -22,5 +22,4 @@ fun CollectContent(
             viewModel.toastEffect.collect { context.toastS(it) }
         }
     }
-
 }
