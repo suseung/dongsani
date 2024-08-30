@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.seungsu.design.ThemePreview
 import com.seungsu.design.theme.DongsaniTheme
 
 @Composable
@@ -53,7 +53,7 @@ fun DongsaniOutlinedTextField(
     colors = colors
 )
 
-@Preview(backgroundColor = 0xffffff, showBackground = true)
+@ThemePreview
 @Composable
 fun DongsaniOutlinedTextFieldPreview() {
     DongsaniTheme {

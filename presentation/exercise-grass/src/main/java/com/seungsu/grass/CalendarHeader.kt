@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.seungsu.design.ThemePreview
 import com.seungsu.design.theme.DongsaniTheme
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -74,7 +74,7 @@ fun CalendarHeader(
     }
 }
 
-@Preview(backgroundColor = 0xffffff, showBackground = true)
+@ThemePreview
 @Composable
 fun CalendarHeaderPreview() {
     DongsaniTheme {

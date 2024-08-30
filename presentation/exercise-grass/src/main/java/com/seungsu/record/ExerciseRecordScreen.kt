@@ -38,11 +38,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seungsu.common.model.ContentsType
+import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniBottomSheet
 import com.seungsu.design.component.DongsaniComposeDialog
 import com.seungsu.design.component.DongsaniTopAppbar
@@ -311,7 +311,7 @@ fun ExerciseRecord(
     }
 }
 
-@Preview(backgroundColor = 0xffffff, showBackground = true)
+@ThemePreview
 @Composable
 fun ExerciseGrassPreview() {
     val lists = listOf(

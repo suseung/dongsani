@@ -25,9 +25,9 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seungsu.common.ext.addStyleSafely
+import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniOutlinedTextField
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.design.theme.LightPurple
@@ -136,7 +136,7 @@ fun ExerciseRecordBottomSheetContents(
     }
 }
 
-@Preview(backgroundColor = 0xffffff, showBackground = true)
+@ThemePreview
 @Composable
 fun ExerciseRecordBottomSheetContentsPreview() {
     DongsaniTheme {

@@ -1,6 +1,5 @@
 package com.example.sparring.makeprofile.component
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,11 +26,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sparring.model.BELTs
 import com.example.sparring.model.GRAUs
+import com.seungsu.design.ThemePreview
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.resource.R
 
@@ -135,7 +134,7 @@ fun LevelSelectBottomSheetContent(
     }
 }
 
-@Preview(backgroundColor = 0xffffff, showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@ThemePreview
 @Composable
 fun LevelSelectBottomSheetContentPreview() {
     DongsaniTheme {

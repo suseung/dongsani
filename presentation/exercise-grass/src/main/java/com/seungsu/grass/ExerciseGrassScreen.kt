@@ -23,10 +23,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.design.theme.Purple
@@ -165,7 +165,7 @@ fun ExerciseGrass(
     }
 }
 
-@Preview(backgroundColor = 0xffffff, showBackground = true)
+@ThemePreview
 @Composable
 fun ExerciseGrassPreview() {
     DongsaniTheme {

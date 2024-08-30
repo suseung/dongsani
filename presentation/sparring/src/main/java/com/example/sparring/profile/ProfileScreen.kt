@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,6 +30,7 @@ import com.example.sparring.profile.component.SparringResultInfo
 import com.seungsu.common.eventbus.Event
 import com.seungsu.common.eventbus.EventBusEntryPoint
 import com.seungsu.core.CollectContent
+import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
 
@@ -136,7 +136,7 @@ fun ProfileLoaded(
 }
 
 
-@Preview(backgroundColor = 0xffffff, showBackground = true)
+@ThemePreview
 @Composable
 fun ProfileLoadedPreview() {
     DongsaniTheme {

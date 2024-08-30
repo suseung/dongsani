@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seungsu.common.GrassIcon
+import com.seungsu.design.ThemePreview
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.design.theme.Purple
 import java.time.DayOfWeek
@@ -66,7 +66,7 @@ fun CalendarDate(
     }
 }
 
-@Preview(backgroundColor = 0xffffff, showBackground = true)
+@ThemePreview
 @Composable
 fun CalendarDatePreview() {
     DongsaniTheme {

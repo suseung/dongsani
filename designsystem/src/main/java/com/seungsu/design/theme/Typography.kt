@@ -12,10 +12,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seungsu.design.R
+import com.seungsu.design.ThemePreview
 
 private val PretendardFontFamily = FontFamily(
     Font(R.font.font_regular, FontWeight.Normal)
@@ -129,7 +129,7 @@ data class RegularTextStyle(
     )
 )
 
-@Preview(backgroundColor = 0xffffff, showBackground = true)
+@ThemePreview
 @Composable
 fun BoldTypographyPreview() {
     val text = "Bold Typography"
@@ -158,7 +158,7 @@ fun BoldTypographyPreview() {
     }
 }
 
-@Preview(backgroundColor = 0xffffff, showBackground = true)
+@ThemePreview
 @Composable
 fun RegularTypographyPreview() {
     val text = "Regular Typography"
