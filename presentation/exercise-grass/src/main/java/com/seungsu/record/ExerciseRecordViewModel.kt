@@ -1,8 +1,8 @@
 package com.seungsu.record
 
 import androidx.lifecycle.viewModelScope
-import com.seungsu.common.model.ContentsType
 import com.seungsu.common.base.MVIViewModel
+import com.seungsu.common.model.ContentsType
 import com.seungsu.domain.base.ApiResult
 import com.seungsu.domain.base.asResult
 import com.seungsu.domain.model.ExerciseRecordItemEntity
@@ -19,7 +19,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -30,8 +29,6 @@ class ExerciseRecordViewModel @Inject constructor(
     private val updateCurrentContentUseCase: UpdateCurrentContentUseCase
 ) : MVIViewModel<ExerciseRecordIntent, ExerciseRecordState, ExerciseRecordEffect>() {
 
-    private var timerJob: Job? = null
-
     @OptIn(ExperimentalCoroutinesApi::class)
     private val exerciseRecordResult = loadDataSignal
         .flatMapLatest {
@@ -40,7 +37,7 @@ class ExerciseRecordViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily, ApiResult.Loading)
 
     init {
-        viewModelScope.launch {
+        launch {
             initializeMock()
             exerciseRecordResult.collect { apiResult ->
                 setState {
@@ -68,7 +65,7 @@ class ExerciseRecordViewModel @Inject constructor(
     }
 
     private fun initializeMock() {
-        viewModelScope.launch {
+        launch {
             val lists = listOf(
                 ExerciseRecordItem(
                     memo = "팔굽혀펴기",
@@ -170,14 +167,13 @@ class ExerciseRecordViewModel @Inject constructor(
     }
 
     private fun processStartTimer() = currentStateIf<ExerciseRecordState.Success> {
-        timerJob?.cancel()
         setState {
             copy(
                 isStart = true,
                 currentTime = 0L
             )
         }
-        timerJob = viewModelScope.launch {
+        launchLatest("timer") {
             while (true) {
                 delay(1000)
                 currentStateIf<ExerciseRecordState.Success> {
@@ -190,7 +186,7 @@ class ExerciseRecordViewModel @Inject constructor(
     }
 
     private fun processStopTimer() = currentStateIf<ExerciseRecordState.Success> {
-        timerJob?.cancel()
+        cancelJob("timer")
         setState { copy(isStart = false) }
         setEffect(ExerciseRecordEffect.ShowMemoBottomSheet)
     }
@@ -205,7 +201,7 @@ class ExerciseRecordViewModel @Inject constructor(
             recordTime = currentTime,
             recordDate = LocalDate.now()
         )
-        viewModelScope.launch {
+        launch {
             insertExerciseRecordUseCase(insertItem.toDomainModel())
                 .asResult()
                 .collect { apiResult ->
@@ -226,7 +222,7 @@ class ExerciseRecordViewModel @Inject constructor(
     }
 
     private fun processOnChangeContent(contentType: ContentsType) {
-        viewModelScope.launch {
+        launch {
             updateCurrentContentUseCase(contentType.code)
             setEffect(ExerciseRecordEffect.ShowRestartDialog)
         }

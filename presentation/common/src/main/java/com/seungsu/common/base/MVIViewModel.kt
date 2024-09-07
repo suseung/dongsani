@@ -2,6 +2,9 @@ package com.seungsu.common.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,9 +15,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 
-abstract class MVIViewModel<I: ViewIntent, S: ViewState, E: ViewEffect>: ViewModel() {
-    abstract fun createInitialState() : S
+abstract class MVIViewModel<I : ViewIntent, S : ViewState, E : ViewEffect> : ViewModel() {
+    abstract fun createInitialState(): S
+
+    private val jobs: MutableMap<String, Job> = mutableMapOf()
+
+    private val errorHandler = CoroutineExceptionHandler { _, exception ->
+        handleException(exception)
+    }
 
     private val initialState: S by lazy { createInitialState() }
 
@@ -32,12 +42,28 @@ abstract class MVIViewModel<I: ViewIntent, S: ViewState, E: ViewEffect>: ViewMod
 
     abstract suspend fun processIntent(intent: I)
 
+    private val _signalState = MutableStateFlow(SignalState.INITIALIZE)
+    val signalState: StateFlow<SignalState> = _signalState
+
+    private val refreshSignal = MutableSharedFlow<SignalState>()
+
+    protected val loadDataSignal: Flow<SignalState> = flow {
+        emit(SignalState.INITIALIZE)
+        emitAll(refreshSignal)
+    }
+
+    open fun onRefresh(signalState: SignalState = SignalState.ERROR_REFRESH) =
+        launch {
+            _signalState.value = signalState
+            refreshSignal.emit(signalState)
+        }
+
     fun dispatch(intent: I) {
-        viewModelScope.launch { _intent.emit(intent) }
+        launch { _intent.emit(intent) }
     }
 
     init {
-        viewModelScope.launch {
+        launch {
             intent.collect { processIntent(it) }
         }
     }
@@ -49,13 +75,13 @@ abstract class MVIViewModel<I: ViewIntent, S: ViewState, E: ViewEffect>: ViewMod
     }
 
     protected fun setEffect(effect: E) {
-        viewModelScope.launch {
+        launch {
             _effect.emit(effect)
         }
     }
 
     protected fun setToastEffect(message: String) {
-        viewModelScope.launch {
+        launch {
             _toastEffect.emit(message)
         }
     }
@@ -71,18 +97,27 @@ abstract class MVIViewModel<I: ViewIntent, S: ViewState, E: ViewEffect>: ViewMod
         }
     }
 
-    private val _signalState = MutableStateFlow<SignalState>(SignalState.INITIALIZE)
-    val signalState: StateFlow<SignalState> = _signalState
-
-    private val refreshSignal = MutableSharedFlow<SignalState>()
-
-    protected val loadDataSignal: Flow<SignalState> = flow {
-        emit(SignalState.INITIALIZE)
-        emitAll(refreshSignal)
+    protected open fun handleException(exception: Throwable) {
+        exception.message?.let {
+            setToastEffect(it)
+        }
     }
 
-    open fun onRefresh(signalState: SignalState = SignalState.ERROR_REFRESH) = viewModelScope.launch {
-        _signalState.value = signalState
-        refreshSignal.emit(signalState)
+    protected fun launch(
+        errorHandler: CoroutineExceptionHandler = this.errorHandler,
+        block: suspend CoroutineScope.() -> Unit
+    ): Job = (viewModelScope + errorHandler).launch(block = block)
+
+    protected fun launchLatest(
+        key: String,
+        errorHandler: CoroutineExceptionHandler = this.errorHandler,
+        block: suspend CoroutineScope.() -> Unit
+    ): Job = launch(errorHandler) {
+        cancelJob(key)
+        launch(errorHandler, block).also {
+            jobs[key] = it
+        }
     }
+
+    protected fun cancelJob(key: String) = jobs[key]?.cancel()
 }

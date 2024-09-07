@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seungsu.common.component.CollectContent
 import com.seungsu.common.model.ContentsType
 import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniBottomSheet
@@ -60,18 +62,20 @@ fun ExerciseRecordScreen(
     onRestart: () -> Unit
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val action by remember { mutableStateOf(viewModel::dispatch) }
     var isMemoBottomSheetVisible by rememberSaveable { mutableStateOf(false) }
     var isMenuExpanded by rememberSaveable { mutableStateOf(false) }
     var isRestartDialogVisible by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        viewModel.effect.collect { effect ->
+    CollectContent(
+        viewModel = viewModel,
+        processEffect = { effect ->
             when (effect) {
                 ExerciseRecordEffect.ShowMemoBottomSheet -> isMemoBottomSheetVisible = true
                 ExerciseRecordEffect.ShowRestartDialog -> isRestartDialogVisible = true
             }
         }
-    }
+    )
 
     Scaffold(
         topBar = {
@@ -127,7 +131,7 @@ fun ExerciseRecordScreen(
                                 )
                             },
                             onClick = {
-                                viewModel.dispatch(ExerciseRecordIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
+                                action(ExerciseRecordIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
                             }
                         )
                         DropdownMenuItem(
@@ -140,7 +144,7 @@ fun ExerciseRecordScreen(
                                 )
                             },
                             onClick = {
-                                viewModel.dispatch(ExerciseRecordIntent.OnChangeContent(ContentsType.SPARRING))
+                                action(ExerciseRecordIntent.OnChangeContent(ContentsType.SPARRING))
                             }
                         )
                     }
@@ -169,7 +173,7 @@ fun ExerciseRecordScreen(
                     ) {
                         Button(
                             onClick = {
-                                viewModel.dispatch(
+                                action(
                                     if (state.isStart.not()) ExerciseRecordIntent.OnClickStart else ExerciseRecordIntent.OnClickStop
                                 )
                             },
@@ -218,11 +222,11 @@ fun ExerciseRecordScreen(
                 isMemoBottomSheetVisible = isMemoBottomSheetVisible,
                 onCloseMemoBottomSheet = {
                     isMemoBottomSheetVisible = false
-                    viewModel.dispatch(ExerciseRecordIntent.OnResetTimer)
+                    action(ExerciseRecordIntent.OnResetTimer)
                 },
                 onSaveMemo = {
                     isMemoBottomSheetVisible = false
-                    viewModel.dispatch(ExerciseRecordIntent.OnSaveMemo(it))
+                    action(ExerciseRecordIntent.OnSaveMemo(it))
                 }
             )
         }

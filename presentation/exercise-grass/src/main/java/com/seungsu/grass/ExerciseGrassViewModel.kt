@@ -9,14 +9,13 @@ import com.seungsu.domain.model.ExerciseRecordItemEntity
 import com.seungsu.domain.usecase.GetExerciseRecordsWithYearMonthUseCase
 import com.seungsu.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @HiltViewModel
 class ExerciseGrassViewModel @Inject constructor(
@@ -32,7 +31,7 @@ class ExerciseGrassViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily, ApiResult.Loading)
 
     init {
-        viewModelScope.launch {
+        launch {
             exerciseGrassResult.collect { apiResult ->
                 setState {
                     when (apiResult) {
@@ -62,7 +61,7 @@ class ExerciseGrassViewModel @Inject constructor(
 
     private fun processChangeMonth(offset: Int) = currentStateIf<ExerciseGrassState.Success> {
         val newYearOfMonth = YearMonth.now().plusMonths(monthOffset + offset.toLong())
-        viewModelScope.launch {
+        launch {
             getExerciseRecordsWithYearMonthUseCase(newYearOfMonth)
                 .asResult()
                 .collect { apiResult ->

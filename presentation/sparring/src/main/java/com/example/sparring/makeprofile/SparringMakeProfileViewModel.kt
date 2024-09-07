@@ -3,8 +3,8 @@ package com.example.sparring.makeprofile
 import androidx.lifecycle.viewModelScope
 import com.example.sparring.model.ProfileInfo
 import com.seungsu.common.INVALID_INT
-import com.seungsu.common.model.ContentsType
 import com.seungsu.common.base.MVIViewModel
+import com.seungsu.common.model.ContentsType
 import com.seungsu.domain.base.ApiResult
 import com.seungsu.domain.base.asResult
 import com.seungsu.domain.usecase.GetBeltIdUseCase
@@ -23,7 +23,6 @@ import com.seungsu.domain.usecase.UpdateProfileImagePathUseCase
 import com.seungsu.domain.usecase.UpdateUserNameUseCase
 import com.seungsu.domain.usecase.UpdateUserNickNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,7 +30,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class SparringMakeProfileViewModel @Inject constructor(
@@ -80,7 +79,7 @@ class SparringMakeProfileViewModel @Inject constructor(
     override fun createInitialState() = SparringMakeProfileState()
 
     init {
-        viewModelScope.launch {
+        launch {
             makeProfileResult.collect { apiResult ->
                 when (apiResult) {
                     is ApiResult.Success -> {
@@ -140,7 +139,7 @@ class SparringMakeProfileViewModel @Inject constructor(
     }
 
     private fun processOnChangeContent(content: ContentsType) {
-        viewModelScope.launch {
+        launch {
             updateCurrentContentUseCase(content.code)
             setEffect(SparringMakeProfileEffect.ShowRestartDialog)
         }
@@ -162,7 +161,7 @@ class SparringMakeProfileViewModel @Inject constructor(
     }
 
     private fun processSaveProfile() = currentState {
-        viewModelScope.launch {
+        launch {
             val profileImageAsync = async { updateProfileImagePathUseCase(profileImagePath) }
             val userNameAsync = async { updateUserNameUseCase(name) }
             val userNickNameAsync = async { updateUserNickNameUseCase(nickName) }

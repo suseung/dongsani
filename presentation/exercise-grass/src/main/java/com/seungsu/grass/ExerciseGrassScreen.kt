@@ -15,6 +15,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,6 +47,7 @@ fun ExerciseGrassScreen(
     navigateToSetting: () -> Unit = {}
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val action by remember { mutableStateOf(viewModel::dispatch) }
 
     Scaffold(
         topBar = {
@@ -104,9 +107,9 @@ fun ExerciseGrassScreen(
                 currentTotalExerciseTimes = state.currentTotalExerciseTimes,
                 currentSelectedExerciseRecords = state.currentSelectedExerciseRecords,
                 color = state.color,
-                onClickMinusMonth = { viewModel.dispatch(ExerciseGrassIntent.OnClickMinusMonth) },
-                onClickPlusMonth = { viewModel.dispatch(ExerciseGrassIntent.OnClickPlusMonth) },
-                onClickGrass = { viewModel.dispatch(ExerciseGrassIntent.OnClickGrass(it)) }
+                onClickMinusMonth = { action(ExerciseGrassIntent.OnClickMinusMonth) },
+                onClickPlusMonth = { action(ExerciseGrassIntent.OnClickPlusMonth) },
+                onClickGrass = { action(ExerciseGrassIntent.OnClickGrass(it)) }
             )
         }
     }

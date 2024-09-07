@@ -13,13 +13,12 @@ import com.seungsu.domain.usecase.GetProfileImagePathUseCase
 import com.seungsu.domain.usecase.GetUserNameUseCase
 import com.seungsu.domain.usecase.GetUserNickNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
@@ -57,7 +56,7 @@ class ProfileViewModel @Inject constructor(
         }.asResult()
         .stateIn(viewModelScope, SharingStarted.Lazily, ApiResult.Loading)
     init {
-        viewModelScope.launch {
+        launch {
             profileResult.collect { apiResult ->
                 when (apiResult) {
                     is ApiResult.Success -> {
