@@ -1,5 +1,6 @@
 package com.example.sparring.makeprofile
 
+import android.net.Uri
 import com.example.sparring.model.BELTs
 import com.example.sparring.model.GRAUs
 import com.seungsu.common.INVALID_INT
@@ -33,16 +34,17 @@ sealed interface SparringMakeProfileIntent: ViewIntent {
 
     data object OnClickSaveProfile: SparringMakeProfileIntent
     data object OnClickDeleteProfile: SparringMakeProfileIntent
-    data object OnClickGetPhotoFromGallery: SparringMakeProfileIntent
-
-    @JvmInline
-    value class OnChangeProfileImage(val filePath: String): SparringMakeProfileIntent
+    data class OnChangeProfileImage(
+        val filePath: String?,
+        val uri: Uri?
+    ): SparringMakeProfileIntent
 }
 
 
 
 data class SparringMakeProfileState(
     val profileImagePath: String = "",
+    val profileImageUri: Uri = Uri.EMPTY,
     val name: String = "",
     val nickName: String = "",
     val gymName: String = "",

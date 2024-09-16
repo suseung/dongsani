@@ -30,6 +30,14 @@ internal class PreferenceStorageImpl @Inject constructor(
         }
     }
 
+    override val profileImageUri: Flow<String> = prefDatastore.data
+        .map { it[KEY_PROFILE_IMAGE_URI] ?: ""}
+
+    override suspend fun updateProfileImageUri(imageUri: String) {
+        prefDatastore.edit { pref ->
+            pref[KEY_PROFILE_IMAGE_URI] = imageUri
+        }
+    }
     override val profileImagePath: Flow<String> = prefDatastore.data
         .map { it[KEY_PROFILE_IMAGE_PATH] ?: "" }
 
@@ -94,6 +102,7 @@ internal class PreferenceStorageImpl @Inject constructor(
     companion object {
         private val KEY_CURRENT_CONTENT = stringPreferencesKey("currentContent")
         private val KEY_PROFILE_IMAGE_PATH = stringPreferencesKey("profileImagePath")
+        private val KEY_PROFILE_IMAGE_URI = stringPreferencesKey("profileImageUri")
         private val KEY_USER_NAME = stringPreferencesKey("userName")
         private val KEY_USER_NICK_NAME = stringPreferencesKey("userNickName")
         private val KEY_GYM_NAME = stringPreferencesKey("gymName")

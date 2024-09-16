@@ -1,5 +1,6 @@
 package com.example.sparring.profile
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,12 +11,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,8 +26,6 @@ import com.example.sparring.model.PlayStyle
 import com.example.sparring.model.SparringResult
 import com.example.sparring.profile.component.ProfileInfo
 import com.example.sparring.profile.component.SparringResultInfo
-import com.seungsu.common.eventbus.Event
-import com.seungsu.common.eventbus.EventBusEntryPoint
 import com.seungsu.common.component.CollectContent
 import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniTopAppbar
@@ -41,23 +38,11 @@ fun ProfileScreen(
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     val action by remember { mutableStateOf(viewModel::dispatch) }
-    val context = LocalContext.current
-    val eventBus = EventBusEntryPoint.resolve(context).getEventBus()
 
-    LaunchedEffect(true) {
-        eventBus.collect {
-            when (it) {
-                Event.Sparring.OnProfileChanged -> action(ProfileIntent.OnRefresh)
-            }
-
-        }
-    }
     CollectContent(
         viewModel = viewModel,
         processEffect = { effect ->
-            when (effect) {
-
-            }
+            when (effect) { }
         }
     )
 
@@ -81,6 +66,7 @@ fun ProfileScreen(
             ProfileLoaded(
                 modifier = Modifier.padding(paddingValues),
                 profileImagePath = profileImagePath,
+                profileImageUri = profileImageUri,
                 userName = name,
                 userNickName = nickName,
                 gymName = gymName,
@@ -99,6 +85,7 @@ fun ProfileScreen(
 fun ProfileLoaded(
     modifier: Modifier = Modifier,
     profileImagePath: String,
+    profileImageUri: Uri,
     userName: String,
     userNickName: String,
     gymName: String,
@@ -117,6 +104,7 @@ fun ProfileLoaded(
     ) {
         ProfileInfo(
             profileImagePath = profileImagePath,
+            profileImageUri = profileImageUri,
             userName = userName,
             userNickName = userNickName,
             gymName = gymName,
@@ -142,6 +130,7 @@ fun ProfileLoadedPreview() {
     DongsaniTheme {
         ProfileLoaded(
             profileImagePath = "",
+            profileImageUri = Uri.EMPTY,
             userName = "name",
             userNickName = "nickName",
             gymName = "gymName",

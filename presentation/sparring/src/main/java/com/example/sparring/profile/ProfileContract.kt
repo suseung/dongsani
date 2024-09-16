@@ -1,5 +1,6 @@
 package com.example.sparring.profile
 
+import android.net.Uri
 import com.example.sparring.model.BELTs
 import com.example.sparring.model.BeltType
 import com.example.sparring.model.GRAUs
@@ -12,12 +13,11 @@ import com.seungsu.common.base.ViewEffect
 import com.seungsu.common.base.ViewIntent
 import com.seungsu.common.base.ViewState
 
-sealed interface ProfileIntent : ViewIntent {
-    data object OnRefresh: ProfileIntent
-}
+sealed interface ProfileIntent : ViewIntent
 
 data class ProfileState(
     val profileImagePath: String = "",
+    val profileImageUri: Uri = Uri.EMPTY,
     val name: String = "",
     val nickName: String = "",
     val gymName: String = "",

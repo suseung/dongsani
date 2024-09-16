@@ -1,5 +1,7 @@
 package com.example.sparring.makeprofile
 
+import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.example.sparring.model.ProfileInfo
 import com.seungsu.common.INVALID_INT
@@ -12,6 +14,7 @@ import com.seungsu.domain.usecase.GetGrauIdUseCase
 import com.seungsu.domain.usecase.GetGymNameUseCase
 import com.seungsu.domain.usecase.GetPlayStyleIdsUseCase
 import com.seungsu.domain.usecase.GetProfileImagePathUseCase
+import com.seungsu.domain.usecase.GetProfileImageUriUseCase
 import com.seungsu.domain.usecase.GetUserNameUseCase
 import com.seungsu.domain.usecase.GetUserNickNameUseCase
 import com.seungsu.domain.usecase.UpdateBeltIdUseCase
@@ -20,6 +23,7 @@ import com.seungsu.domain.usecase.UpdateGrauIdUseCase
 import com.seungsu.domain.usecase.UpdateGymNameUseCase
 import com.seungsu.domain.usecase.UpdatePlayStyleIdsUseCase
 import com.seungsu.domain.usecase.UpdateProfileImagePathUseCase
+import com.seungsu.domain.usecase.UpdateProfileImageUriUseCase
 import com.seungsu.domain.usecase.UpdateUserNameUseCase
 import com.seungsu.domain.usecase.UpdateUserNickNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,6 +39,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SparringMakeProfileViewModel @Inject constructor(
     getProfileImagePathUseCase: GetProfileImagePathUseCase,
+    getProfileImageUriUseCase: GetProfileImageUriUseCase,
     getUserNameUseCase: GetUserNameUseCase,
     getUserNickNameUseCase: GetUserNickNameUseCase,
     getGymNameUseCase: GetGymNameUseCase,
@@ -42,6 +47,7 @@ class SparringMakeProfileViewModel @Inject constructor(
     getGrauIdUseCase: GetGrauIdUseCase,
     getPlayStyleIdsUseCase: GetPlayStyleIdsUseCase,
     private val updateProfileImagePathUseCase: UpdateProfileImagePathUseCase,
+    private val updateProfileImageUriUseCase: UpdateProfileImageUriUseCase,
     private val updateCurrentContentUseCase: UpdateCurrentContentUseCase,
     private val updateUserNameUseCase: UpdateUserNameUseCase,
     private val updateUserNickNameUseCase: UpdateUserNickNameUseCase,
@@ -56,6 +62,7 @@ class SparringMakeProfileViewModel @Inject constructor(
         .flatMapLatest {
             combine(
                 getProfileImagePathUseCase(Unit),
+                getProfileImageUriUseCase(Unit),
                 getUserNameUseCase(Unit),
                 getUserNickNameUseCase(Unit),
                 getGymNameUseCase(Unit),
@@ -65,12 +72,13 @@ class SparringMakeProfileViewModel @Inject constructor(
             ) { values: Array<Any> ->
                 ProfileInfo(
                     profileImagePath = values[0] as String,
-                    name = values[1] as String,
-                    nickName = values[2] as String,
-                    gymName = values[3] as String,
-                    beltId = values[4] as Int,
-                    grauId = values[5] as Int,
-                    playStyleIds = values[6] as List<Int>
+                    profileImageUri = (values[1] as String).takeIf { it != "" }?.toUri() ?: Uri.EMPTY,
+                    name = values[2] as String,
+                    nickName = values[3] as String,
+                    gymName = values[4] as String,
+                    beltId = values[5] as Int,
+                    grauId = values[6] as Int,
+                    playStyleIds = values[7] as List<Int>
                 )
             }
         }.asResult()
@@ -87,6 +95,7 @@ class SparringMakeProfileViewModel @Inject constructor(
                         setState {
                             SparringMakeProfileState(
                                 profileImagePath = data.profileImagePath,
+                                profileImageUri = data.profileImageUri,
                                 name = data.name,
                                 nickName = data.nickName,
                                 gymName = data.gymName,
@@ -117,7 +126,11 @@ class SparringMakeProfileViewModel @Inject constructor(
             SparringMakeProfileIntent.OnClearName -> setState { copy(name = "") }
             SparringMakeProfileIntent.OnClearNickName -> setState { copy(nickName = "") }
             is SparringMakeProfileIntent.OnChangeContent -> processOnChangeContent(intent.content)
-            is SparringMakeProfileIntent.OnChangeLevel -> processChangeLevel(intent.beltId, intent.grauId)
+            is SparringMakeProfileIntent.OnChangeLevel -> processChangeLevel(
+                intent.beltId,
+                intent.grauId
+            )
+
             SparringMakeProfileIntent.OnClickSaveProfile -> processSaveProfile()
             is SparringMakeProfileIntent.OnSelectPlayStyle -> setState {
                 if (currentPlayStyleIds.contains(intent.playStyleId)) {
@@ -128,12 +141,17 @@ class SparringMakeProfileViewModel @Inject constructor(
             }
 
             SparringMakeProfileIntent.OnClickDeleteProfile -> setState {
-                copy(profileImagePath = "")
+                copy(
+                    profileImagePath = "",
+                    profileImageUri = Uri.EMPTY
+                )
             }
-            SparringMakeProfileIntent.OnClickGetPhotoFromGallery -> setToastEffect("갤러리~")
 
             is SparringMakeProfileIntent.OnChangeProfileImage -> setState {
-                copy(profileImagePath = intent.filePath)
+                copy(
+                    profileImagePath = intent.filePath ?: "",
+                    profileImageUri = intent.uri ?: Uri.EMPTY
+                )
             }
         }
     }
@@ -163,6 +181,7 @@ class SparringMakeProfileViewModel @Inject constructor(
     private fun processSaveProfile() = currentState {
         launch {
             val profileImageAsync = async { updateProfileImagePathUseCase(profileImagePath) }
+            val profileImageUriAsync = async { updateProfileImageUriUseCase(profileImageUri.toString()) }
             val userNameAsync = async { updateUserNameUseCase(name) }
             val userNickNameAsync = async { updateUserNickNameUseCase(nickName) }
             val gymNameAsync = async { updateGymNameUseCase(gymName) }
@@ -172,6 +191,7 @@ class SparringMakeProfileViewModel @Inject constructor(
 
             listOf(
                 profileImageAsync,
+                profileImageUriAsync,
                 userNameAsync,
                 userNickNameAsync,
                 gymNameAsync,

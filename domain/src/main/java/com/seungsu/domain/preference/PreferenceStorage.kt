@@ -9,6 +9,9 @@ interface PreferenceStorage {
     suspend fun updateProfileImagePath(filePath: String)
     val profileImagePath: Flow<String>
 
+    suspend fun updateProfileImageUri(imageUri: String)
+    val profileImageUri: Flow<String>
+
     suspend fun updateUserName(userName: String)
     val userName: Flow<String>
 

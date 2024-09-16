@@ -2,9 +2,12 @@ package com.seungsu.common
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.net.Uri
 import android.os.Environment
+import android.provider.MediaStore
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -20,11 +23,19 @@ fun createNewImageFile(context: Context): File {
 }
 
 fun getCurrentBitmap(
-    bitmap: Bitmap,
-    imagePath: String
+    context: Context,
+    imagePath: String = "",
+    imageUri: Uri = Uri.EMPTY
 ): Bitmap {
-    val exifInterface = ExifInterface(imagePath)
-    val orientation = exifInterface.getAttributeInt(
+    val exifInterface = when {
+        imagePath != "" -> ExifInterface(imagePath)
+        else -> context.contentResolver.openInputStream(imageUri)?.let { ExifInterface(it) }
+    }
+    val bitmap = when {
+        imagePath != "" -> BitmapFactory.decodeFile(imagePath)
+        else -> MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
+    }
+    val orientation = exifInterface?.getAttributeInt(
         ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
     )
     val rotationDegrees = when (orientation) {

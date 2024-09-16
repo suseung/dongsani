@@ -39,7 +39,11 @@ fun DongsaniOutlineButton(
             horizontal = 12.dp
         )
     ) {
-        Text(text = content)
+        Text(
+            text = content,
+            style = DongsaniTheme.typos.regular.font14,
+            color = DongsaniTheme.colors.label.onBgPrimary
+        )
     }
 }
 

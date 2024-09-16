@@ -1,6 +1,6 @@
 package com.example.sparring.profile.component
 
-import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,7 @@ import com.seungsu.resource.R
 fun ProfileInfo(
     modifier: Modifier = Modifier,
     profileImagePath: String,
+    profileImageUri: Uri,
     userName: String,
     userNickName: String,
     gymName: String,
@@ -46,35 +48,48 @@ fun ProfileInfo(
     currentPlayStyles: List<PlayStyle>,
     onClickEditProfile: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (profileImagePath.isNotEmpty()) {
-                val resultBitmap = getCurrentBitmap(
-                    bitmap = BitmapFactory.decodeFile(profileImagePath),
-                    imagePath = profileImagePath
-                )
-                Image(
-                    bitmap = resultBitmap.asImageBitmap(),
-                    contentDescription = "profile image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(end = 12.dp)
-                        .clip(CircleShape)
-                        .size(60.dp)
-                )
-            } else {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_default_profile),
-                    contentDescription = "profile image",
-                    modifier = Modifier
-                        .padding(end = 12.dp)
-                        .size(60.dp)
-                )
+            when {
+                profileImagePath.isNotEmpty() || profileImageUri != Uri.EMPTY -> {
+                    val resultBitmap = when {
+                        profileImagePath.isNotEmpty() -> getCurrentBitmap(
+                            context = context,
+                            imagePath = profileImagePath
+                        )
+                        else -> getCurrentBitmap(
+                            context = context,
+                            imageUri = profileImageUri
+                        )
+                    }
+                    Image(
+                        bitmap = resultBitmap.asImageBitmap(),
+                        contentDescription = "profile image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .clip(CircleShape)
+                            .size(60.dp)
+                    )
+                }
+                else -> {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_default_profile),
+                        contentDescription = "profile image",
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .size(60.dp),
+                        tint = DongsaniTheme.colors.system.inverse
+                    )
+                }
             }
+
             if (userName.isEmpty()) {
                 Text(
                     modifier = Modifier.weight(1f),
@@ -162,6 +177,7 @@ fun ProfileInfoPreview() {
         ProfileInfo(
             modifier = Modifier.padding(16.dp),
             profileImagePath = "",
+            profileImageUri = Uri.EMPTY,
             userName = "name",
             userNickName = "nickName",
             gymName = "gymName",
