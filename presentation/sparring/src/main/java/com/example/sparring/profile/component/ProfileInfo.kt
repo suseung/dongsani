@@ -30,7 +30,6 @@ import com.example.sparring.model.GrauType
 import com.example.sparring.model.PlayStyle
 import com.seungsu.common.getCurrentBitmap
 import com.seungsu.design.ThemePreview
-import com.seungsu.design.component.VerticalSeparator
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.resource.R
 
@@ -101,24 +100,10 @@ fun ProfileInfo(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = userName,
-                            style = DongsaniTheme.typos.bold.font16,
-                            color = DongsaniTheme.colors.label.onBgPrimary
-                        )
-                        VerticalSeparator(
-                            modifier = Modifier.padding(horizontal = 20.dp),
-                            color = DongsaniTheme.colors.label.onBgTertiary
-                        )
-                        Text(
-                            text = userNickName,
-                            style = DongsaniTheme.typos.regular.font14,
-                            color = DongsaniTheme.colors.label.onBgSecondary
-                        )
-                    }
+                    NameAndNickName(
+                        userName = userName,
+                        userNickName = userNickName
+                    )
                     Text(
                         text = gymName,
                         style = DongsaniTheme.typos.regular.font14,

@@ -24,6 +24,7 @@
     <string name="sparring_name_label">이름 (필수)</string>
     <string name="sparring_nickname_label">별명 (선택)</string>
     <string name="sparring_gym_name_label">체육관명 (필수)</string>
+    <string name="sparring_memo_label">메모 (선택)</string>
     <string name="sparring_level_label">레벨 (필수)</string>
     <string name="sparring_belt_label">벨트 (필수)</string>
     <string name="sparring_grau_label">그랄 (필수)</string>
@@ -32,6 +33,7 @@
     <string name="sparring_nickname_placeholder">2~10자 이내로 입력해 주세요.</string>
     <string name="sparring_gym_name_placeholder">체육관명을 정확하게 입력해주세요.</string>
     <string name="sparring_level_placeholder">현재 레벨을 선택해 주세요.</string>
+    <string name="sparring_memo_placeholder">2~15자 이내로 입력해 주세요.</string>
     <string name="sparring_type_all_rounder">All-rounder</string>
     <string name="sparring_type_guard">Guard</string>
     <string name="sparring_type_half_guard">Half-Guard</string>
@@ -69,7 +71,11 @@
     <string name="cancel">취소</string>
     <string name="settings">설정</string>
     <string name="camera_permission_request_message">"카메라" 접근 권한이 없어 해당 기능을 사용할 수 없습니다. 권한을 허용하려면 “설정”을 선택해주세요.</string>
-
+    <string name="sparring_record">스파링 현황</string>
+    <string name="sparring_record_all">전체</string>
+    <string name="sparring_record_gym">체육관</string>
+    <string name="add_sparring_record">+ 스파링 추가</string>
+    <string name="add_sparring_record_title">스파링 추가</string>
 
 
 </resources>

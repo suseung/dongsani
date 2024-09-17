@@ -7,7 +7,9 @@ import com.example.sparring.model.GRAUs
 import com.example.sparring.model.GrauType
 import com.example.sparring.model.PLAYSTYLEs
 import com.example.sparring.model.PlayStyle
+import com.example.sparring.model.SparringRecord
 import com.example.sparring.model.SparringResult
+import com.example.sparring.model.mockSparingRecords
 import com.seungsu.common.INVALID_INT
 import com.seungsu.common.base.ViewEffect
 import com.seungsu.common.base.ViewIntent
@@ -24,7 +26,8 @@ data class ProfileState(
     val currentBeltId: Int = INVALID_INT,
     val currentGrauId: Int = INVALID_INT,
     val currentPlayStyleIds: List<Int> = emptyList(),
-    val sparringResult: SparringResult = SparringResult()
+    val sparringResult: SparringResult = SparringResult(),
+    val currentSparringRecords: List<SparringRecord> = mockSparingRecords
 ) : ViewState {
     val currentBelt: BeltType
         get() = if (currentBeltId == INVALID_INT) {
