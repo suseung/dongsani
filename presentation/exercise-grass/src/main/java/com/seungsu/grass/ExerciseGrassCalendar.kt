@@ -23,9 +23,7 @@ fun ExerciseGrassCalendar(
     currentDayOfWeek: DayOfWeek,
     currentTotalExerciseTimes: Map<LocalDate, Long>,
     color: Color,
-    onClickMinusMonth: () -> Unit = {},
-    onClickPlusMonth: () -> Unit = {},
-    onClickGrass: (LocalDate) -> Unit = {}
+    onUiAction: (ExerciseGrassIntent) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -39,8 +37,7 @@ fun ExerciseGrassCalendar(
                     horizontal = 24.dp
                 ),
             date = date,
-            onClickMinusMonth = onClickMinusMonth,
-            onClickPlusMonth = onClickPlusMonth
+            onUiAction = onUiAction
         )
         CalendarWeekOfDay(
             modifier = Modifier.padding(top = 16.dp)
@@ -51,7 +48,7 @@ fun ExerciseGrassCalendar(
             currentTotalExerciseTimes = currentTotalExerciseTimes,
             date = date,
             color = color,
-            onClickGrass = onClickGrass
+            onClickGrass = { onUiAction(ExerciseGrassIntent.OnClickGrass(it)) }
         )
     }
 }

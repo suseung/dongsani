@@ -224,30 +224,7 @@ fun SparringMakeProfileScreen(
                 currentPlayStyleIds = currentPlayStyleIds,
                 profileImagePath = profileImagePath,
                 profileImageUri = profileImageUri,
-                onChangeName = { action(SparringMakeProfileIntent.OnChangeName(it)) },
-                onChangeNickName = { action(SparringMakeProfileIntent.OnChangeNickName(it)) },
-                onChangeGymName = { action(SparringMakeProfileIntent.OnChangeGymName(it)) },
-                onClearName = { action(SparringMakeProfileIntent.OnClearName) },
-                onClearNickName = { action(SparringMakeProfileIntent.OnClearNickName) },
-                onClearGymName = { action(SparringMakeProfileIntent.OnClearGymName) },
-                onChangeLevel = { beltId, grauId ->
-                    action(
-                        SparringMakeProfileIntent.OnChangeLevel(
-                            beltId,
-                            grauId
-                        )
-                    )
-                },
-                onSelectPlayStyle = { id -> action(SparringMakeProfileIntent.OnSelectPlayStyle(id)) },
-                onClickDeleteProfileImage = { action(SparringMakeProfileIntent.OnClickDeleteProfile) },
-                onChangeProfileImage = { filePath, uri ->
-                    action(
-                        SparringMakeProfileIntent.OnChangeProfileImage(
-                            filePath,
-                            uri
-                        )
-                    )
-                }
+                onUiAction = action
             )
         }
     }
@@ -274,16 +251,7 @@ fun SparringProfileLoaded(
     profileImagePath: String,
     profileImageUri: Uri,
     currentPlayStyleIds: List<Int>,
-    onChangeName: (String) -> Unit = {},
-    onChangeNickName: (String) -> Unit = {},
-    onChangeGymName: (String) -> Unit = {},
-    onClearName: () -> Unit = {},
-    onClearNickName: () -> Unit = {},
-    onClearGymName: () -> Unit = {},
-    onChangeLevel: (Int, Int) -> Unit = { _, _ -> },
-    onSelectPlayStyle: (Int) -> Unit = {},
-    onClickDeleteProfileImage: () -> Unit = {},
-    onChangeProfileImage: (String?, Uri?) -> Unit = { _, _ -> }
+    onUiAction: (SparringMakeProfileIntent) -> Unit = {}
 ) {
     val context = LocalContext.current
     var isLevelBottomSheetOpen by rememberSaveable { mutableStateOf(false) }
@@ -293,10 +261,7 @@ fun SparringProfileLoaded(
     val cameraActivityResultLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                onChangeProfileImage(
-                    mediaPath.absolutePath,
-                    null
-                )
+                onUiAction(SparringMakeProfileIntent.OnChangeProfileImage(mediaPath.absolutePath, null))
             } else {
                 return@rememberLauncherForActivityResult
             }
@@ -309,10 +274,7 @@ fun SparringProfileLoaded(
                         uri,
                         Intent.FLAG_GRANT_READ_URI_PERMISSION
                     )
-                    onChangeProfileImage(
-                        null,
-                        uri
-                    )
+                    onUiAction(SparringMakeProfileIntent.OnChangeProfileImage(null, uri))
                 }
 
             } else {
@@ -360,6 +322,7 @@ fun SparringProfileLoaded(
                         context = context,
                         imagePath = profileImagePath
                     )
+
                     else -> getCurrentBitmap(
                         context = context,
                         imageUri = profileImageUri
@@ -398,7 +361,7 @@ fun SparringProfileLoaded(
         )
         DongsaniTextField(
             value = name,
-            onValueChange = { onChangeName(it) },
+            onValueChange = { onUiAction(SparringMakeProfileIntent.OnChangeName(it)) },
             textStyle = DongsaniTheme.typos.regular.font12.copy(
                 color = DongsaniTheme.colors.label.onBgPrimary
             ),
@@ -418,7 +381,7 @@ fun SparringProfileLoaded(
                         painter = painterResource(id = R.drawable.ic_close),
                         modifier = Modifier
                             .size(12.dp)
-                            .clickable { onClearName() },
+                            .clickable { onUiAction(SparringMakeProfileIntent.OnClearName) },
                         tint = DongsaniTheme.colors.label.onBgSecondary,
                         contentDescription = "close"
                     )
@@ -435,7 +398,7 @@ fun SparringProfileLoaded(
         )
         DongsaniTextField(
             value = nickName,
-            onValueChange = { onChangeNickName(it) },
+            onValueChange = { onUiAction(SparringMakeProfileIntent.OnChangeNickName(it)) },
             textStyle = DongsaniTheme.typos.regular.font12.copy(
                 color = DongsaniTheme.colors.label.onBgPrimary
             ),
@@ -455,7 +418,7 @@ fun SparringProfileLoaded(
                         painter = painterResource(id = R.drawable.ic_close),
                         modifier = Modifier
                             .size(12.dp)
-                            .clickable { onClearNickName() },
+                            .clickable { onUiAction(SparringMakeProfileIntent.OnClearNickName) },
                         tint = DongsaniTheme.colors.label.onBgSecondary,
                         contentDescription = "close"
                     )
@@ -472,7 +435,7 @@ fun SparringProfileLoaded(
         )
         DongsaniTextField(
             value = gymName,
-            onValueChange = { onChangeGymName(it) },
+            onValueChange = { onUiAction(SparringMakeProfileIntent.OnChangeGymName(it)) },
             textStyle = DongsaniTheme.typos.regular.font12.copy(
                 color = DongsaniTheme.colors.label.onBgPrimary,
             ),
@@ -492,7 +455,7 @@ fun SparringProfileLoaded(
                         painter = painterResource(id = R.drawable.ic_close),
                         modifier = Modifier
                             .size(12.dp)
-                            .clickable { onClearGymName() },
+                            .clickable { onUiAction(SparringMakeProfileIntent.OnClearGymName) },
                         tint = DongsaniTheme.colors.label.onBgSecondary,
                         contentDescription = "close"
                     )
@@ -540,7 +503,7 @@ fun SparringProfileLoaded(
                 painter = painterResource(id = R.drawable.ic_right),
                 modifier = Modifier
                     .size(24.dp)
-                    .clickable { onClearGymName() },
+                    .clickable { onUiAction(SparringMakeProfileIntent.OnClearGymName) },
                 tint = DongsaniTheme.colors.label.onBgSecondary,
                 contentDescription = "close"
             )
@@ -561,7 +524,7 @@ fun SparringProfileLoaded(
                 SelectItem(
                     content = PLAYSTYLEs[index].styleName,
                     isSelected = currentPlayStyleIds.contains(PLAYSTYLEs[index].id),
-                    onClickItem = { onSelectPlayStyle(PLAYSTYLEs[index].id) }
+                    onClickItem = { onUiAction(SparringMakeProfileIntent.OnSelectPlayStyle(PLAYSTYLEs[index].id)) }
                 )
             }
         }
@@ -596,7 +559,7 @@ fun SparringProfileLoaded(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                         .noRippleClickable {
-                            onClickDeleteProfileImage()
+                            onUiAction(SparringMakeProfileIntent.OnClickDeleteProfile)
                             isProfileImageSelectorOpen = false
                         }
                 )
@@ -669,9 +632,8 @@ fun SparringProfileLoaded(
                 currentGrauId = currentGrauId,
                 onClickClose = { isLevelBottomSheetOpen = false },
                 onClickSave = { beltId, grauId ->
-                    onChangeLevel(beltId, grauId)
-                    if (beltId != INVALID_INT && grauId != INVALID_INT) isLevelBottomSheetOpen =
-                        false
+                    onUiAction(SparringMakeProfileIntent.OnChangeLevel(beltId, grauId))
+                    if (beltId != INVALID_INT && grauId != INVALID_INT) isLevelBottomSheetOpen = false
                 }
             )
         }

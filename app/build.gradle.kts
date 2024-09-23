@@ -17,5 +17,5 @@ dependencies {
 
     implementation(libs.bundles.androidx.ui.compose)
     debugImplementation(libs.bundles.androidx.ui.compose.debug)
-
+    implementation(libs.androidx.material3)
 }

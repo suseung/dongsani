@@ -25,8 +25,7 @@ import com.seungsu.resource.R as resourceR
 fun CalendarHeader(
     modifier: Modifier = Modifier,
     date: YearMonth,
-    onClickMinusMonth: () -> Unit = {},
-    onClickPlusMonth: () -> Unit = {}
+    onUiAction: (ExerciseGrassIntent) -> Unit = {}
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -38,7 +37,7 @@ fun CalendarHeader(
             horizontalArrangement = Arrangement.Center
         ) {
             IconButton(
-                onClick = onClickMinusMonth
+                onClick = { onUiAction(ExerciseGrassIntent.OnClickMinusMonth) }
             ) {
                 Icon(
                     painter = painterResource(id = resourceR.drawable.ic_left),
@@ -54,7 +53,7 @@ fun CalendarHeader(
                 modifier = Modifier.padding(horizontal = 32.dp)
             )
             IconButton(
-                onClick = onClickPlusMonth
+                onClick = { onUiAction(ExerciseGrassIntent.OnClickPlusMonth) }
             ) {
                 Icon(
                     painter = painterResource(id = resourceR.drawable.ic_right),

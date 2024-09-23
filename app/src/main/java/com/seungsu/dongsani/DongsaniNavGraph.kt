@@ -2,12 +2,16 @@ package com.seungsu.dongsani
 
 import android.app.Activity
 import android.content.Intent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -16,8 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sparring.addrecord.SparringAddRecordScreen
 import com.example.sparring.makeprofile.SparringMakeProfileScreen
-import com.example.sparring.record.SparringRecordScreen
 import com.example.sparring.profile.ProfileScreen
+import com.example.sparring.record.SparringRecordScreen
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.seungsu.common.model.ContentsType
 import com.seungsu.dongsani.Destination.EXERCISE_GRASS
@@ -60,6 +64,7 @@ fun DongsaniNavGraph(
     }
 
     NavHost(
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
         navController = navController,
         startDestination = startDestination
     ) {

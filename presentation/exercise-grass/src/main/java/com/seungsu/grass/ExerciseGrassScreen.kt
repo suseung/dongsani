@@ -107,9 +107,7 @@ fun ExerciseGrassScreen(
                 currentTotalExerciseTimes = state.currentTotalExerciseTimes,
                 currentSelectedExerciseRecords = state.currentSelectedExerciseRecords,
                 color = state.color,
-                onClickMinusMonth = { action(ExerciseGrassIntent.OnClickMinusMonth) },
-                onClickPlusMonth = { action(ExerciseGrassIntent.OnClickPlusMonth) },
-                onClickGrass = { action(ExerciseGrassIntent.OnClickGrass(it)) }
+                onUiAction = action
             )
         }
     }
@@ -124,9 +122,7 @@ fun ExerciseGrass(
     currentTotalExerciseTimes: Map<LocalDate, Long>,
     currentSelectedExerciseRecords: List<ExerciseRecordItem>,
     color: Color,
-    onClickMinusMonth: () -> Unit = {},
-    onClickPlusMonth: () -> Unit = {},
-    onClickGrass: (LocalDate) -> Unit = {}
+    onUiAction: (ExerciseGrassIntent)  -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier
@@ -143,9 +139,7 @@ fun ExerciseGrass(
                 currentDayOfWeek = currentDayOfWeek,
                 currentTotalExerciseTimes = currentTotalExerciseTimes,
                 color = color,
-                onClickMinusMonth = onClickMinusMonth,
-                onClickPlusMonth = onClickPlusMonth,
-                onClickGrass = onClickGrass
+                onUiAction = onUiAction
             )
         }
         if (currentSelectedExerciseRecords.isNotEmpty()) {

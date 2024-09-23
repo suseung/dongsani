@@ -109,12 +109,7 @@ fun SparringAddRecordScreen(
                 gymName = gymName,
                 opponentName = opponentName,
                 memo = memo,
-                onChangeGymName = { action(SparringAddRecordIntent.OnChangeGymName(it)) },
-                onChangeOpponentName = { action(SparringAddRecordIntent.OnChangeOpponentName(it)) },
-                onChangeMemo = { action(SparringAddRecordIntent.OnChangeMemo(it)) },
-                onClearGymName = { action(SparringAddRecordIntent.OnClearGymName) },
-                onClearOpponentName = { action(SparringAddRecordIntent.OnClearOpponentName) },
-                onClearMemo = { action(SparringAddRecordIntent.OnClearMemo) }
+                onUiAction = action
             )
         }
     }
@@ -126,12 +121,7 @@ fun SparringAddRecordLoaded(
     gymName: String,
     opponentName: String,
     memo: String,
-    onChangeGymName: (String) -> Unit = { _ -> },
-    onChangeOpponentName: (String) -> Unit = { _ -> },
-    onChangeMemo: (String) -> Unit = { _ -> },
-    onClearGymName: () -> Unit = {},
-    onClearOpponentName: () -> Unit = {},
-    onClearMemo: () -> Unit = {}
+    onUiAction: (SparringAddRecordIntent) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -151,7 +141,7 @@ fun SparringAddRecordLoaded(
         )
         DongsaniTextField(
             value = gymName,
-            onValueChange = { onChangeGymName(it) },
+            onValueChange = { onUiAction(SparringAddRecordIntent.OnChangeGymName(it)) },
             textStyle = DongsaniTheme.typos.regular.font12.copy(
                 color = DongsaniTheme.colors.label.onBgPrimary,
             ),
@@ -171,7 +161,7 @@ fun SparringAddRecordLoaded(
                         painter = painterResource(id = R.drawable.ic_close),
                         modifier = Modifier
                             .size(12.dp)
-                            .clickable { onClearGymName() },
+                            .clickable { onUiAction(SparringAddRecordIntent.OnClearGymName) },
                         tint = DongsaniTheme.colors.label.onBgSecondary,
                         contentDescription = "close"
                     )
@@ -188,7 +178,7 @@ fun SparringAddRecordLoaded(
         )
         DongsaniTextField(
             value = opponentName,
-            onValueChange = { onChangeOpponentName(it) },
+            onValueChange = { onUiAction(SparringAddRecordIntent.OnChangeOpponentName(it)) },
             textStyle = DongsaniTheme.typos.regular.font12.copy(
                 color = DongsaniTheme.colors.label.onBgPrimary,
             ),
@@ -208,7 +198,7 @@ fun SparringAddRecordLoaded(
                         painter = painterResource(id = R.drawable.ic_close),
                         modifier = Modifier
                             .size(12.dp)
-                            .clickable { onClearOpponentName() },
+                            .clickable { onUiAction(SparringAddRecordIntent.OnClearOpponentName) },
                         tint = DongsaniTheme.colors.label.onBgSecondary,
                         contentDescription = "close"
                     )
@@ -225,7 +215,7 @@ fun SparringAddRecordLoaded(
         )
         DongsaniTextField(
             value = memo,
-            onValueChange = { onChangeMemo(it) },
+            onValueChange = { onUiAction(SparringAddRecordIntent.OnChangeMemo(it)) },
             textStyle = DongsaniTheme.typos.regular.font12.copy(
                 color = DongsaniTheme.colors.label.onBgPrimary,
             ),
@@ -245,7 +235,7 @@ fun SparringAddRecordLoaded(
                         painter = painterResource(id = R.drawable.ic_close),
                         modifier = Modifier
                             .size(12.dp)
-                            .clickable { onClearMemo() },
+                            .clickable { onUiAction(SparringAddRecordIntent.OnClearMemo) },
                         tint = DongsaniTheme.colors.label.onBgSecondary,
                         contentDescription = "close"
                     )
