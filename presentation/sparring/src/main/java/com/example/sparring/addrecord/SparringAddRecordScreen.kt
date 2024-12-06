@@ -110,7 +110,7 @@ fun SparringAddRecordScreen(
 }
 
 @Composable
-fun SparringAddRecordLoaded(
+private fun SparringAddRecordLoaded(
     modifier: Modifier = Modifier,
     gymName: String,
     opponentName: String,
@@ -242,7 +242,7 @@ fun SparringAddRecordLoaded(
 
 @ThemePreview
 @Composable
-fun SparringAddRecordLoadedPreview() {
+private fun SparringAddRecordLoadedPreview() {
     DongsaniTheme {
         SparringAddRecordLoaded(
             modifier = Modifier.padding(16.dp),

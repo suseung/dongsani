@@ -55,7 +55,7 @@ fun ExerciseGrassCalendar(
 
 @ThemePreview
 @Composable
-fun ExerciseGrassCalendarPreview() {
+private fun ExerciseGrassCalendarPreview() {
     DongsaniTheme {
         ExerciseGrassCalendar(
             modifier = Modifier.padding(16.dp),

@@ -159,7 +159,7 @@ fun ExerciseGrass(
 
 @ThemePreview
 @Composable
-fun ExerciseGrassPreview() {
+private fun ExerciseGrassPreview() {
     DongsaniTheme {
         ExerciseGrass(
             date = YearMonth.now(),

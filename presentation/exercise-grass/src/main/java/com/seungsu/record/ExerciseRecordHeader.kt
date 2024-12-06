@@ -52,7 +52,7 @@ fun ExerciseRecordHeader(
 
 @ThemePreview
 @Composable
-fun ExerciseRecordHeaderPreview() {
+private fun ExerciseRecordHeaderPreview() {
     DongsaniTheme {
         ExerciseRecordHeader(
             modifier = Modifier.padding(16.dp)

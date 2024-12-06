@@ -40,7 +40,7 @@ fun ResultItem(
 
 @ThemePreview
 @Composable
-fun ResultItemPreview() {
+private fun ResultItemPreview() {
     DongsaniTheme {
         ResultItem(
             modifier = Modifier.padding(16.dp),

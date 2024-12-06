@@ -75,7 +75,7 @@ fun CalendarHeader(
 
 @ThemePreview
 @Composable
-fun CalendarHeaderPreview() {
+private fun CalendarHeaderPreview() {
     DongsaniTheme {
         CalendarHeader(
             modifier = Modifier.padding(16.dp),

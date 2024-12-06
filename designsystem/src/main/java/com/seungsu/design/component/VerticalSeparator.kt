@@ -38,7 +38,7 @@ fun VerticalSeparator(
 
 @ThemePreview
 @Composable
-fun VerticalSeparatorPreview() {
+private fun VerticalSeparatorPreview() {
     DongsaniTheme {
         Row(
             modifier = Modifier.width(100.dp)

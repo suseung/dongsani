@@ -40,7 +40,7 @@ fun DongsaniTopCenterAppBar(
 
 @ThemePreview
 @Composable
-fun DongsaniTopCenterAppBarPreview() {
+private fun DongsaniTopCenterAppBarPreview() {
     DongsaniTheme {
         DongsaniTopCenterAppBar(
             titleContent = { Text("DongsaniTopCenterAppBar")  },

@@ -157,7 +157,7 @@ fun ProfileInfo(
 
 @ThemePreview
 @Composable
-fun ProfileInfoPreview() {
+private fun ProfileInfoPreview() {
     DongsaniTheme {
         ProfileInfo(
             modifier = Modifier.padding(16.dp),

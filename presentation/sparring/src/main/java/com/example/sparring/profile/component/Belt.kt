@@ -86,7 +86,7 @@ fun Belt(
 
 @ThemePreview
 @Composable
-fun BeltPreview() {
+private fun BeltPreview() {
     DongsaniTheme {
         Column {
             Belt(

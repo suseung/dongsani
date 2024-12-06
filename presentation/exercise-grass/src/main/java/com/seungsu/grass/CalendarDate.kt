@@ -68,7 +68,7 @@ fun CalendarDate(
 
 @ThemePreview
 @Composable
-fun CalendarDatePreview() {
+private fun CalendarDatePreview() {
     DongsaniTheme {
         Column(
             modifier = Modifier.padding(16.dp)

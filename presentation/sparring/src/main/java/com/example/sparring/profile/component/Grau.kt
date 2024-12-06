@@ -47,7 +47,7 @@ fun Grau(
 
 @ThemePreview
 @Composable
-fun GrauPreview() {
+private fun GrauPreview() {
     DongsaniTheme {
         Column {
             Grau(

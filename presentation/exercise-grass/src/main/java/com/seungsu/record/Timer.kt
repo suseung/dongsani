@@ -50,7 +50,7 @@ fun Timer(
 
 @ThemePreview
 @Composable
-fun TimerPreview() {
+private fun TimerPreview() {
     DongsaniTheme {
         Timer(time = "12:34:55")
     }

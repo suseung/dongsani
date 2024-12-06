@@ -102,7 +102,7 @@ fun SparringRecord(
 
 @ThemePreview
 @Composable
-fun SparringRecordPreview() {
+private fun SparringRecordPreview() {
     DongsaniTheme {
         SparringRecord(
             modifier = Modifier.padding(16.dp),

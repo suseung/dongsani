@@ -49,7 +49,7 @@ fun DongsaniOutlineButton(
 
 @ThemePreview
 @Composable
-fun DongsaniOutlineButtonPreview() {
+private fun DongsaniOutlineButtonPreview() {
     DongsaniOutlineButton(
         modifier = Modifier.padding(16.dp),
         content = "White",

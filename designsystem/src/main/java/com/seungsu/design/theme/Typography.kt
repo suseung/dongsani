@@ -131,7 +131,7 @@ data class RegularTextStyle(
 
 @ThemePreview
 @Composable
-fun BoldTypographyPreview() {
+private fun BoldTypographyPreview() {
     val text = "Bold Typography"
     val fontLists = listOf(
         BoldTextStyle().font48,
@@ -160,7 +160,7 @@ fun BoldTypographyPreview() {
 
 @ThemePreview
 @Composable
-fun RegularTypographyPreview() {
+private fun RegularTypographyPreview() {
     val text = "Regular Typography"
     val fontLists = listOf(
         RegularTextStyle().font48,

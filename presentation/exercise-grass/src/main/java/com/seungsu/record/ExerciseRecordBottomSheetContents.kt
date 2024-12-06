@@ -138,7 +138,7 @@ fun ExerciseRecordBottomSheetContents(
 
 @ThemePreview
 @Composable
-fun ExerciseRecordBottomSheetContentsPreview() {
+private fun ExerciseRecordBottomSheetContentsPreview() {
     DongsaniTheme {
         ExerciseRecordBottomSheetContents(
             parsedCurrentTime = "12:34:32",

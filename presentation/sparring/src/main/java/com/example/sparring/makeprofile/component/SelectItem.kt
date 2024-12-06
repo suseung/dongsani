@@ -31,7 +31,7 @@ fun SelectItem(
 
 @ThemePreview
 @Composable
-fun SkillPreview() {
+private fun SkillPreview() {
     DongsaniTheme {
         Column {
             SelectItem(

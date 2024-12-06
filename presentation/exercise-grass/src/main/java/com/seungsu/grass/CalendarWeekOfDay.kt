@@ -36,7 +36,7 @@ fun CalendarWeekOfDay(
 
 @ThemePreview
 @Composable
-fun CalendarWeekOfDayPreview() {
+private fun CalendarWeekOfDayPreview() {
     DongsaniTheme {
         CalendarWeekOfDay()
     }

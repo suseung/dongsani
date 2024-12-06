@@ -75,7 +75,7 @@ fun SparringResultInfo(
 
 @ThemePreview
 @Composable
-fun SparringResultInfoPreview() {
+private fun SparringResultInfoPreview() {
     DongsaniTheme {
         SparringResultInfo(
             modifier = Modifier.padding(16.dp),

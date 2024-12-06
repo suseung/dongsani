@@ -311,7 +311,7 @@ fun ExerciseRecord(
 
 @ThemePreview
 @Composable
-fun ExerciseGrassPreview() {
+private fun ExerciseGrassPreview() {
     val lists = listOf(
         ExerciseRecordItem(
             memo = "memo1",

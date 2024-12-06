@@ -84,7 +84,7 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileLoaded(
+private fun ProfileLoaded(
     modifier: Modifier = Modifier,
     profileImagePath: String,
     profileImageUri: Uri,
@@ -149,7 +149,7 @@ fun ProfileLoaded(
 
 @ThemePreview
 @Composable
-fun ProfileLoadedPreview() {
+private fun ProfileLoadedPreview() {
     DongsaniTheme {
         ProfileLoaded(
             profileImagePath = "",

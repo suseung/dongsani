@@ -48,7 +48,7 @@ fun ExerciseRecord(
 
 @ThemePreview
 @Composable
-fun ExerciseRecordPreview() {
+private fun ExerciseRecordPreview() {
     DongsaniTheme {
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp),

@@ -78,7 +78,7 @@ fun DongsaniTextField(
 
 @ThemePreview
 @Composable
-fun DongsaniTextFieldPreview() {
+private fun DongsaniTextFieldPreview() {
     DongsaniTheme {
         DongsaniTextField(
             modifier = Modifier.padding(16.dp),

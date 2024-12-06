@@ -660,7 +660,7 @@ fun SparringProfileLoaded(
 
 @ThemePreview
 @Composable
-fun SparringProfileLoadedPreview() {
+private fun SparringProfileLoadedPreview() {
     DongsaniTheme {
         SparringProfileLoaded(
             name = "name",

@@ -55,7 +55,7 @@ fun DongsaniOutlinedTextField(
 
 @ThemePreview
 @Composable
-fun DongsaniOutlinedTextFieldPreview() {
+private fun DongsaniOutlinedTextFieldPreview() {
     DongsaniTheme {
         DongsaniOutlinedTextField(
             modifier = Modifier.padding(16.dp),

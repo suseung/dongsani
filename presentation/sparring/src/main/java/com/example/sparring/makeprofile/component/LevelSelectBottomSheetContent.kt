@@ -136,7 +136,7 @@ fun LevelSelectBottomSheetContent(
 
 @ThemePreview
 @Composable
-fun LevelSelectBottomSheetContentPreview() {
+private fun LevelSelectBottomSheetContentPreview() {
     DongsaniTheme {
         LevelSelectBottomSheetContent(
             currentBeltId = -1,

@@ -47,7 +47,7 @@ fun DongsaniTopAppbar(
 
 @ThemePreview
 @Composable
-fun DongsaniTopAppbarPreview() {
+private fun DongsaniTopAppbarPreview() {
     DongsaniTheme {
         DongsaniTopAppbar(
             titleContent = {

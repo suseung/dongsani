@@ -84,7 +84,7 @@ fun ExerciseSettingScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseSettingLoaded(
+private fun ExerciseSettingLoaded(
     modifier: Modifier = Modifier,
     color: Color,
     colorText: String
@@ -183,7 +183,7 @@ fun ExerciseSettingLoaded(
 
 @ThemePreview
 @Composable
-fun ExerciseSettingLoadedPreviwe() {
+private fun ExerciseSettingLoadedPreviwe() {
     DongsaniTheme {
         ExerciseSettingLoaded(
             modifier = Modifier.padding(16.dp),

@@ -85,7 +85,7 @@ fun SparringRecordScreen(
 }
 
 @Composable
-fun SparringRecordLoaded(
+private fun SparringRecordLoaded(
     modifier: Modifier = Modifier,
     records: List<SparringRecord>,
     onClickAddRecord: () -> Unit = {}
@@ -175,7 +175,7 @@ fun SparringRecordLoaded(
 
 @ThemePreview
 @Composable
-fun SparringRecordLoadedPreview() {
+private fun SparringRecordLoadedPreview() {
     DongsaniTheme {
         SparringRecordLoaded(
             modifier = Modifier.padding(16.dp),

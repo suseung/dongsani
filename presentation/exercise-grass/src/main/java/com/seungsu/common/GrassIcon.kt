@@ -30,7 +30,7 @@ fun GrassIcon(
 
 @ThemePreview
 @Composable
-fun GrassIconPreview() {
+private fun GrassIconPreview() {
     GrassIcon(
         color = Purple,
         modifier = Modifier.padding(16.dp)

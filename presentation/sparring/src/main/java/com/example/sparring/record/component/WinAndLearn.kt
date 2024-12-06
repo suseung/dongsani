@@ -41,7 +41,7 @@ fun WinAndLearn(
 
 @ThemePreview
 @Composable
-fun WinAndLearnPreview() {
+private fun WinAndLearnPreview() {
     DongsaniTheme {
         WinAndLearn(
             modifier = Modifier.padding(16.dp),

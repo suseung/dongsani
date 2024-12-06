@@ -40,7 +40,7 @@ fun NameAndNickName(
 
 @ThemePreview
 @Composable
-fun NameAndNickNamePreview() {
+private fun NameAndNickNamePreview() {
     DongsaniTheme {
         NameAndNickName(
             modifier = Modifier.padding(16.dp),
