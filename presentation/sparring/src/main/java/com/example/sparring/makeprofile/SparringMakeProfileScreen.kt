@@ -38,7 +38,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -83,8 +82,8 @@ import com.seungsu.common.model.DialogEvent
 import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniBottomSheet
 import com.seungsu.design.component.DongsaniComposeDialog
+import com.seungsu.design.component.DongsaniScaffold
 import com.seungsu.design.component.DongsaniTextField
-import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.resource.R
 import java.io.File
@@ -126,69 +125,65 @@ fun SparringMakeProfileScreen(
         onDispose { eventBus.publishEvent(Event.Sparring.OnProfileChanged) }
     }
 
-    Scaffold(
-        topBar = {
-            DongsaniTopAppbar(
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(20.dp)
-                            .clickable { onNavPopback() },
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
-                        contentDescription = "back"
-                    )
-                },
-                titleContent = {
-                    Text(
-                        text = stringResource(id = R.string.sparring_profile_title),
-                        style = DongsaniTheme.typos.regular.font18,
-                        color = DongsaniTheme.colors.label.onBgPrimary,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                actions = {
-                    IconButton(
-                        onClick = { isMenuExpanded = isMenuExpanded.not() }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = "setting",
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = isMenuExpanded,
-                        onDismissRequest = { isMenuExpanded = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = "운동기록",
-                                    style = TextStyle(
-                                        color = DongsaniTheme.colors.label.onBgPrimary
-                                    )
-                                )
-                            },
-                            onClick = {
-                                action(SparringMakeProfileIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = "스파링",
-                                    style = TextStyle(
-                                        color = DongsaniTheme.colors.label.onBgPrimary
-                                    )
-                                )
-                            },
-                            onClick = {
-                                action(SparringMakeProfileIntent.OnChangeContent(ContentsType.SPARRING))
-                            }
-                        )
-                    }
-                }
+    DongsaniScaffold(
+        navigationIcon = {
+            Icon(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .size(20.dp)
+                    .clickable { onNavPopback() },
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
+                contentDescription = "back"
             )
+        },
+        titleContent = {
+            Text(
+                text = stringResource(id = R.string.sparring_profile_title),
+                style = DongsaniTheme.typos.regular.font18,
+                color = DongsaniTheme.colors.label.onBgPrimary,
+                textAlign = TextAlign.Center
+            )
+        },
+        actions = {
+            IconButton(
+                onClick = { isMenuExpanded = isMenuExpanded.not() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = "setting",
+                )
+            }
+            DropdownMenu(
+                expanded = isMenuExpanded,
+                onDismissRequest = { isMenuExpanded = false }
+            ) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = "운동기록",
+                            style = TextStyle(
+                                color = DongsaniTheme.colors.label.onBgPrimary
+                            )
+                        )
+                    },
+                    onClick = {
+                        action(SparringMakeProfileIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
+                    }
+                )
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = "스파링",
+                            style = TextStyle(
+                                color = DongsaniTheme.colors.label.onBgPrimary
+                            )
+                        )
+                    },
+                    onClick = {
+                        action(SparringMakeProfileIntent.OnChangeContent(ContentsType.SPARRING))
+                    }
+                )
+            }
         },
         containerColor = DongsaniTheme.colors.background.groupedUpperBase,
         bottomBar = {

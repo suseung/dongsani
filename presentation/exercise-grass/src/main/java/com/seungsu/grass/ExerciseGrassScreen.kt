@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seungsu.design.ThemePreview
-import com.seungsu.design.component.DongsaniTopAppbar
+import com.seungsu.design.component.DongsaniScaffold
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.design.theme.Purple
 import com.seungsu.model.ExerciseRecordItem
@@ -49,51 +48,47 @@ fun ExerciseGrassScreen(
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     val action by remember { mutableStateOf(viewModel::dispatch) }
 
-    Scaffold(
-        topBar = {
-            DongsaniTopAppbar(
-                titleContent = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = stringResource(id = resourceR.string.exercise_record_title),
-                            style = DongsaniTheme.typos.regular.font18,
-                            textAlign = TextAlign.Center,
-                            color = DongsaniTheme.colors.label.onBgTertiary,
-                            modifier = Modifier
-                                .padding(end = 32.dp)
-                                .clickable { navToExerciseRecord() }
-                        )
+    DongsaniScaffold(
+        titleContent = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = resourceR.string.exercise_record_title),
+                    style = DongsaniTheme.typos.regular.font18,
+                    textAlign = TextAlign.Center,
+                    color = DongsaniTheme.colors.label.onBgTertiary,
+                    modifier = Modifier
+                        .padding(end = 32.dp)
+                        .clickable { navToExerciseRecord() }
+                )
 
-                        Text(
-                            text = stringResource(id = resourceR.string.exercise_grass_title),
-                            style = DongsaniTheme.typos.regular.font18,
-                            color = Purple,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = navigateToSetting) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = resourceR.drawable.ic_setting),
-                            contentDescription = "setting",
-                            modifier = Modifier.clickable { navigateToSetting() }
-                        )
-                    }
-                },
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(20.dp),
-                        painter = painterResource(id = resourceR.drawable.ic_dongsani),
-                        tint = DongsaniTheme.colors.label.onBgPrimary,
-                        contentDescription = "dongsani logo"
-                    )
-                }
+                Text(
+                    text = stringResource(id = resourceR.string.exercise_grass_title),
+                    style = DongsaniTheme.typos.regular.font18,
+                    color = Purple,
+                    textAlign = TextAlign.Center
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = navigateToSetting) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = resourceR.drawable.ic_setting),
+                    contentDescription = "setting",
+                    modifier = Modifier.clickable { navigateToSetting() }
+                )
+            }
+        },
+        navigationIcon = {
+            Icon(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .size(20.dp),
+                painter = painterResource(id = resourceR.drawable.ic_dongsani),
+                tint = DongsaniTheme.colors.label.onBgPrimary,
+                contentDescription = "dongsani logo"
             )
         }
     ) { paddingValues ->

@@ -14,7 +14,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,7 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seungsu.common.GrassIcon
 import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniBottomSheet
-import com.seungsu.design.component.DongsaniTopAppbar
+import com.seungsu.design.component.DongsaniScaffold
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.design.theme.Purple
 import com.seungsu.model.GrassColors
@@ -48,34 +47,30 @@ fun ExerciseSettingScreen(
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     val action by remember { mutableStateOf(viewModel::dispatch) }
 
-    Scaffold(
-        topBar = {
-            DongsaniTopAppbar(
-                titleContent = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = stringResource(id = resourceR.string.exercise_setting_title),
-                            style = DongsaniTheme.typos.regular.font18,
-                            color = DongsaniTheme.colors.label.onBgPrimary,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(end = 32.dp)
-                        )
-                    }
-                },
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(20.dp)
-                            .clickable { onNavPopback() },
-                        painter = painterResource(id = resourceR.drawable.ic_arrow_back),
-                        tint = DongsaniTheme.colors.label.onBgPrimary,
-                        contentDescription = "back"
-                    )
-                }
+    DongsaniScaffold(
+        titleContent = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = resourceR.string.exercise_setting_title),
+                    style = DongsaniTheme.typos.regular.font18,
+                    color = DongsaniTheme.colors.label.onBgPrimary,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(end = 32.dp)
+                )
+            }
+        },
+        navigationIcon = {
+            Icon(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .size(20.dp)
+                    .clickable { onNavPopback() },
+                painter = painterResource(id = resourceR.drawable.ic_arrow_back),
+                tint = DongsaniTheme.colors.label.onBgPrimary,
+                contentDescription = "back"
             )
         }
     ) { paddingValues ->

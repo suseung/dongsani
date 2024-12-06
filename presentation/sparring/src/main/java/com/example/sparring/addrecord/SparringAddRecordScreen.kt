@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,12 +27,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.sparring.record.SparringRecordEffect
 import com.seungsu.common.component.CollectContent
 import com.seungsu.common.ext.toastS
 import com.seungsu.design.ThemePreview
+import com.seungsu.design.component.DongsaniScaffold
 import com.seungsu.design.component.DongsaniTextField
-import com.seungsu.design.component.DongsaniTopAppbar
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.resource.R
 
@@ -58,27 +56,23 @@ fun SparringAddRecordScreen(
         }
     )
 
-    Scaffold(
-        topBar = {
-            DongsaniTopAppbar(
-                titleContent = {
-                    Text(
-                        text = stringResource(R.string.add_sparring_record_title),
-                        style = DongsaniTheme.typos.regular.font18,
-                        color = DongsaniTheme.colors.label.onBgPrimary,
-                    )
-                },
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(20.dp)
-                            .clickable { onNavPopback() },
-                        painter = painterResource(id = R.drawable.ic_arrow_back),
-                        tint = DongsaniTheme.colors.label.onBgPrimary,
-                        contentDescription = "back"
-                    )
-                }
+    DongsaniScaffold(
+        titleContent = {
+            Text(
+                text = stringResource(R.string.add_sparring_record_title),
+                style = DongsaniTheme.typos.regular.font18,
+                color = DongsaniTheme.colors.label.onBgPrimary,
+            )
+        },
+        navigationIcon = {
+            Icon(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .size(20.dp)
+                    .clickable { onNavPopback() },
+                painter = painterResource(id = R.drawable.ic_arrow_back),
+                tint = DongsaniTheme.colors.label.onBgPrimary,
+                contentDescription = "back"
             )
         },
         containerColor = DongsaniTheme.colors.background.groupedUpperBase,

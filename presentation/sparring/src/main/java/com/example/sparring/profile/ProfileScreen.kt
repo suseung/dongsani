@@ -11,7 +11,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,7 +32,7 @@ import com.example.sparring.profile.component.ProfileInfo
 import com.example.sparring.profile.component.SparringResultInfo
 import com.seungsu.common.component.CollectContent
 import com.seungsu.design.ThemePreview
-import com.seungsu.design.component.DongsaniTopAppbar
+import com.seungsu.design.component.DongsaniScaffold
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.resource.R
 
@@ -53,20 +52,16 @@ fun ProfileScreen(
         }
     )
 
-    Scaffold(
-        topBar = {
-            DongsaniTopAppbar(
-                titleContent = {
-                    Text(
-                        text = stringResource(id = com.seungsu.resource.R.string.mypage),
-                        style = DongsaniTheme.typos.regular.font18,
-                        color = DongsaniTheme.colors.label.onBgPrimary,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                actions = {}
+    DongsaniScaffold(
+        titleContent = {
+            Text(
+                text = stringResource(id = com.seungsu.resource.R.string.mypage),
+                style = DongsaniTheme.typos.regular.font18,
+                color = DongsaniTheme.colors.label.onBgPrimary,
+                textAlign = TextAlign.Center
             )
         },
+        actions = {},
         containerColor = DongsaniTheme.colors.background.groupedUpperBase
     ) { paddingValues ->
         with(uiState) {

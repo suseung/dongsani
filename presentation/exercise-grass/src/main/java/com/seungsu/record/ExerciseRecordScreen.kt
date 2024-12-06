@@ -21,10 +21,8 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +45,7 @@ import com.seungsu.common.model.ContentsType
 import com.seungsu.design.ThemePreview
 import com.seungsu.design.component.DongsaniBottomSheet
 import com.seungsu.design.component.DongsaniComposeDialog
-import com.seungsu.design.component.DongsaniTopAppbar
+import com.seungsu.design.component.DongsaniScaffold
 import com.seungsu.design.theme.DongsaniTheme
 import com.seungsu.design.theme.Purple
 import com.seungsu.model.ExerciseRecordItem
@@ -77,88 +75,84 @@ fun ExerciseRecordScreen(
         }
     )
 
-    Scaffold(
-        topBar = {
-            DongsaniTopAppbar(
-                titleContent = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
+    DongsaniScaffold(
+        titleContent = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = resourceR.string.exercise_record_title),
+                    style = DongsaniTheme.typos.regular.font18,
+                    color = Purple,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(end = 32.dp)
+                )
+                Text(
+                    text = stringResource(id = resourceR.string.exercise_grass_title),
+                    style = DongsaniTheme.typos.regular.font18,
+                    color = DongsaniTheme.colors.label.onBgTertiary,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.clickable { navToExerciseGrass() }
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = navigateToSetting) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = resourceR.drawable.ic_setting),
+                    contentDescription = "setting",
+                    modifier = Modifier.clickable { navigateToSetting() }
+                )
+            }
+            IconButton(
+                onClick = { isMenuExpanded = isMenuExpanded.not() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = "setting",
+                )
+            }
+            DropdownMenu(
+                expanded = isMenuExpanded,
+                onDismissRequest = { isMenuExpanded = false }
+            ) {
+                DropdownMenuItem(
+                    text = {
                         Text(
-                            text = stringResource(id = resourceR.string.exercise_record_title),
-                            style = DongsaniTheme.typos.regular.font18,
-                            color = Purple,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(end = 32.dp)
+                            text = "운동기록",
+                            style = TextStyle(
+                                color = DongsaniTheme.colors.label.onBgPrimary
+                            )
                         )
+                    },
+                    onClick = {
+                        action(ExerciseRecordIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
+                    }
+                )
+                DropdownMenuItem(
+                    text = {
                         Text(
-                            text = stringResource(id = resourceR.string.exercise_grass_title),
-                            style = DongsaniTheme.typos.regular.font18,
-                            color = DongsaniTheme.colors.label.onBgTertiary,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.clickable { navToExerciseGrass() }
+                            text = "스파링",
+                            style = TextStyle(
+                                color = DongsaniTheme.colors.label.onBgPrimary
+                            )
                         )
+                    },
+                    onClick = {
+                        action(ExerciseRecordIntent.OnChangeContent(ContentsType.SPARRING))
                     }
-                },
-                actions = {
-                    IconButton(onClick = navigateToSetting) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = resourceR.drawable.ic_setting),
-                            contentDescription = "setting",
-                            modifier = Modifier.clickable { navigateToSetting() }
-                        )
-                    }
-                    IconButton(
-                        onClick = { isMenuExpanded = isMenuExpanded.not() }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = "setting",
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = isMenuExpanded,
-                        onDismissRequest = { isMenuExpanded = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = "운동기록",
-                                    style = TextStyle(
-                                        color = DongsaniTheme.colors.label.onBgPrimary
-                                    )
-                                )
-                            },
-                            onClick = {
-                                action(ExerciseRecordIntent.OnChangeContent(ContentsType.EXERCISE_RECORD))
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = "스파링",
-                                    style = TextStyle(
-                                        color = DongsaniTheme.colors.label.onBgPrimary
-                                    )
-                                )
-                            },
-                            onClick = {
-                                action(ExerciseRecordIntent.OnChangeContent(ContentsType.SPARRING))
-                            }
-                        )
-                    }
-                },
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(20.dp),
-                        painter = painterResource(id = resourceR.drawable.ic_dongsani),
-                        tint = DongsaniTheme.colors.label.onBgPrimary,
-                        contentDescription = "dongsani logo"
-                    )
-                }
+                )
+            }
+        },
+        navigationIcon = {
+            Icon(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .size(20.dp),
+                painter = painterResource(id = resourceR.drawable.ic_dongsani),
+                tint = DongsaniTheme.colors.label.onBgPrimary,
+                contentDescription = "dongsani logo"
             )
         },
         bottomBar = {
